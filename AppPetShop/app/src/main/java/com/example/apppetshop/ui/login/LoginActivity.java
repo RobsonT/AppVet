@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,11 +23,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apppetshop.CadastroPet;
 import com.example.apppetshop.R;
 import com.example.apppetshop.ui.login.LoginViewModel;
 import com.example.apppetshop.ui.login.LoginViewModelFactory;
 
 public class LoginActivity extends AppCompatActivity {
+
+    //botao testePet
+    private Button pet = null;
+
 
     private LoginViewModel loginViewModel;
 
@@ -117,6 +123,16 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
+
+
+        //Testar tela Pets
+        pet = findViewById(R.id.testepet);
+        pet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testePet();
+            }
+        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
@@ -127,5 +143,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    //parte do criar Activity
+    public void testePet(){
+        Intent intent = new Intent(this, CadastroPet.class);
+        startActivity(intent) ;
     }
 }
