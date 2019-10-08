@@ -25,14 +25,6 @@ public class CompraDAO implements Dao<Compra> {
     }
 
     @Override
-    public void update(Compra purchase, String[] params) {
-        purchase.setIdClient(Integer.parseInt(params[0]));
-        purchase.setIdItem(Integer.parseInt(params[1]));
-
-        purchases.add(purchase);
-    }
-
-    @Override
     public void delete(Compra purchase) {
         purchases.remove(purchase);
     }

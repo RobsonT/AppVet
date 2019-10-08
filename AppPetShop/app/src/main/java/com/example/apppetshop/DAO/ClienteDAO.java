@@ -29,16 +29,6 @@ public class ClienteDAO implements Dao<Cliente>{
     }
 
     @Override
-    public void update(Cliente client, String[] params) {
-        client.setName(params[0]);
-        client.setCpf(params[1]);
-        client.setEmail(params[2]);
-        client.setPassword(params[3]);
-
-        clients.add(client);
-    }
-
-    @Override
     public void delete(Cliente client) {
         clients.remove(client);
     }
