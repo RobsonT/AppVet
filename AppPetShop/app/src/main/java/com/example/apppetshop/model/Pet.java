@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class Pet {
     private int id;
-    private String nome;
-    private String sexo;
-    private boolean castrado;
-    private Date dataNascimento;
-    private String tipo;
-    private String porte;
-    private double peso;
-    private int idRaca;
-    private Straing imagem;
+    private String name;
+    private String sex;
+    private boolean castrated;
+    private Date birthDate;
+    private String type;
+    private String mien;
+    private double weight;
+    private int idBreed;
+    private String image;
 
     public int getId() {
         return id;
@@ -22,75 +22,75 @@ public class Pet {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getSex() {
+        return sex;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
-    public boolean isCastrado() {
-        return castrado;
+    public boolean isCastrated() {
+        return castrated;
     }
 
-    public void setCastrado(boolean castrado) {
-        this.castrado = castrado;
+    public void setCastrated(boolean castrated) {
+        this.castrated = castrated;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getType() {
+        return type;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getPorte() {
-        return porte;
+    public String getMien() {
+        return mien;
     }
 
-    public void setPorte(String porte) {
-        this.porte = porte;
+    public void setMien(String mien) {
+        this.mien = mien;
     }
 
-    public double getPeso() {
-        return peso;
+    public double getWeight() {
+        return weight;
     }
 
-    public void setPeso(double peso) {
-        this.peso = peso;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
-    public int getIdRaca() {
-        return idRaca;
+    public int getIdBreed() {
+        return idBreed;
     }
 
-    public void setIdRaca(int idRaca) {
-        this.idRaca = idRaca;
+    public void setIdBreed(int idBreed) {
+        this.idBreed = idBreed;
     }
 
-    public Straing getImagem() {
-        return imagem;
+    public String getImage() {
+        return image;
     }
 
-    public void setImagem(Straing imagem) {
-        this.imagem = imagem;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

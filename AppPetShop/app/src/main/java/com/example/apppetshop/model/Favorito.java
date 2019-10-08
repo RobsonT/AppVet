@@ -2,8 +2,8 @@ package com.example.apppetshop.model;
 
 public class Favorito {
     private int id;
-    private int idCliente;
-    private int idProduto;
+    private int idClient;
+    private int idProduct;
 
     public int getId() {
         return id;
@@ -13,19 +13,19 @@ public class Favorito {
         this.id = id;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public int getIdClient() {
+        return idClient;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
-    public int getIdProduto() {
-        return idProduto;
+    public int getIdProduct() {
+        return idProduct;
     }
 
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
+    public void setIdProduct(int idProduct) {
+        this.idProduct = idProduct;
     }
 }

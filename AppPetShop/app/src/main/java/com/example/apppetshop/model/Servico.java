@@ -1,10 +1,9 @@
 package com.example.apppetshop.model;
 
-public class Produto {
+public class Servico {
     private int id;
     private String name;
     private double price;
-    private String image;
 
     public int getId() {
         return id;
@@ -28,13 +27,5 @@ public class Produto {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

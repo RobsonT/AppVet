@@ -1,9 +1,12 @@
 package com.example.apppetshop.model;
 
+import java.util.Date;
+
 public class ServicoCliente {
     private int id;
-    private int idCliente;
-    private int idServico;
+    private int idClient;
+    private int idService;
+    private Date time;
 
     public int getId() {
         return id;
@@ -13,19 +16,27 @@ public class ServicoCliente {
         this.id = id;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public int getIdClient() {
+        return idClient;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
-    public int getIdServico() {
-        return idServico;
+    public int getIdService() {
+        return idService;
     }
 
-    public void setIdServico(int idServico) {
-        this.idServico = idServico;
+    public void setIdService(int idService) {
+        this.idService = idService;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

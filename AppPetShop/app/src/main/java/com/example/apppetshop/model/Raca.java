@@ -2,8 +2,8 @@ package com.example.apppetshop.model;
 
 public class Raca {
     private int id;
-    private String tipo;
-    private String raca;
+    private String type;
+    private String breed;
 
     public int getId() {
         return id;
@@ -13,19 +13,19 @@ public class Raca {
         this.id = id;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getType() {
+        return type;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getRaca() {
-        return raca;
+    public String getBreed() {
+        return breed;
     }
 
-    public void setRaca(String raca) {
-        this.raca = raca;
+    public void setBreed(String breed) {
+        this.breed = breed;
     }
 }
