@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }else if(client == null){
                 Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT);
-            }else(client == null){
+            }else{
                 Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT);
             }
         }
