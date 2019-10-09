@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
@@ -43,16 +44,32 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean validatePassword(){
+        String passwordText = password.getText().toString().trim();
+
+        if(passwordText.isEmpty()){
+            password.setError("preencha o campo de senha");
+            return false;
+        }
+
+        password.setError(null);
+        return true;
+    }
+
     public void enter(View view){
         String emailText = email.getText().toString().trim();
-        String passwordText = email.getText().toString();
+        String passwordText = password.getText().toString();
 
         if(validateEmail()){
-            Cliente client = new Cliente();
+            Cliente client;
             client = clienteDAO.getByEmail(emailText);
-            if(!client.equals(null) && client.getPassword() == passwordText){
+            if(client != null && client.getPassword().equals(passwordText)){
                 Intent i = new Intent( this, Loja.class );
                 startActivity(i);
+            }else if(client == null){
+                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT);
+            }else(client == null){
+                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT);
             }
         }
     }

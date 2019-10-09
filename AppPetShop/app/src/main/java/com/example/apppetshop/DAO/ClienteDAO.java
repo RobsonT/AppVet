@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteDAO implements Dao<Cliente>{
-    private List<Cliente> clients = new ArrayList<>();
+    private List<Cliente> clients;
     private static ClienteDAO instance;
 
     private ClienteDAO() {
+        clients = new ArrayList<>();
     }
 
     public static ClienteDAO getInstance(){
