@@ -32,4 +32,13 @@ public class ClienteDAO implements Dao<Cliente>{
     public void delete(Cliente client) {
         clients.remove(client);
     }
+
+    public Cliente getByEmail(String email) {
+        for (Cliente c : clients) {
+            if (c.getEmail().equals(email)) {
+                return c;
+            }
+        }
+        return null;
+    }
 }
