@@ -2,12 +2,14 @@ package com.example.apppetshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.apppetshop.DAO.ClienteDAO;
+import com.example.apppetshop.model.Cliente;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,8 +44,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void enter(View view){
+        String emailText = email.getText().toString().trim();
+        String passwordText = email.getText().toString();
 
-        if(validateEmail() )
+        if(validateEmail()){
+            Cliente client = new Cliente();
+            client = clienteDAO.getByEmail(emailText);
+            if(!client.equals(null) && client.getPassword() == passwordText){
+                Intent i = new Intent( this, Loja.class );
+                startActivity(i);
+            }
+        }
     }
 
     public void newUser(View view){
