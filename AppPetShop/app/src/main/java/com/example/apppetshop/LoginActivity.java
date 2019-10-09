@@ -60,16 +60,16 @@ public class LoginActivity extends AppCompatActivity {
         String emailText = email.getText().toString().trim();
         String passwordText = password.getText().toString();
 
-        if(validateEmail()){
+        if(validateEmail() && validatePassword()){
             Cliente client;
             client = clienteDAO.getByEmail(emailText);
             if(client != null && client.getPassword().equals(passwordText)){
                 Intent i = new Intent( this, Loja.class );
                 startActivity(i);
             }else if(client == null){
-                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show();
             }
         }
     }
