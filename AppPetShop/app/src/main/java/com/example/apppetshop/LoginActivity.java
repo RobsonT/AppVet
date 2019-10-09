@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.emailUsuario);
         password = findViewById(R.id.senhaUsuario);
-        clienteDAO = new ClienteDAO();
+        clienteDAO = ClienteDAO.getInstance();
     }
 
     public boolean validateEmail(){
@@ -58,7 +58,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void newUser(View view){
-
+        Intent i = new Intent( this, Cadastro.class );
+        startActivity(i);
     }
 
     public void recoverPasssword(View view){
