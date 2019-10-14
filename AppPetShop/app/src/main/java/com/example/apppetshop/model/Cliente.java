@@ -2,10 +2,17 @@ package com.example.apppetshop.model;
 
 public class Cliente {
     private int id;
-    private String name;
+    private String nome;
     private String cpf;
     private String email;
-    private String password;
+    private String senha;
+
+    public Cliente(String nome, String email, String cpf, String senha){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+    }
 
     public int getId() {
         return id;
@@ -15,12 +22,12 @@ public class Cliente {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCpf() {
@@ -39,11 +46,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

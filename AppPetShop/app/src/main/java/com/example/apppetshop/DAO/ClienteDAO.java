@@ -1,5 +1,8 @@
 package com.example.apppetshop.DAO;
 
+import android.widget.Toast;
+
+import com.example.apppetshop.Cadastro;
 import com.example.apppetshop.model.Cliente;
 
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ public class ClienteDAO implements Dao<Cliente>{
 
     private ClienteDAO() {
         clients = new ArrayList<>();
+        Cliente cliente = new Cliente("a", "a@a.a", "1", "1");
+        clients.add(cliente);
     }
 
     public static ClienteDAO getInstance(){

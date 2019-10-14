@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navHome"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/navCart"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="Carrinho" />
+        <item
+            android:id="@+id/navFavorite"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="Favoritos" />
+        <item
+            android:id="@+id/navRequest"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:title="Pedidos" />
+        <item
+            android:id="@+id/navPet"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:title="Pets" />
+    </group>
+</menu>

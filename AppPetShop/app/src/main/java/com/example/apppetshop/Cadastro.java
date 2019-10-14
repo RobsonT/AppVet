@@ -66,6 +66,12 @@ public class Cadastro extends AppCompatActivity {
     }
 
     public boolean validateCPF() {
+        String cpfText = email.getText().toString();
+        if(cpfText.isEmpty()){
+            cpf.setError("Preencha o cpf");
+            return false;
+        }
+
         cpf.setError(null);
         return true;
     }
@@ -88,11 +94,8 @@ public class Cadastro extends AppCompatActivity {
 
     public void register(View view) {
 
-        Cliente cliente = new Cliente();
-        cliente.setName(name.getText().toString());
-        cliente.setCpf(cpf.getText().toString());
-        cliente.setPassword(password.getText().toString());
-        cliente.setEmail(email.getText().toString());
+        Cliente cliente = new Cliente(name.getText().toString(), email.getText().toString(), cpf.getText().toString(), password.getText().toString());
+
         if (validateName() && validateEmail() && validateCPF() && validatePassword()) {
             if (clienteDAO.getByEmail(cliente.getEmail()) == null) {
                 clienteDAO.save(cliente);
