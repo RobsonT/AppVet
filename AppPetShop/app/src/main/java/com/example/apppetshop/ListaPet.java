@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.model.Pet;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +36,20 @@ public class ListaPet extends Fragment {
 
         petAdapter = new PetAdapter(pets);
 
+        FloatingActionButton fab = v.findViewById(R.id.fab);
+
         recyclerView = v.findViewById(R.id.recyclerViewPet);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(petAdapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), CadastroPet.class);
+                startActivity(i);
+            }
+        });
 
         return v;
     }

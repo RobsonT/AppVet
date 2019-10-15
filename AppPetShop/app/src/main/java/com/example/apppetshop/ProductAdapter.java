@@ -2,6 +2,7 @@ package com.example.apppetshop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +38,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         Produto product = productList1.get(position);
-        holder.textProduct.setText(product.getName());
-        holder.imgProduct.setImageResource(product.getImage());
+        holder.textProduct.setText(product.getNome());
+        holder.imgProduct.setImageResource(product.getImagem());
+        holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
         if (position < productList2.size()) {
             product = productList2.get(position);
-            holder.textPreco.setText(product.getName());
-            holder.textProduct1.setText(product.getName());
-            holder.imgProduct1.setImageResource(product.getImage());
-            holder.textPreco1.setText(product.getName());
+            holder.textProduct1.setText(product.getNome());
+            holder.imgProduct1.setImageResource(product.getImagem());
+            holder.textPreco1.setText("R$" + String.valueOf(product.getPreco()));
         }else{
             holder.secondColumn.setVisibility(View.INVISIBLE);
         }
