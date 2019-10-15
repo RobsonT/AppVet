@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,8 +41,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.imgProduct.setImageResource(product.getImage());
         if (position < productList2.size()) {
             product = productList2.get(position);
+            holder.textPreco.setText(product.getName());
             holder.textProduct1.setText(product.getName());
             holder.imgProduct1.setImageResource(product.getImage());
+            holder.textPreco1.setText(product.getName());
         }else{
             holder.secondColumn.setVisibility(View.INVISIBLE);
         }
@@ -67,8 +68,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         TextView textProduct;
+        TextView textPreco;
         ImageView imgProduct1;
         TextView textProduct1;
+        TextView textPreco1;
         CardView cv;
         LinearLayout secondColumn;
 
@@ -76,11 +79,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             textProduct = itemView.findViewById(R.id.textProduct);
+            textPreco = itemView.findViewById(R.id.textPreco);
             imgProduct1 = itemView.findViewById(R.id.imgProduct1);
             textProduct1 = itemView.findViewById(R.id.textProduct1);
+            textPreco1 = itemView.findViewById(R.id.textPreco1);
             cv = itemView.findViewById(R.id.cardView);
             secondColumn = itemView.findViewById(R.id.secondColumn);
         }
-
     }
 }

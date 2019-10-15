@@ -25,7 +25,7 @@ public class LojaFragment extends Fragment {
     ArrayList<Produto> products1;
     ArrayList<Produto> products2;
 
-    public static final String[] names = {"Breaking Bad" ,"Rick and Morty","Breaking Bad", "Rick and Morty"};
+    public static final String[] names = {"Breaking Bad" ,"Rick and Morty","Ricardo", "Pedro"};
     public static final int[] images = {R.drawable.icongato ,R.drawable.iconcachorro,R.drawable.icongato, R.drawable.iconcachorro};
 
     @Override
