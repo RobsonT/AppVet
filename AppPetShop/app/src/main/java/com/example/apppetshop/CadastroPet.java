@@ -54,7 +54,7 @@ public class CadastroPet extends AppCompatActivity {
         birthDate = birthDatePet.getText().toString();
         Pet pet = new Pet();
         if(validateName()){
-            pet.setName(name);
+            pet.setNome(name);
         }
 
         Intent intent = new Intent(this, CadastroPet2.class);
