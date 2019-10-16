@@ -2,9 +2,9 @@ package com.example.apppetshop.model;
 
 public class Produto {
     private int id;
-    private String name;
-    private double price;
-    private int image;
+    private String nome;
+    private double preco;
+    private int imagem;
 
     public int getId() {
         return id;
@@ -14,27 +14,28 @@ public class Produto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public double getPrice() {
-        return price;
+    public double getPreco() {
+        return preco;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
 
-    public int getImage() {
-        return image;
+    public int getImagem() {
+        return imagem;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImagem(int imagem) {
+        this.imagem = imagem;
     }
 }
+

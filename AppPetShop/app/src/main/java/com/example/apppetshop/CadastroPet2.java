@@ -38,7 +38,7 @@ public class CadastroPet2 extends AppCompatActivity {
         peso = Double.parseDouble(pesoPet.getText().toString());
         Pet pet = new Pet();
         if(validatePeso()){
-            pet.setWeight(peso);
+            pet.setPeso(peso);
         }
 
         Intent intent = new Intent(this, CadastroPet3.class);

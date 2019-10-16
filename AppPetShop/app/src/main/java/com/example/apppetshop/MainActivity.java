@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            case R.id.navRequest:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
 //                break;
-//            case R.id.navPet:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ListaPet()).commit();
-//                break;
+            case R.id.navPet:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ListaPet()).commit();
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
