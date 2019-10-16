@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            case R.id.navCart:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Carrinho()).commit();
 //                break;
-//            case R.id.navFavorite:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
-//                break;
+            case R.id.navFavorite:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new FavoriteList()).commit();
+                break;
 //            case R.id.navRequest:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
 //                break;

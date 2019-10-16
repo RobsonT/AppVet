@@ -1,31 +1,22 @@
 package com.example.apppetshop.model;
 
 public class Favorito {
-    private int id;
-    private int idClient;
-    private int idProduct;
+    private int idCliente;
+    private int idProduto;
 
-    public int getId() {
-        return id;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public int getIdClient() {
-        return idClient;
+    public int getIdProduto() {
+        return idProduto;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
-
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
     }
 }
