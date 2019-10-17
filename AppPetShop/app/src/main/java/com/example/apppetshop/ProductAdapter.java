@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.DAO.FavoritoDAO;
+import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Produto;
 
 import java.util.List;
@@ -23,10 +24,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     List<Produto> productList2;
     FavoritoDAO favoritoDao;
     Context context;
+    Favorito favorito;
+    Produto product;
 
     public ProductAdapter(List<Produto> productList1, List<Produto> productList2) {
         this.productList1 = productList1;
         this.productList2 = productList2;
+        favorito = new Favorito();
     }
 
     @Override
@@ -39,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Produto product = productList1.get(position);
+       product = productList1.get(position);
         holder.textProduct.setText(product.getNome());
         holder.imgProduct.setImageResource(product.getImagem());
         holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
@@ -52,15 +56,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }else{
             holder.secondColumn.setVisibility(View.INVISIBLE);
         }
-
         holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 if(holder.favoriteLeft.getTag().equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag("true");
+                    favorito.setIdProduto(product.getId());
+                    favorito.setIdCliente(0);
+                    favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
+                    favorito.setIdProduto(product.getId());
+                    favorito.setIdCliente(0);
+                    favoritoDao.delete(favorito);
                     holder.favoriteLeft.setTag("false");
                 }
             }
@@ -72,9 +81,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(holder.favoriteRight.getTag().equals("false")) {
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteRight.setTag("true");
+                    favorito.setIdProduto(product.getI   d());
+                    favorito.setIdCliente(0);
+                    favoritoDao.save(favorito);
                 }else{
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite);
                     holder.favoriteRight.setTag("false");
+                    favorito.setIdProduto(product.getId());
+                    favorito.setIdCliente(0);
+                    favoritoDao.delete(favorito);
                 }
             }
         });
