@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apppetshop.DAO.FavoritoDAO;
 import com.example.apppetshop.model.Produto;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     List<Produto> productList1;
     List<Produto> productList2;
+    FavoritoDAO favoritoDao;
     Context context;
 
     public ProductAdapter(List<Produto> productList1, List<Produto> productList2) {
@@ -41,6 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.textProduct.setText(product.getNome());
         holder.imgProduct.setImageResource(product.getImagem());
         holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
+        favoritoDao = FavoritoDAO.getInstance();
         if (position < productList2.size()) {
             product = productList2.get(position);
             holder.textProduct1.setText(product.getNome());
@@ -49,6 +52,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }else{
             holder.secondColumn.setVisibility(View.INVISIBLE);
         }
+
+        holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+            }
+        });
+
+        holder.favoriteRight.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
+            }
+        });
+
         holder.secondColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +84,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList1.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imgProduct;
         TextView textProduct;
         TextView textPreco;
@@ -75,6 +93,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView textPreco1;
         CardView cv;
         LinearLayout secondColumn;
+        ImageView favoriteLeft;
+        ImageView favoriteRight;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +106,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             textPreco1 = itemView.findViewById(R.id.textPreco1);
             cv = itemView.findViewById(R.id.cardView);
             secondColumn = itemView.findViewById(R.id.secondColumn);
+            favoriteLeft = itemView.findViewById(R.id.ic_favorite1);
+            favoriteRight = itemView.findViewById(R.id.ic_favorite);
         }
     }
 }
