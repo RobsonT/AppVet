@@ -11,7 +11,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ProdutoFavoritos" />
         <activity android:name=".ListaPet" />
         <activity android:name=".ProdutoDescricao" />
         <activity android:name=".ListaServico" />
