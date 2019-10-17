@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
@@ -26,6 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.emailUsuario);
         password = findViewById(R.id.senhaUsuario);
         clienteDAO = ClienteDAO.getInstance();
+//        Sublinhar texto
+        TextView textView = findViewById(R.id.textView17);
+        SpannableString content = new SpannableString(textView.getText().toString());
+        content.setSpan(new UnderlineSpan(), 0, textView.getText().toString().length(), 0);
+        textView.setText(content);
     }
 
     public boolean validateEmail(){

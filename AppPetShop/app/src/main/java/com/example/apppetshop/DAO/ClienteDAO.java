@@ -15,6 +15,7 @@ public class ClienteDAO implements Dao<Cliente>{
     private ClienteDAO() {
         clients = new ArrayList<>();
         Cliente cliente = new Cliente("a", "a@a.a", "1", "1");
+        cliente.setId(0);
         clients.add(cliente);
     }
 
