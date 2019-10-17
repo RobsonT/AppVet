@@ -57,7 +57,8 @@
                         android:id="@+id/ic_favorite1"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_favorite" />
+                        android:src="@drawable/ic_favorite"
+                        android:tag="false" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -104,7 +105,8 @@
                         android:id="@+id/ic_favorite"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_favorite" />
+                        android:src="@drawable/ic_favorite"
+                        android:tag="false" />
                 </LinearLayout>
 
             </LinearLayout>

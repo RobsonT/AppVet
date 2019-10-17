@@ -56,14 +56,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+                if(holder.favoriteLeft.getTag().equals("false")) {
+                    holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    holder.favoriteLeft.setTag("true");
+                }else{
+                    holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
+                    holder.favoriteLeft.setTag("false");
+                }
             }
         });
 
         holder.favoriteRight.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
+                if(holder.favoriteRight.getTag().equals("false")) {
+                    holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    holder.favoriteRight.setTag("true");
+                }else{
+                    holder.favoriteRight.setImageResource(R.drawable.ic_favorite);
+                    holder.favoriteRight.setTag("false");
+                }
             }
         });
 
