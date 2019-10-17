@@ -16,7 +16,7 @@ public class ProdutoDAO implements Dao<Produto>{
         products = new ArrayList<>();
         Produto produto = new Produto();
         produto.setId(0);
-        produto.setNome("Ração");
+        produto.setNome("Ração que contem comida gostosa e faz seu cachorro se sentir feliz");
         produto.setImagem(R.drawable.iconcachorro);
         produto.setPreco(18);
 

@@ -21,7 +21,11 @@
             android:title="Pedidos" />
         <item
             android:id="@+id/navPet"
-            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:icon="@drawable/ic_pets"
             android:title="Pets" />
+        <item
+            android:id="@+id/navService"
+            android:icon="@drawable/ic_service"
+            android:title="Serviços" />
     </group>
 </menu>
