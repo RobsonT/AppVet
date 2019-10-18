@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,8 @@ public class FavoriteList extends Fragment {
 
         favoritoDao = FavoritoDAO.getInstance();
         favoritos = favoritoDao.getAll();
+
+        Toast.makeText(getContext(), String.valueOf(favoritos.size()), Toast.LENGTH_SHORT).show();
 
         favoriteAdapter = new FavoriteAdapter(favoritos);
 
