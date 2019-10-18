@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.senhaUsuario);
         clienteDAO = ClienteDAO.getInstance();
 //        Sublinhar texto
-        TextView textView = findViewById(R.id.textView17);
+        TextView textView = findViewById(R.id.recuperarSenha);
         SpannableString content = new SpannableString(textView.getText().toString());
         content.setSpan(new UnderlineSpan(), 0, textView.getText().toString().length(), 0);
         textView.setText(content);

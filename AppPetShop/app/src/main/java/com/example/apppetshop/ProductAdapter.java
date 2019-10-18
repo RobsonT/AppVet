@@ -2,7 +2,6 @@ package com.example.apppetshop;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,11 +98,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            textProduct = itemView.findViewById(R.id.textProduct);
-            textPreco = itemView.findViewById(R.id.textPreco);
+            textProduct = itemView.findViewById(R.id.nomeProduto);
+            textPreco = itemView.findViewById(R.id.precoProduto);
             imgProduct1 = itemView.findViewById(R.id.imgProduct1);
-            textProduct1 = itemView.findViewById(R.id.textProduct1);
-            textPreco1 = itemView.findViewById(R.id.textPreco1);
+            textProduct1 = itemView.findViewById(R.id.nomeProduto1);
+            textPreco1 = itemView.findViewById(R.id.precoProduto1);
             cv = itemView.findViewById(R.id.cardView);
             secondColumn = itemView.findViewById(R.id.secondColumn);
             favoriteLeft = itemView.findViewById(R.id.ic_favorite1);

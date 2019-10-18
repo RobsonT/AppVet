@@ -24,7 +24,8 @@
                 android:layout_marginLeft="28dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:tag="imagemFavorito" />
 
             <LinearLayout
                 android:layout_width="300dp"
@@ -39,6 +40,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="2dp"
+                    android:tag="nomeFavorito"
                     android:text="Place_holder"
                     android:textSize="17sp" />
 
@@ -50,6 +52,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="2dp"
+                    android:tag="precoFavorito"
                     android:text="Place_holder"
                     android:textSize="17sp" />
             </LinearLayout>
