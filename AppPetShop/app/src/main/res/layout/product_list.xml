@@ -61,7 +61,7 @@
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite"
-                        android:tag="addFavoritos" />
+                        android:tag="false" />
                         android:tag="false" />
                 </LinearLayout>
 
@@ -113,7 +113,7 @@
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite"
-                        android:tag="addFavoritos" />
+                        android:tag="false" />
                         android:tag="false" />
                 </LinearLayout>
 

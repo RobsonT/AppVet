@@ -32,10 +32,10 @@ public class FavoriteList extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_produto_favoritos,  container, false);
 
-        favoritoDao = FavoritoDAO.getInstance();
-        favoritos = favoritoDao.getAll();
+        int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
-        Toast.makeText(getContext(), String.valueOf(favoritos.size()), Toast.LENGTH_SHORT).show();
+        favoritoDao = FavoritoDAO.getInstance();
+        favoritos = favoritoDao.getByClient(clientId);
 
         favoriteAdapter = new FavoriteAdapter(favoritos);
 

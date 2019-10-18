@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Pet {
     private int id;
+    private int idCliente;
     private String nome;
     private String sexo;
     private boolean castrado;
@@ -84,5 +85,13 @@ public class Pet {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 }

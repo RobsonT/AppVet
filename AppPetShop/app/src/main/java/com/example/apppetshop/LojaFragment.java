@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Produto;
@@ -31,6 +32,8 @@ public class LojaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_loja,  container, false);
 
+        int clientId = Integer.parseInt(getArguments().getString("clientId"));
+
         products1= new ArrayList<>();
         products2= new ArrayList<>();
 
@@ -45,8 +48,7 @@ public class LojaFragment extends Fragment {
         }
 
 
-        productAdapter = new ProductAdapter(products1, products2);
-
+        productAdapter = new ProductAdapter(products1, products2, clientId);
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
