@@ -81,7 +81,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(holder.favoriteRight.getTag().equals("false")) {
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteRight.setTag("true");
-                    favorito.setIdProduto(product.getI   d());
+                    favorito.setIdProduto(product.getId());
                     favorito.setIdCliente(0);
                     favoritoDao.save(favorito);
                 }else{

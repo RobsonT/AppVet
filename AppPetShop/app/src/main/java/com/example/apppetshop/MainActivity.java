@@ -9,17 +9,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bundle = new Bundle();
+        bundle.putString("clientId", getIntent().getExtras().getString( "clientId" ));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,7 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new LojaFragment()).commit();
+            LojaFragment lojaFragment = new LojaFragment();
+            lojaFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
             navigationView.setCheckedItem(R.id.navHome);
         }
     }
@@ -43,18 +50,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.navHome:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new LojaFragment()).commit();
+                LojaFragment lojaFragment = new LojaFragment();
+                lojaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
                 break;
 //            case R.id.navCart:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Carrinho()).commit();
 //                break;
             case R.id.navFavorite:
+                FavoriteList favoriteList = new FavoriteList();
+                favoriteList.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new FavoriteList()).commit();
                 break;
 //            case R.id.navRequest:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
 //                break;
             case R.id.navPet:
+                ListaPet listaPet = new ListaPet();
+                listaPet.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ListaPet()).commit();
                 break;
         }

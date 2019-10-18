@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity {
     public void enter(View view){
         String emailText = email.getText().toString().trim();
         String passwordText = password.getText().toString();
-        Toast.makeText(this, String.valueOf(clienteDAO.getAll().size()), Toast.LENGTH_SHORT).show();
         if(validateEmail() && validatePassword()){
             Cliente client;
             client = clienteDAO.getByEmail(emailText);
             if(client != null && client.getSenha().equals(passwordText)){
                 Intent i = new Intent( this, MainActivity.class );
+                i.putExtra("clientId", String.valueOf(client.getId()));
                 startActivity(i);
             }else if(client == null){
                 Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
