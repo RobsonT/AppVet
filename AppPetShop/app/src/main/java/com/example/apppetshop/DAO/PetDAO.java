@@ -18,6 +18,7 @@ public class PetDAO implements Dao<Pet>{
         pet.setNome("a");
         pet.setImage(R.drawable.iconcachorro);
         pet.setIdRaca(0);
+        pet.setIdCliente(0);
         pets.add(pet);
     }
 
@@ -37,6 +38,15 @@ public class PetDAO implements Dao<Pet>{
     @Override
     public List<Pet> getAll() {
         return pets;
+    }
+
+    public List<Pet> getByClient(int idClient){
+        List<Pet> petsClient = new ArrayList<>();
+        for (Pet pet : pets) {
+            if (pet.getIdCliente() == idClient)
+                petsClient.add(pet);
+        }
+        return petsClient;
     }
 
     @Override

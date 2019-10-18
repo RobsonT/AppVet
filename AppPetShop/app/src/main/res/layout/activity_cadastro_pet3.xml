@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DBEFF0"
     tools:context=".CadastroPet3">
 
     <LinearLayout
@@ -37,7 +38,7 @@
                 android:layout_width="50sp"
                 android:layout_height="100sp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/iconcadastropetsegundatela" />
+                app:srcCompat="@drawable/iconcadastropetterceiratela" />
         </LinearLayout>
 
     </LinearLayout>

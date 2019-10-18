@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navFavorite:
                 FavoriteList favoriteList = new FavoriteList();
                 favoriteList.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new FavoriteList()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, favoriteList).commit();
                 break;
 //            case R.id.navRequest:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navPet:
                 ListaPet listaPet = new ListaPet();
                 listaPet.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ListaPet()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, listaPet).commit();
                 break;
         }
 

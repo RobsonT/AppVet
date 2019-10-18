@@ -51,6 +51,12 @@ public class FavoritoDAO implements Dao<Favorito> {
 
     @Override
     public void delete(Favorito favorito) {
-        favorites.remove(favorito);
+        int n = -1;
+        for (Favorito f: favorites){
+            n++;
+            if(f.getIdProduto() == favorito.getIdProduto() && f.getIdCliente() == favorito.getIdCliente()){
+                favorites.remove(n);
+            }
+        }
     }
 }

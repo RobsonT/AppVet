@@ -23,6 +23,7 @@
                 android:paddingTop="25dp"
                 app:srcCompat="@drawable/imagem_inicial" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
                     android:hint="Digite seu e-mail"
                     android:inputType="textPersonName" />
 
+
                 <EditText
                     android:id="@+id/senhaUsuario"
                     android:layout_width="match_parent"
@@ -50,20 +52,23 @@
                     android:cursorVisible="true"
                     android:ems="10"
                     android:hint="Senha"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:password="true"
+                    android:tag="senhaUsuario" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5sp"
                     android:layout_marginTop="10sp"
                     android:layout_marginRight="5sp"
                     android:onClick="enter"
+                    android:tag="loginUsuario"
                     android:text="Entrar" />
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/recuperarSenha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10sp"
@@ -76,7 +81,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/loginGoogle"
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5sp"
@@ -84,10 +89,11 @@
                         android:layout_marginRight="5sp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/googleg_standard_color_18"
+                        android:tag="loginGoogle"
                         android:text="Google" />
 
                     <Button
-                        android:id="@+id/button5"
+                        android:id="@+id/loginFacebook"
                         android:layout_width="10dp"
                         android:layout_height="35dp"
                         android:layout_marginLeft="5sp"
@@ -96,18 +102,20 @@
                         android:layout_weight="1"
                         android:background="#1976D1"
                         android:drawableLeft="@drawable/ic_facebook"
+                        android:tag="loginFacebook"
                         android:text="Facebook"
                         android:textColor="@android:color/white" />
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/criarConta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5sp"
                     android:layout_marginTop="10sp"
                     android:layout_marginRight="5sp"
                     android:onClick="newUser"
+                    android:tag="criarConta"
                     android:text="Sou um novo usuário" />
 
             </LinearLayout>

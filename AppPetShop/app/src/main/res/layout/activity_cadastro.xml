@@ -1,88 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cadastro">
+    tools:context=".Cadastro"
+    android:background="@drawable/plano_fundo">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/plano_fundo">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+        <EditText
+            android:id="@+id/nomeUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Nome de Usuário"
+            android:inputType="textPersonName"
+            android:padding="20dp"
+            android:tag="nomeUsuario" />
 
-            <EditText
-                android:id="@+id/nomeUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Nome de Usuário"
-                android:inputType="textPersonName"
-                android:padding="20dp" />
+        <EditText
+            android:id="@+id/emailUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="EMAIL"
+            android:inputType="textPersonName"
+            android:padding="20dp"
+            android:tag="emailUsuario" />
 
-            <EditText
-                android:id="@+id/emailUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="EMAIL"
-                android:inputType="textPersonName"
-                android:padding="20dp" />
+        <EditText
+            android:id="@+id/cpfUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="CPF"
+            android:inputType="numberDecimal"
+            android:padding="20dp"
+            android:tag="cpfUsuario" />
 
-            <EditText
-                android:id="@+id/cpfUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="CPF"
-                android:inputType="numberDecimal"
-                android:padding="20dp" />
+        <EditText
+            android:id="@+id/senhaUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="SENHA"
+            android:inputType="textPassword"
+            android:padding="20dp"
+            android:tag="senhaUsuario" />
 
-            <EditText
-                android:id="@+id/senhaUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="SENHA"
-                android:inputType="textPassword"
-                android:padding="20dp" />
-
-            <EditText
-                android:id="@+id/senhaConfUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Confirmar SENHA"
-                android:inputType="textPassword"
-                android:padding="20dp" />
+        <EditText
+            android:id="@+id/senhaConfUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Confirmar SENHA"
+            android:inputType="textPassword"
+            android:padding="20dp"
+            android:tag="senhaConfirmUsuario" />
 
 
-            <Button
-                android:id="@+id/cadastroUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="register"
-                android:padding="20dp"
-                android:text="CADASTRAR" />
+        <Button
+            android:id="@+id/cadastroUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="register"
+            android:padding="20dp"
+            android:tag="cadastroCliente"
+            android:text="CADASTRAR" />
 
-        </LinearLayout>
-
-
-    </ScrollView>
-
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

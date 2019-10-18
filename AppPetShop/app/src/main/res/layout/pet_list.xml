@@ -42,6 +42,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="2dp"
+                        android:tag="nomePet"
                         android:text="Place_holder"
                         android:textSize="17sp" />
 
@@ -53,6 +54,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="2dp"
+                        android:tag="racaPet"
                         android:text="Place_holder"
                         android:textSize="17sp" />
                 </LinearLayout>

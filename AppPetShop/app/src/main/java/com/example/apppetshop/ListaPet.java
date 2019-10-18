@@ -31,8 +31,10 @@ public class ListaPet extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_lista_pet,  container, false);
 
+        int clientId = Integer.parseInt(getArguments().getString("clientId"));
+
         petDao = PetDAO.getInstance();
-        pets = petDao.getAll();
+        pets = petDao.getByClient(clientId);
 
         petAdapter = new PetAdapter(pets);
 

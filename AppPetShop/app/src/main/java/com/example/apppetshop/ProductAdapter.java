@@ -2,13 +2,13 @@ package com.example.apppetshop;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +26,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Context context;
     Favorito favorito;
     Produto product;
+    int clientId;
 
-    public ProductAdapter(List<Produto> productList1, List<Produto> productList2) {
+    public ProductAdapter(List<Produto> productList1, List<Produto> productList2, int clientId) {
         this.productList1 = productList1;
         this.productList2 = productList2;
         favorito = new Favorito();
+        this.clientId = clientId;
     }
 
     @Override
@@ -43,19 +45,35 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       product = productList1.get(position);
+
+        favoritoDao = FavoritoDAO.getInstance();
+        List<Favorito> favoritos = favoritoDao.getByClient(clientId);
+
+        product = productList1.get(position);
         holder.textProduct.setText(product.getNome());
         holder.imgProduct.setImageResource(product.getImagem());
         holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
-        favoritoDao = FavoritoDAO.getInstance();
+        for(Favorito f: favoritos){
+            if(f.getIdProduto() == product.getId()){
+                holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+                holder.favoriteLeft.setTag("true");
+            }
+        }
         if (position < productList2.size()) {
             product = productList2.get(position);
             holder.textProduct1.setText(product.getNome());
             holder.imgProduct1.setImageResource(product.getImagem());
             holder.textPreco1.setText("R$" + String.valueOf(product.getPreco()));
+            for(Favorito f: favoritos){
+                if(f.getIdProduto() == product.getId()){
+                    holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    holder.favoriteRight.setTag("true");
+                }
+            }
         }else{
             holder.secondColumn.setVisibility(View.INVISIBLE);
         }
+
         holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -63,12 +81,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag("true");
                     favorito.setIdProduto(product.getId());
-                    favorito.setIdCliente(0);
+                    favorito.setIdCliente(clientId);
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
                     favorito.setIdProduto(product.getId());
-                    favorito.setIdCliente(0);
+                    favorito.setIdCliente(clientId);
                     favoritoDao.delete(favorito);
                     holder.favoriteLeft.setTag("false");
                 }
@@ -126,11 +144,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            textProduct = itemView.findViewById(R.id.textProduct);
-            textPreco = itemView.findViewById(R.id.textPreco);
+            textProduct = itemView.findViewById(R.id.nomeProduto);
+            textPreco = itemView.findViewById(R.id.precoProduto);
             imgProduct1 = itemView.findViewById(R.id.imgProduct1);
-            textProduct1 = itemView.findViewById(R.id.textProduct1);
-            textPreco1 = itemView.findViewById(R.id.textPreco1);
+            textProduct1 = itemView.findViewById(R.id.nomeProduto1);
+            textPreco1 = itemView.findViewById(R.id.precoProduto1);
             cv = itemView.findViewById(R.id.cardView);
             secondColumn = itemView.findViewById(R.id.secondColumn);
             favoriteLeft = itemView.findViewById(R.id.ic_favorite1);
