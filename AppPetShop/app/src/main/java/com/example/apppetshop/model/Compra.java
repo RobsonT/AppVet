@@ -2,9 +2,9 @@ package com.example.apppetshop.model;
 
 public class Compra {
     private int id;
-    private int idClient;
-    private int idItem;
-    private boolean confirmed;
+    private int idCliente;
+    private String data;
+    private boolean confirmado;
 
     public int getId() {
         return id;
@@ -14,27 +14,27 @@ public class Compra {
         this.id = id;
     }
 
-    public int getIdClient() {
-        return idClient;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public int getIdItem() {
-        return idItem;
+    public String getData() {
+        return data;
     }
 
-    public void setIdItem(int idItem) {
-        this.idItem = idItem;
+    public void setData(String data) {
+        this.data = data;
     }
 
-    public boolean isConfirmed() {
-        return confirmed;
+    public boolean isConfirmado() {
+        return confirmado;
     }
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
+    public void setConfirmado(boolean confirmado) {
+        this.confirmado = confirmado;
     }
 }

@@ -17,6 +17,7 @@ import com.example.apppetshop.DAO.FavoritoDAO;
 import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Produto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -112,11 +113,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         });
 
-        holder.secondColumn.setOnClickListener(new View.OnClickListener() {
+        holder.firstColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent( view.getContext(), ProdutoDescricao.class);
                 i.putExtra( "idProduto", String.valueOf(productList1.get(position).getId()));
+                i.putExtra("idCliente", String.valueOf(clientId));
+                view.getContext().startActivity(i);
+            }
+        });
+
+        holder.secondColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent( view.getContext(), ProdutoDescricao.class);
+                i.putExtra( "idProduto", String.valueOf(productList2.get(position).getId()));
+                i.putExtra("idCliente", String.valueOf(clientId));
                 view.getContext().startActivity(i);
             }
         });
@@ -138,6 +150,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView textPreco1;
         CardView cv;
         LinearLayout secondColumn;
+        LinearLayout firstColumn;
         ImageView favoriteLeft;
         ImageView favoriteRight;
 
@@ -151,6 +164,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             textPreco1 = itemView.findViewById(R.id.precoProduto1);
             cv = itemView.findViewById(R.id.cardView);
             secondColumn = itemView.findViewById(R.id.secondColumn);
+            firstColumn = itemView.findViewById(R.id.firstColumn);
             favoriteLeft = itemView.findViewById(R.id.ic_favorite1);
             favoriteRight = itemView.findViewById(R.id.ic_favorite);
         }

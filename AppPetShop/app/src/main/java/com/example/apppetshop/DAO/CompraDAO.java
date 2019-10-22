@@ -7,25 +7,47 @@ import java.util.List;
 
 public class CompraDAO implements Dao<Compra> {
 
-    private List<Compra> purchases = new ArrayList<>();
+    private List<Compra> compras;
+
+    private static CompraDAO instance;
+
+    private CompraDAO() {
+        compras = new ArrayList<>();
+    }
+
+    public static CompraDAO getInstance(){
+        if(instance == null){
+            instance = new CompraDAO();
+        }
+
+        return instance;
+    }
 
     @Override
     public Compra get(int id) {
-        return purchases.get(id);
+        return compras.get(id);
     }
 
     @Override
     public List<Compra> getAll() {
-        return purchases;
+        return compras;
+    }
+
+    public Compra getUnconfirmed(int id) {
+        for (Compra c: compras) {
+            if(c.getIdCliente() == id && !c.isConfirmado())
+                return c;
+        }
+        return null;
     }
 
     @Override
     public void save(Compra purchase) {
-        purchases.add(purchase);
+        compras.add(purchase);
     }
 
     @Override
     public void delete(Compra purchase) {
-        purchases.remove(purchase);
+        compras.remove(purchase);
     }
 }

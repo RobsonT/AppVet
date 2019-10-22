@@ -18,6 +18,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/firstColumn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -62,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite"
                         android:tag="false" />
-                        android:tag="false" />
+                    android:tag="false" />
                 </LinearLayout>
 
             </LinearLayout>

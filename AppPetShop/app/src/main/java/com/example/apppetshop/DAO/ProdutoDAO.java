@@ -19,7 +19,7 @@ public class ProdutoDAO implements Dao<Produto>{
         produto.setNome("Ração que contem comida gostosa e faz seu cachorro se sentir feliz");
         produto.setImagem(R.drawable.iconcachorro);
         produto.setPreco(18);
-
+        produto.setDescricao("Isso é a descrição do produto");
         products.add(produto);
     }
 

@@ -3,8 +3,8 @@ package com.example.apppetshop.model;
 public class Descricao {
     private int id;
     private int idProduto;
-    private String attribute;
-    private String value;
+    private String atributo;
+    private String valor;
 
     public int getId() {
         return id;
@@ -22,19 +22,19 @@ public class Descricao {
         this.idProduto = idProduto;
     }
 
-    public String getAttribute() {
-        return attribute;
+    public String getAtributo() {
+        return atributo;
     }
 
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
+    public void setAtributo(String atributo) {
+        this.atributo = atributo;
     }
 
-    public String getValue() {
-        return value;
+    public String getValor() {
+        return valor;
     }
 
-    public void setValue(String price) {
-        this.value = price;
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 }
