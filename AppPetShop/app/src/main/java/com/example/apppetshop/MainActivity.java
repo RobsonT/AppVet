@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lojaFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
                 break;
-//            case R.id.navCart:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Carrinho()).commit();
-//                break;
+            case R.id.navCart:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Carrinho()).commit();
+                break;
             case R.id.navFavorite:
                 FavoriteList favoriteList = new FavoriteList();
                 favoriteList.setArguments(bundle);
