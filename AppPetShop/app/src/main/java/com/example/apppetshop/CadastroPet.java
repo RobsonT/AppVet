@@ -93,7 +93,7 @@ public class CadastroPet extends AppCompatActivity {
 
             Pet pet = new Pet();
             pet.setNome(name);
-            pet.setNascimento(birthDate);et
+            pet.setNascimento(birthDate);
             pet.setSexo(sex);
             pet.setTipo(type);
 
