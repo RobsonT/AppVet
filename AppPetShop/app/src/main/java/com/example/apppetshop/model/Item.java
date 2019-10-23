@@ -1,18 +1,9 @@
 package com.example.apppetshop.model;
 
 public class Item {
-    private int id;
     private int idProduto;
     private int quantidade;
     private int idCompra;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getIdProduto() {
         return idProduto;
