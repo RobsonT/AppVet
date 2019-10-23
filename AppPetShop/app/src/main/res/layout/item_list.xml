@@ -70,7 +70,7 @@
 
                 <Button
                     android:id="@+id/decrementButton"
-                    android:layout_width="57dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:textSize="20sp"
