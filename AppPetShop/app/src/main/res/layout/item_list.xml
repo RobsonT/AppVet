@@ -108,9 +108,4 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-    <![CDATA[
-
-
-    />
-]]>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ public class Pet {
     private String nome;
     private String sexo;
     private boolean castrado;
-    private String nascimento;
+    private Date nascimento;
     private String tipo;
     private String porte;
     private double peso;
@@ -21,6 +21,14 @@ public class Pet {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Date getNascimento() {
+        return nascimento;
+    }
+
+    public void setNascimento(Date nascimento) {
+        this.nascimento = nascimento;
     }
 
     public String getNome() {
