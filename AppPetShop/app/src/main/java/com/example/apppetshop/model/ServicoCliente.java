@@ -4,9 +4,10 @@ import java.util.Date;
 
 public class ServicoCliente {
     private int id;
-    private int idClient;
-    private int idService;
-    private Date time;
+    private int idCliente;
+    private String nomeServico;
+    private int idPet;
+    private Date data;
 
     public int getId() {
         return id;
@@ -16,27 +17,35 @@ public class ServicoCliente {
         this.id = id;
     }
 
-    public int getIdClient() {
-        return idClient;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public int getIdService() {
-        return idService;
+    public String getNomeServico() {
+        return nomeServico;
     }
 
-    public void setIdService(int idService) {
-        this.idService = idService;
+    public void setNomeServico(String nomeServico) {
+        this.nomeServico = nomeServico;
     }
 
-    public Date getTime() {
-        return time;
+    public int getIdPet() {
+        return idPet;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setIdPet(int idPet) {
+        this.idPet = idPet;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 }
