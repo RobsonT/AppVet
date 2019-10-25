@@ -1,11 +1,14 @@
 package com.example.apppetshop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,11 +104,20 @@ public class CadastroPet2 extends AppCompatActivity {
     }
 
     //teste do return button
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.return_button, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.item1){
+            Toast.makeText(this,"teste com sucesso",Toast.LENGTH_SHORT);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public boolean validatePeso() {
