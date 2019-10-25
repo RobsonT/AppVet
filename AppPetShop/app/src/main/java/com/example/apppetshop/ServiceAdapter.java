@@ -58,9 +58,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imgPet = itemView.findViewById(R.id.imageCart);
-            dataServico = itemView.findViewById(R.id.nascPet);
-            nomeServico = itemView.findViewById(R.id.nameCart);
+            imgPet = itemView.findViewById(R.id.imgService);
+            dataServico = itemView.findViewById(R.id.dataService);
+            nomeServico = itemView.findViewById(R.id.nomeService);
         }
     }
 }

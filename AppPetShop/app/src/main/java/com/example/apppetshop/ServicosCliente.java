@@ -28,18 +28,18 @@ public class ServicosCliente extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_lista_pet,  container, false);
+        View v = inflater.inflate(R.layout.activity_servicos_cliente,  container, false);
 
-        int clientId = Integer.parseInt(getArguments().getString("clientId"));
+        final int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
         servicoClienteDAO = ServicoClienteDAO.getInstance();
         servicos = servicoClienteDAO.getByClient(clientId);
 
         serviceAdapter = new ServiceAdapter(servicos);
 
-        FloatingActionButton fab = v.findViewById(R.id.fab);
+        FloatingActionButton fab = v.findViewById(R.id.fabService);
 
-        recyclerView = v.findViewById(R.id.recyclerViewPet);
+        recyclerView = v.findViewById(R.id.recyclerViewService);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(serviceAdapter);
@@ -48,6 +48,7 @@ public class ServicosCliente extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(),Servicos.class);
+                i.putExtra("ClientId", clientId);
                 startActivity(i);
             }
         });
