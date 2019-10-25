@@ -39,6 +39,47 @@ public class CadastroPet extends AppCompatActivity {
         sexM = findViewById(R.id.machoPet);
         sexF = findViewById(R.id.femeaPet);
 
+        dog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dog.setTag("true");
+                cat.setTag("false");
+                dog.setImageResource(R.drawable.iconcachorroselected);
+                cat.setImageResource(R.drawable.icongato);
+
+            }
+        });
+
+        cat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cat.setTag("true");
+                dog.setTag("false");
+                cat.setImageResource(R.drawable.icongatoselected);
+                dog.setImageResource(R.drawable.icongato);
+            }
+        });
+
+        sexM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sexM.setTag("true");
+                sexF.setTag("false");
+                sexM.setImageResource(R.drawable.iconmasculinoselected);
+                sexF.setImageResource(R.drawable.iconfeminino);
+            }
+        });
+
+        sexF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sexM.setTag("false");
+                sexF.setTag("true");
+                sexM.setImageResource(R.drawable.iconmasculino);
+                sexF.setImageResource(R.drawable.iconfemininoselected);
+            }
+        });
+
     }
 
     public boolean validateName() {
@@ -98,7 +139,7 @@ public class CadastroPet extends AppCompatActivity {
             pet.setTipo(type);
 
             Intent i = new Intent(this, CadastroPet2.class);
-            i.putExtra("pet", (Serializable) pet);
+            i.putExtra("pet", pet);
             startActivity(i);
         }
     }

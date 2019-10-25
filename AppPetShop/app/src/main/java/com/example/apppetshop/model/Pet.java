@@ -1,8 +1,9 @@
 package com.example.apppetshop.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Pet {
+public class Pet implements Serializable {
     private int id;
     private int idCliente;
     private String nome;
@@ -12,7 +13,7 @@ public class Pet {
     private String tipo;
     private String porte;
     private double peso;
-    private int idRaca;
+    private String raca;
     private int image;
 
     public int getId() {
@@ -79,12 +80,12 @@ public class Pet {
         this.peso = peso;
     }
 
-    public int getIdRaca() {
-        return idRaca;
+    public String getRaca() {
+        return raca;
     }
 
-    public void setIdRaca(int idRaca) {
-        this.idRaca = idRaca;
+    public void setRaca(String raca) {
+        this.raca = raca;
     }
 
     public int getImage() {
