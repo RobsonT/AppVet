@@ -98,6 +98,7 @@
                         android:layout_height="130dp"
                         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
                         android:tag="cachorro"
+                        android:visibility="visible"
                         app:srcCompat="@drawable/iconcachorro" />
 
                     <ImageView
