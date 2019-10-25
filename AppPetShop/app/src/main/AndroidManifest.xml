@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ServiceAdapter"></activity>
+        <activity android:name=".RecuperacaoSenha"></activity>
         <activity android:name=".Servicos" />
         <activity
             android:name=".MainActivity"
