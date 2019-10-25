@@ -17,7 +17,7 @@ public class PetDAO implements Dao<Pet>{
         Pet pet = new Pet();
         pet.setNome("a");
         pet.setImage(R.drawable.iconcachorro);
-        pet.setIdRaca(0);
+        pet.setRaca("alguma");
         pet.setIdCliente(0);
         pets.add(pet);
     }

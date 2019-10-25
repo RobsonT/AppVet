@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -37,12 +38,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        if(savedInstanceState == null) {
-            LojaFragment lojaFragment = new LojaFragment();
-            lojaFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
-            navigationView.setCheckedItem(R.id.navHome);
+        if(getIntent().getExtras().getString("compra") != null){
+            Carrinho carrinho = new Carrinho();
+            carrinho.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, carrinho).commit();
+            navigationView.setCheckedItem(R.id.navCart);
+        }else {
+            if (savedInstanceState == null) {
+                LojaFragment lojaFragment = new LojaFragment();
+                lojaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
+                navigationView.setCheckedItem(R.id.navHome);
+            }
         }
     }
 
@@ -55,7 +62,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
                 break;
             case R.id.navCart:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Carrinho()).commit();
+                Carrinho carrinho = new Carrinho();
+                carrinho.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, carrinho).commit();
                 break;
             case R.id.navFavorite:
                 FavoriteList favoriteList = new FavoriteList();

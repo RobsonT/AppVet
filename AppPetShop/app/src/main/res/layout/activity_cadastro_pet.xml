@@ -97,8 +97,12 @@
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+<<<<<<< HEAD
                         android:tag="cachorro"
                         android:visibility="visible"
+=======
+                        android:tag="false"
+>>>>>>> ed4f9bc7fca7cd73def7b18178b379e95917e818
                         app:srcCompat="@drawable/iconcachorro" />
 
                     <ImageView
@@ -106,7 +110,7 @@
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-                        android:tag="gato"
+                        android:tag="false"
                         app:srcCompat="@drawable/icongato" />
                 </LinearLayout>
             </LinearLayout>
@@ -139,7 +143,7 @@
                         android:layout_height="100dp"
                         android:layout_weight="1"
                         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-                        android:tag="macho"
+                        android:tag="false"
                         app:srcCompat="@drawable/iconmasculino" />
 
                     <ImageView
@@ -148,7 +152,7 @@
                         android:layout_height="100dp"
                         android:layout_weight="1"
                         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-                        android:tag="femea"
+                        android:tag="false"
                         app:srcCompat="@drawable/iconfeminino" />
                 </LinearLayout>
 

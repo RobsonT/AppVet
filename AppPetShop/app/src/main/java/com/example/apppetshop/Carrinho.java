@@ -3,17 +3,88 @@ package com.example.apppetshop;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.apppetshop.DAO.CompraDAO;
+import com.example.apppetshop.DAO.ItemDAO;
+import com.example.apppetshop.model.Compra;
+import com.example.apppetshop.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Carrinho extends Fragment {
+
+    RecyclerView recyclerView;
+    CartAdapter cartAdapter;
+    List<Item> itens;
+
+    ItemDAO itemDao;
+    CompraDAO compraDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_carrinho,  container, false);
+        Log.i("errot1", getArguments().getString("clientId"));
+        final int clientId = Integer.parseInt(getArguments().getString("clientId"));
+
+        itemDao = ItemDAO.getInstance();
+        compraDAO = CompraDAO.getInstance();
+
+        Compra compra = compraDAO.getUnconfirmed(clientId);
+
+        LinearLayout listCart = v.findViewById(R.id.listCart);
+        TextView warningCart = v.findViewById(R.id.warningCart);
+        TextView moreProducts = v.findViewById(R.id.moreProducts);
+
+        moreProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent i = new Intent( getContext(), MainActivity.class );
+//                i.putExtra("clientId", String.valueOf(clientId));
+//                startActivity(i);
+                Bundle bundle = new Bundle();
+                bundle.putString("clientId", String.valueOf(clientId));
+
+                LojaFragment lojaFragment = new LojaFragment();
+                lojaFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentContainer, lojaFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
+        if(compra != null){
+            listCart.setVisibility(View.VISIBLE);
+            itens = itemDao.getByCompra(compra.getId());
+            warningCart.setVisibility(View.GONE);
+        }else{
+            listCart.setVisibility(View.GONE);
+            itens = new ArrayList<>();
+            warningCart.setVisibility(View.VISIBLE);
+        }
+
+        cartAdapter = new CartAdapter(itens, clientId);
+
+        recyclerView = v.findViewById(R.id.recyclerViewCart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(cartAdapter);
+
         return v;
     }
 }

@@ -84,7 +84,7 @@ public class ProdutoDescricao extends AppCompatActivity {
         ArrayList<String> listaDescricoes = new ArrayList<>();
         String descricao;
         List<Descricao> descricoes = descricaoDAO.getByProduct(productId);
-        for (Descricao d: descricoes) {
+        for (Descricao d : descricoes) {
             descricao = d.getAtributo() + ": " + d.getValor();
             listaDescricoes.add(descricao);
         }
@@ -95,8 +95,8 @@ public class ProdutoDescricao extends AppCompatActivity {
         lstDescricao.setAdapter(arrayAdapter);
 
         if (favoritoDAO.getByClient(clientId).size() > 0) {
-            for (Favorito f: favoritoDAO.getByClient(clientId)) {
-                if(f.getIdProduto() == productId){
+            for (Favorito f : favoritoDAO.getByClient(clientId)) {
+                if (f.getIdProduto() == productId) {
                     favorito.setText("remover favoritos");
                     break;
                 }
@@ -129,16 +129,34 @@ public class ProdutoDescricao extends AppCompatActivity {
             compra.setId(compraDAO.getAll().size());
             compra.setConfirmado(false);
             compra.setIdCliente(clientId);
+            compraDAO.save(compra);
         }
 
-        Item item = new Item();
-        item.setId(itemDAO.getAll().size());
-        item.setIdCompra(compra.getId());
-        item.setIdProduto(productId);
-        item.setQuantidade(1);
+        List<Item> itens = itemDAO.getByCompra(compra.getId());
+        Item item = null;
 
-        Intent i = new Intent(this, Cadastro.class);
-        i.putExtra("clientId", clientId);
+        boolean findItem = false;
+        for (Item i : itens) {
+            if (productId == i.getIdProduto()) {
+                item = i;
+                item.setQuantidade(item.getQuantidade() + 1);
+                findItem = true;
+                itemDAO.updateQuantity(item);
+                break;
+            }
+        }
+        if (!findItem) {
+            item = new Item();
+            item.setIdCompra(compra.getId());
+            item.setIdProduto(productId);
+            item.setQuantidade(1);
+            itemDAO.save(item);
+        }
+
+
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("clientId", String.valueOf(clientId));
+        i.putExtra("compra", "compra");
         startActivity(i);
     }
 }
