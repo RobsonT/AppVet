@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,6 +98,14 @@ public class CadastroPet2 extends AppCompatActivity {
         });
 
         pet = (Pet) getIntent().getSerializableExtra("pet");
+    }
+
+    //teste do return button
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     public boolean validatePeso() {
