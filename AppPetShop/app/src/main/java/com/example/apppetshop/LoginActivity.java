@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private ClienteDAO clienteDAO;
 
+    TextView textView;
+
     private CallbackManager callbackManager;
 
     @Override
@@ -68,6 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         textView.setText(content);
 
         googleSignInButton = findViewById(R.id.loginGoogle);
+//Muda texto do botao google
+        textView = (TextView) googleSignInButton.getChildAt(0);
+        textView.setText("Google");
 
         loginButton = findViewById(R.id.loginFacebook);
         callbackManager = CallbackManager.Factory.create();
