@@ -141,4 +141,7 @@
         <item>Sem raça definida</item>
     </string-array>
 
+    <string name="facebook_app_id">778460789290197</string>
+    <string name="fb_login_protocol_scheme">fb778460789290197</string>
+
 </resources>
