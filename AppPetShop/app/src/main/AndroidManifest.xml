@@ -16,13 +16,13 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ListaPet" />
-        <activity android:name=".ProdutoDescricao" />
+        <activity android:name=".ProdutoDescricao" android:parentActivityName=".MainActivity" android:finishOnCloseSystemDialogs="true"/>
         <activity android:name=".ListaServico" />
         <activity android:name=".ServicosCliente" />
         <activity android:name=".FinalizarCompra" />
         <activity android:name=".Carrinho" />
-        <activity android:name=".CadastroPet3" />
-        <activity android:name=".CadastroPet2" />
+        <activity android:name=".CadastroPet3" android:parentActivityName=".CadastroPet2"/>
+        <activity android:name=".CadastroPet2" android:parentActivityName=".CadastroPet"/>
         <activity android:name=".CadastroPet" />
         <activity android:name=".Cadastro" />
         <activity

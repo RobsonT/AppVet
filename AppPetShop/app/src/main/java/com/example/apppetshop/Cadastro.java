@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
 public class Cadastro extends AppCompatActivity {
 
@@ -33,6 +35,11 @@ public class Cadastro extends AppCompatActivity {
         cpf = findViewById(R.id.cpfUsuario);
         password = findViewById(R.id.senhaUsuario);
         confPassword = findViewById(R.id.senhaConfUsuario);
+
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
+        MaskTextWatcher mtw = new MaskTextWatcher(cpf,smf);
+        cpf.addTextChangedListener(mtw);
+
     }
 
     public boolean validateName() {

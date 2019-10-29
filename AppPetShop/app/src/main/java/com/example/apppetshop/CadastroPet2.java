@@ -121,24 +121,6 @@ public class CadastroPet2 extends AppCompatActivity {
         edittext.setAdapter(adapter);
     }
 
-    //teste do return button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.return_button, menu);
-        return true;
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.buttonreturn){
-            Toast.makeText(this,"teste com sucesso",Toast.LENGTH_SHORT);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public boolean validatePeso() {
         if (pesoPet.getText().toString().isEmpty()) {
