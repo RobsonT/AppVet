@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 listaPet.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, listaPet).commit();
                 break;
+            case R.id.navService:
+                ServicosCliente servicosCliente = new ServicosCliente();
+                servicosCliente.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, servicosCliente).commit();
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
