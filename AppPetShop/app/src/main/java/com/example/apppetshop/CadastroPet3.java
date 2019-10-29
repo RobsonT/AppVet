@@ -23,8 +23,8 @@ public class CadastroPet3 extends AppCompatActivity {
 
 
         //teste camera
-        btnCamera = (Button) findViewById(R.id.buttonCamera);
-        imageView = (ImageView) findViewById(R.id.camera);
+        btnCamera = findViewById(R.id.buttonCamera);
+        imageView = findViewById(R.id.camera);
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
