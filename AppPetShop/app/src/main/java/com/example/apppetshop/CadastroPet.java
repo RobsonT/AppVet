@@ -56,7 +56,7 @@ public class CadastroPet extends AppCompatActivity {
                 cat.setTag("true");
                 dog.setTag("false");
                 cat.setImageResource(R.drawable.icongatoselected);
-                dog.setImageResource(R.drawable.icongato);
+                dog.setImageResource(R.drawable.iconcachorro);
             }
         });
 
