@@ -44,7 +44,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:completionThreshold="1"
                     android:hint="Qual a raça dele(a)?"
+                    android:completionHint="Escolha uma raça"
                     android:tag="racaPet" />
             </LinearLayout>
 
@@ -179,7 +181,7 @@
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="50sp"
-                    android:layout_height="100sp"
+                    android:layout_height="50sp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/iconcadastropetsegundatela" />
             </LinearLayout>

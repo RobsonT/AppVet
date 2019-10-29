@@ -10,12 +10,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.apppetshop.model.Pet;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
 import java.io.Serializable;
 
@@ -28,13 +32,13 @@ public class CadastroPet2 extends AppCompatActivity {
     private ImageView porteP;
     private ImageView porteM;
     private ImageView porteG;
-
     private Pet pet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet2);
+
 
         pesoPet = findViewById(R.id.pesoPet);
         racaPet = findViewById(R.id.racaPet);
@@ -43,6 +47,12 @@ public class CadastroPet2 extends AppCompatActivity {
         porteP = findViewById(R.id.portePequenoPet);
         porteM = findViewById(R.id.porteMedioPet);
         porteG = findViewById(R.id.porteGrandePet);
+
+
+        //teste mascara de data
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN");
+        MaskTextWatcher mtw = new MaskTextWatcher(pesoPet,smf);
+        pesoPet.addTextChangedListener(mtw);
 
         porteP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +111,14 @@ public class CadastroPet2 extends AppCompatActivity {
         });
 
         pet = (Pet) getIntent().getSerializableExtra("pet");
+
+
+        //teste autocomplete
+        String[] cachorros = getResources().getStringArray(R.array.gatos);
+
+        AutoCompleteTextView edittext = findViewById(R.id.racaPet);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,cachorros);
+        edittext.setAdapter(adapter);
     }
 
     //teste do return button
@@ -110,6 +128,8 @@ public class CadastroPet2 extends AppCompatActivity {
         inflater.inflate(R.menu.return_button, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.apppetshop.model.Pet;
+import com.github.rtoshiro.util.format.MaskFormatter;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -38,6 +41,11 @@ public class CadastroPet extends AppCompatActivity {
         cat = findViewById(R.id.gatoPet);
         sexM = findViewById(R.id.machoPet);
         sexF = findViewById(R.id.femeaPet);
+
+        //teste mascara de data
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");
+        MaskTextWatcher mtw = new MaskTextWatcher(birthDatePet,smf);
+        birthDatePet.addTextChangedListener(mtw);
 
         dog.setOnClickListener(new View.OnClickListener() {
             @Override
