@@ -35,6 +35,7 @@ public class CadastroPet2 extends AppCompatActivity {
     private ImageView porteM;
     private ImageView porteG;
     private Pet pet;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,18 @@ public class CadastroPet2 extends AppCompatActivity {
         porteP = findViewById(R.id.portePequenoPet);
         porteM = findViewById(R.id.porteMedioPet);
         porteG = findViewById(R.id.porteGrandePet);
+
+
+        button = findViewById(R.id.voltarPet2);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
 
 
         //teste mascara de data

@@ -14,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.apppetshop.model.Pet;
-import com.github.rtoshiro.util.format.MaskFormatter;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +29,7 @@ public class CadastroPet extends AppCompatActivity {
     private ImageView cat;
     private ImageView sexM;
     private ImageView sexF;
+    private Button button;
 
     int clientId;
 
@@ -47,6 +46,17 @@ public class CadastroPet extends AppCompatActivity {
         cat = findViewById(R.id.gatoPet);
         sexM = findViewById(R.id.machoPet);
         sexF = findViewById(R.id.femeaPet);
+
+        button = findViewById(R.id.cancelarCadastroPet);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent retorno = new Intent();
+
+                    setResult(Activity.RESULT_CANCELED, retorno);
+                    finish();
+            }
+        });
 
         //teste mascara de data
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");

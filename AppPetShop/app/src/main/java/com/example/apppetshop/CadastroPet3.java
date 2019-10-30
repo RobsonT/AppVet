@@ -19,7 +19,7 @@ import com.example.apppetshop.model.Pet;
 public class CadastroPet3 extends AppCompatActivity {
 
     ImageView imageView;
-    Button btnCamera, confirmar;
+    Button btnCamera, confirmar,button;
     Pet pet;
     PetDAO petDAO;
     Bitmap bitmap;
@@ -46,6 +46,19 @@ public class CadastroPet3 extends AppCompatActivity {
                 startActivityForResult(intent,0);
             }
         });
+
+
+        button = findViewById(R.id.voltarPet3);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
+
 
         confirmar = findViewById(R.id.cadastrarPet);
         confirmar.setOnClickListener(new View.OnClickListener() {

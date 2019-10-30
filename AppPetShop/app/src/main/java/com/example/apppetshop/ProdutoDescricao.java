@@ -2,6 +2,7 @@ package com.example.apppetshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,7 @@ public class ProdutoDescricao extends AppCompatActivity {
     TextView nomeProduto;
     ImageView imagemProduto;
     TextView precoProduto;
-    Button addCarrinho;
+    Button addCarrinho,button;
     Button favorito;
     TextView descricaoProduto;
     ListView lstDescricao;
@@ -67,6 +68,17 @@ public class ProdutoDescricao extends AppCompatActivity {
         favorito = findViewById(R.id.addFavoritos);
         descricaoProduto = findViewById(R.id.descricaoProduto);
         lstDescricao = findViewById(R.id.lstDescricao);
+
+        button = findViewById(R.id.cancelarProduto);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
 
         productId = Integer.parseInt(getIntent().getExtras().getString("idProduto"));
         clientId = Integer.parseInt(getIntent().getExtras().getString("idCliente"));

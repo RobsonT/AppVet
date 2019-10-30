@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class RecuperacaoSenha extends AppCompatActivity {
 
     EditText number;
     EditText email;
-    Button send;
+    Button send,button;
 //
 //    ClienteDAO clienteDAO;
 
@@ -32,6 +33,19 @@ public class RecuperacaoSenha extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recuperacao_senha);
+
+
+
+        button = findViewById(R.id.voltarSenha);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
 
 //        email = findViewById(R.id.emailRecuperarSenha);
 //        number = findViewById(R.id.numeroSMS);

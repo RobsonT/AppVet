@@ -2,10 +2,14 @@ package com.example.apppetshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
@@ -20,6 +24,7 @@ public class Cadastro extends AppCompatActivity {
     private EditText cpf;
     private EditText password;
     private EditText confPassword;
+    private Button button;
 
     ClienteDAO clienteDAO;
 
@@ -39,6 +44,17 @@ public class Cadastro extends AppCompatActivity {
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
         MaskTextWatcher mtw = new MaskTextWatcher(cpf,smf);
         cpf.addTextChangedListener(mtw);
+
+        button =  findViewById(R.id.voltarCadastro);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
 
     }
 

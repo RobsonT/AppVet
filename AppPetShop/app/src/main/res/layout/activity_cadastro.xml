@@ -79,6 +79,13 @@
             android:tag="cadastroCliente"
             android:text="CADASTRAR" />
 
+        <Button
+            android:id="@+id/voltarCadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="voltar" />
+
     </LinearLayout>
 
 

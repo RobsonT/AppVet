@@ -28,13 +28,15 @@ import java.util.List;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
 public class Servicos extends AppCompatActivity {
 
     ImageView servicoBanho, servicoTosa, servicoHospedagem, servicoAdestrar, servicoCastrar, servicoGeral;
     Spinner horario, pet;
     EditText data;
-    Button addServico;
+    Button addServico,button;
     String servico;
 
     PetDAO petDAO;
@@ -64,6 +66,24 @@ public class Servicos extends AppCompatActivity {
         pet = findViewById(R.id.spinner2);
         data = findViewById(R.id.dataServico);
         addServico = findViewById(R.id.addServico);
+
+
+        button = findViewById(R.id.cancelarServico);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retorno = new Intent();
+
+                setResult(Activity.RESULT_CANCELED, retorno);
+                finish();
+            }
+        });
+
+
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");
+        MaskTextWatcher mtw = new MaskTextWatcher(data,smf);
+        data.addTextChangedListener(mtw);
+
 
         List<Pet> pets = petDAO.getByClient(clientId);
         final String[] spinnerArray = new String[pets.size()];

@@ -111,7 +111,7 @@
             </ListView>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/cancelarProduto"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

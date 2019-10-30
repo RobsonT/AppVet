@@ -25,12 +25,8 @@
         <activity android:name=".ServicosCliente" />
         <activity android:name=".FinalizarCompra" />
         <activity android:name=".Carrinho" />
-        <activity
-            android:name=".CadastroPet3"
-            android:parentActivityName=".CadastroPet2" />
-        <activity
-            android:name=".CadastroPet2"
-            android:parentActivityName=".CadastroPet" />
+        <activity android:name=".CadastroPet3" />
+        <activity android:name=".CadastroPet2"/>
         <activity android:name=".CadastroPet" />
         <activity android:name=".Cadastro" />
         <activity
