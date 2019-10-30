@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private ClienteDAO clienteDAO;
 
+    private TextView recuperarSenha;
+
     TextView textView;
 
     private CallbackManager callbackManager;
@@ -63,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.emailUsuario);
         password = findViewById(R.id.senhaUsuario);
         clienteDAO = ClienteDAO.getInstance();
+        recuperarSenha = findViewById(R.id.recuperarSenha);
+
 //        Sublinhar texto
         TextView textView = findViewById(R.id.recuperarSenha);
         SpannableString content = new SpannableString(textView.getText().toString());
@@ -72,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton = findViewById(R.id.loginGoogle);
 //Muda texto do botao google
         textView = (TextView) googleSignInButton.getChildAt(0);
-        textView.setText("Google");
+        textView.setText("Login com Google");
 
         loginButton = findViewById(R.id.loginFacebook);
         callbackManager = CallbackManager.Factory.create();
