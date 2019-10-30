@@ -21,10 +21,7 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ListaPet" />
-        <activity
-            android:name=".ProdutoDescricao"
-            android:finishOnCloseSystemDialogs="true" />
-        <activity android:name=".ListaServico" />
+        <activity android:name=".ProdutoDescricao" />
         <activity android:name=".ServicosCliente" />
         <activity android:name=".FinalizarCompra" />
         <activity android:name=".Carrinho" />

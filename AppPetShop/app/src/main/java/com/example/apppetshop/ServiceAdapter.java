@@ -15,6 +15,7 @@ import com.example.apppetshop.model.Cliente;
 import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.ServicoCliente;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
@@ -43,7 +44,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         Pet pet = petDAO.get(servico.getIdPet());
         holder.nomeServico.setText(servico.getNomeServico());
         holder.imgPet.setImageBitmap(pet.getImage());
-        holder.dataServico.setText(servico.getData().toString());
+        SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        String date = spf.format(servico.getData());
+        holder.dataServico.setText(date);
     }
 
     @Override

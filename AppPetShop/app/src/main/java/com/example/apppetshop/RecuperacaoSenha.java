@@ -22,13 +22,9 @@ import com.example.apppetshop.model.Cliente;
 
 public class RecuperacaoSenha extends AppCompatActivity {
 
-//    final int SEND_SMS_PERMISSION_REQUEST_ONE = 1;
-//    EditText number;
-//    EditText email;
-//    String message = "deu certo";
-//    Button send;
-//    EditText emailE;
-//    Button recover;
+    EditText number;
+    EditText email;
+    Button send;
 //
 //    ClienteDAO clienteDAO;
 
@@ -73,7 +69,34 @@ public class RecuperacaoSenha extends AppCompatActivity {
     }
 
     public void enviarSMS(View v){
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("08591869244", null, "teste envio", null, null);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    1);
+        }else {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("085989900573", null, "teste", null, null);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage("085989900573", null, "teste", null, null);
+                } else {
+                    Toast.makeText(this, "SMS não pode sser enviado", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

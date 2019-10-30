@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,13 +25,15 @@ public class ServicosCliente extends Fragment {
     ServiceAdapter serviceAdapter;
     List<ServicoCliente> servicos;
 
+    int clientId;
+
     ServicoClienteDAO servicoClienteDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_servicos_cliente,  container, false);
 
-        final int clientId = Integer.parseInt(getArguments().getString("clientId"));
+        clientId = Integer.parseInt(getArguments().getString("clientId"));
 
         servicoClienteDAO = ServicoClienteDAO.getInstance();
         servicos = servicoClienteDAO.getByClient(clientId);
@@ -48,11 +51,21 @@ public class ServicosCliente extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(),Servicos.class);
-                i.putExtra("ClientId", clientId);
-                startActivity(i);
+                i.putExtra("clientId", String.valueOf(clientId));
+                startActivityForResult(i, 0);
             }
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            servicos = servicoClienteDAO.getByClient(clientId);
+            serviceAdapter = new ServiceAdapter(servicos);
+            recyclerView.setAdapter(serviceAdapter);
+        }
     }
 }

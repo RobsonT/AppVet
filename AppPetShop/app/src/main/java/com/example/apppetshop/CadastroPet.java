@@ -32,10 +32,14 @@ public class CadastroPet extends AppCompatActivity {
     private ImageView sexM;
     private ImageView sexF;
 
+    int clientId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet);
+
+        clientId = Integer.parseInt(getIntent().getExtras().getString("clientId"));
 
         namePet = findViewById(R.id.nomePet);
         birthDatePet = findViewById(R.id.nascPet);
@@ -147,6 +151,7 @@ public class CadastroPet extends AppCompatActivity {
             pet.setNascimento(birthDate);
             pet.setSexo(sex);
             pet.setTipo(type);
+            pet.setIdCliente(clientId);
 
             Intent i = new Intent(this, CadastroPet2.class);
             i.putExtra("pet", pet);

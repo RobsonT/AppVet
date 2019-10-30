@@ -50,21 +50,21 @@
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicobanhoselected" />
+                        app:srcCompat="@drawable/servicobanho" />
 
                     <ImageView
                         android:id="@+id/sevicoTosa"
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicotosaselected" />
+                        app:srcCompat="@drawable/servicotosa" />
 
                     <ImageView
-                        android:id="@+id/servicoHospetagem"
+                        android:id="@+id/servicoHospedagem"
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicohospedagemselected" />
+                        app:srcCompat="@drawable/servicohospedagem" />
 
                 </LinearLayout>
 
@@ -79,21 +79,21 @@
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicoadestrarselected" />
+                        app:srcCompat="@drawable/servicoadestrar" />
 
                     <ImageView
                         android:id="@+id/servicoCastrar"
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicocastrarselected" />
+                        app:srcCompat="@drawable/servicocastrar" />
 
                     <ImageView
                         android:id="@+id/servicoGeral"
                         android:layout_width="110dp"
                         android:layout_height="90dp"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/servicogeralselected" />
+                        app:srcCompat="@drawable/servicogeral" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -118,6 +118,8 @@
                         android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:text="HORÁRIO:" />
+                        android:text="ESCOLHA O HORÁRIO:"
+                        android:visibility="visible" />
 
                     <Spinner
                         android:id="@+id/spinner"
@@ -138,6 +140,8 @@
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:text="ESCOLHA O PET" />
+                        android:text="QUAL PET IRÁ RECEBER O SERVIÇO?"
+                        android:visibility="visible" />
 
                     <Spinner
                         android:id="@+id/spinner2"
@@ -161,8 +165,8 @@
                         android:text="DIA PARA A CONSULTA:" />
 
                     <EditText
-                        android:id="@+id/editText2"
                         android:layout_width="200dp"
+                        android:id="@+id/dataServico"
                         android:layout_height="wrap_content"
                         android:inputType="date" />
 
@@ -171,7 +175,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/addServico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

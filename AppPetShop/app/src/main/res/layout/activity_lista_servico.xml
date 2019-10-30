@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#DBEFF0"
-    tools:context=".ListaServico">
+    android:background="#DBEFF0">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
