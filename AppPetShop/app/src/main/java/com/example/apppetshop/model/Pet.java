@@ -1,5 +1,7 @@
 package com.example.apppetshop.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +16,7 @@ public class Pet implements Serializable {
     private String porte;
     private double peso;
     private String raca;
-    private int image;
+    private Bitmap image;
 
     public int getId() {
         return id;
@@ -88,11 +90,11 @@ public class Pet implements Serializable {
         this.raca = raca;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 

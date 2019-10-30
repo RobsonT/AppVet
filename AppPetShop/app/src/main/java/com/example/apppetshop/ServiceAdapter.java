@@ -42,7 +42,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         servico = serviceList.get(position);
         Pet pet = petDAO.get(servico.getIdPet());
         holder.nomeServico.setText(servico.getNomeServico());
-        holder.imgPet.setImageResource(pet.getImage());
+        holder.imgPet.setImageBitmap(pet.getImage());
         holder.dataServico.setText(servico.getData().toString());
     }
 

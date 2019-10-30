@@ -14,12 +14,12 @@ public class PetDAO implements Dao<Pet>{
 
     private PetDAO() {
         pets = new ArrayList<>();
-        Pet pet = new Pet();
-        pet.setNome("a");
-        pet.setImage(R.drawable.iconcachorro);
-        pet.setRaca("alguma");
-        pet.setIdCliente(0);
-        pets.add(pet);
+//        Pet pet = new Pet();
+//        pet.setNome("a");
+//        pet.setImage(R.drawable.iconcachorro);
+//        pet.setRaca("alguma");
+//        pet.setIdCliente(0);
+//        pets.add(pet);
     }
 
     public static PetDAO getInstance(){

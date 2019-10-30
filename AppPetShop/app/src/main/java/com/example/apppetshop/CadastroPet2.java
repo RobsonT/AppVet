@@ -114,10 +114,15 @@ public class CadastroPet2 extends AppCompatActivity {
 
 
         //teste autocomplete
-        String[] cachorros = getResources().getStringArray(R.array.gatos);
+        String[] racas;
+        if(pet.getTipo().equals("gato")) {
+            racas = getResources().getStringArray(R.array.gatos);
+        }else{
+            racas = getResources().getStringArray(R.array.cachorros);
+        }
 
         AutoCompleteTextView edittext = findViewById(R.id.racaPet);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,cachorros);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,racas);
         edittext.setAdapter(adapter);
     }
 
