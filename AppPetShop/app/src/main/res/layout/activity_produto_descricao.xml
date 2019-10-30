@@ -33,7 +33,7 @@
             android:layout_height="127dp"
             android:layout_gravity="center"
             android:tag="imagemProduto"
-            app:srcCompat="@drawable/boneco" />
+            app:srcCompat="@drawable/produto2boneco" />
 
         <TextView
             android:id="@+id/precoProduto"
