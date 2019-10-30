@@ -51,6 +51,7 @@ public class ListaPet extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), CadastroPet.class);
+                i.putExtra("clientId", String.valueOf(clientId));
                 startActivityForResult(i, 0);
             }
         });
