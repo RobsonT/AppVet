@@ -3,6 +3,7 @@ package com.example.apppetshop;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -53,6 +54,10 @@ public class CadastroPet3 extends AppCompatActivity {
                 if(bitmap != null) {
                     pet.setImage(bitmap);
                     petDAO.save(pet);
+                    Intent retorno = new Intent();
+
+                    setResult(Activity.RESULT_OK, retorno);
+                    finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "Insira a imagem", Toast.LENGTH_SHORT).show();
                 }
