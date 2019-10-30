@@ -58,16 +58,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Ex: (00) 9.9999-9999"
+                    android:hint="Ex: (000) 9.9999-9999"
                     android:inputType="numberSigned"
                     android:paddingBottom="15dp" />
 
                 <Button
-                    android:id="@+id/recuperarSenha"
+                    android:id="@+id/recuperarsenha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Recuperar senha"
-                    android:onClick="enviarSMS"/>
+                    android:onClick="enviarSMS"
+                    android:text="recuperar senha" />
+
+
             </LinearLayout>
 
         </LinearLayout>

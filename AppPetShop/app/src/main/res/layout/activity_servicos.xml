@@ -115,13 +115,13 @@
 
                     <TextView
                         android:id="@+id/textView21"
-                        android:layout_width="250dp"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
-                        android:text="ESCOLHA O HORÁRIO:" />
+                        android:text="HORÁRIO:" />
 
                     <Spinner
                         android:id="@+id/spinner"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -135,13 +135,13 @@
 
                     <TextView
                         android:id="@+id/textView9"
-                        android:layout_width="250dp"
+                        android:layout_width="180dp"
                         android:layout_height="wrap_content"
-                        android:text="QUAL PET IRÁ RECEBER O SERVIÇO?" />
+                        android:text="ESCOLHA O PET" />
 
                     <Spinner
                         android:id="@+id/spinner2"
-                        android:layout_width="match_parent"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -155,14 +155,14 @@
 
                     <TextView
                         android:id="@+id/textView22"
-                        android:layout_width="250dp"
+                        android:layout_width="180dp"
                         android:layout_height="25dp"
                         android:layout_gravity="bottom"
-                        android:text="ESCOLHA O DIA PARA A CONSULTA:" />
+                        android:text="DIA PARA A CONSULTA:" />
 
                     <EditText
                         android:id="@+id/editText2"
-                        android:layout_width="match_parent"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:inputType="date" />
 
@@ -177,6 +177,13 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="ADICIONAR SERVIÇO" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="cancelar" />
         </LinearLayout>
     </ScrollView>
 

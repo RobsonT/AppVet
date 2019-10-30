@@ -74,6 +74,6 @@ public class RecuperacaoSenha extends AppCompatActivity {
 
     public void enviarSMS(View v){
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("085991869244", null, "teste", null, null);
+        smsManager.sendTextMessage("08591869244", null, "teste envio", null, null);
     }
 }

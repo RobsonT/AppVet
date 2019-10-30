@@ -3,7 +3,7 @@
     package="com.example.apppetshop">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -12,20 +12,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ServiceAdapter"></activity>
-        <activity android:name=".RecuperacaoSenha"></activity>
+        <activity android:name=".ProdutoList"></activity>
+        <activity android:name=".ListaPedido" />
+        <activity android:name=".ServiceAdapter" />
+        <activity android:name=".RecuperacaoSenha" />
         <activity android:name=".Servicos" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ListaPet" />
-        <activity android:name=".ProdutoDescricao" android:parentActivityName=".MainActivity" android:finishOnCloseSystemDialogs="true"/>
+        <activity
+            android:name=".ProdutoDescricao"
+            android:finishOnCloseSystemDialogs="true" />
         <activity android:name=".ListaServico" />
         <activity android:name=".ServicosCliente" />
         <activity android:name=".FinalizarCompra" />
         <activity android:name=".Carrinho" />
-        <activity android:name=".CadastroPet3" android:parentActivityName=".CadastroPet2"/>
-        <activity android:name=".CadastroPet2" android:parentActivityName=".CadastroPet"/>
+        <activity
+            android:name=".CadastroPet3"
+            android:parentActivityName=".CadastroPet2" />
+        <activity
+            android:name=".CadastroPet2"
+            android:parentActivityName=".CadastroPet" />
         <activity android:name=".CadastroPet" />
         <activity android:name=".Cadastro" />
         <activity
@@ -37,7 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -45,7 +52,8 @@
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
-            <intent-filter><action android:name="android.intent.action.VIEW" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -57,7 +65,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
     </application>
 
 </manifest>
