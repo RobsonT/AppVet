@@ -22,7 +22,6 @@
             android:orientation="vertical"
             android:paddingTop="30dp">
 
-<<<<<<< HEAD
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="250dp"
@@ -30,32 +29,10 @@
                 android:background="@drawable/imagem_inicial" />
 
             <LinearLayout
-=======
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Digite seu email que corresponda ao email cadastrado para receber um email com a senha cadastrada para o email informado:"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/emailRecuperacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Digite seu email aqui"
-                android:inputType="textPersonName"
-                android:padding="20dp" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/recuperarSenha"
->>>>>>> 8b3f7d5ee26920d6beb67de42eba5de78ec9c76d
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="30dp">
 
                 <TextView
                     android:id="@+id/textView12"
@@ -69,13 +46,12 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/emailRecuperarSenha"
+                    android:id="@+id/emailRecuperacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Digite seu email aqui"
                     android:inputType="textPersonName"
-                    android:padding="10dp"
-                    android:paddingBottom="15dp" />
+                    android:padding="20dp" />
 
                 <EditText
                     android:id="@+id/numeroSMS"
@@ -87,16 +63,15 @@
                     android:paddingBottom="15dp" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/recuperarSenha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:onClick="enviarSMS"
-                    android:padding="20dp"
-                    android:text="Confirmar" />
+                    tools:text="Recuperar senha"
+                    android:onClick="enviarSMS"/>
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

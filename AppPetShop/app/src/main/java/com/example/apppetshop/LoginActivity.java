@@ -231,10 +231,4 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    public void RecuperarSenha(View v){
-        Intent intent = new Intent(this, RecuperacaoSenha.class);
-        startActivity(intent);
-    }
-
 }
