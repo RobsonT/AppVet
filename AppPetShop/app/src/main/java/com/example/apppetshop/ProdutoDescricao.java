@@ -26,6 +26,8 @@ import com.example.apppetshop.model.Produto;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ProdutoDescricao extends AppCompatActivity {
@@ -141,7 +143,10 @@ public class ProdutoDescricao extends AppCompatActivity {
             compra.setId(compraDAO.getAll().size());
             compra.setConfirmado(false);
             compra.setIdCliente(clientId);
+            Date currentTime = Calendar.getInstance().getTime();
+            compra.setData(currentTime);
             compraDAO.save(compra);
+
         }
 
         List<Item> itens = itemDAO.getByCompra(compra.getId());

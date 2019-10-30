@@ -12,8 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProdutoList"></activity>
-        <activity android:name=".ListaPedido" />
+        <activity android:name=".PedidoList"></activity>
         <activity android:name=".ServiceAdapter" />
         <activity android:name=".RecuperacaoSenha" />
         <activity android:name=".Servicos" />

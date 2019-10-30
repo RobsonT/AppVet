@@ -41,6 +41,15 @@ public class CompraDAO implements Dao<Compra> {
         return null;
     }
 
+    public List<Compra> getByClient(int id) {
+        List<Compra> newCompras = new ArrayList<>();
+        for (Compra c: compras) {
+            if(c.getIdCliente() == id)
+                newCompras.add(c);
+        }
+        return newCompras;
+    }
+
     @Override
     public void save(Compra purchase) {
         compras.add(purchase);
