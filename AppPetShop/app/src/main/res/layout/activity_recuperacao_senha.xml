@@ -43,7 +43,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/emailRecuperacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Digite seu email aqui"
@@ -51,7 +51,7 @@
                 android:padding="20dp" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recuperarSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"

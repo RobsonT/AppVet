@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public class ListaPet extends Fragment {
     RecyclerView recyclerView;
     PetAdapter petAdapter;
     List<Pet> pets;
+    int clientId;
 
     PetDAO petDao;
 
@@ -31,7 +33,7 @@ public class ListaPet extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_lista_pet,  container, false);
 
-        int clientId = Integer.parseInt(getArguments().getString("clientId"));
+        clientId = Integer.parseInt(getArguments().getString("clientId"));
 
         petDao = PetDAO.getInstance();
         pets = petDao.getByClient(clientId);
@@ -49,10 +51,20 @@ public class ListaPet extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), CadastroPet.class);
-                startActivity(i);
+                startActivityForResult(i, 0);
             }
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            pets = petDao.getByClient(clientId);
+            petAdapter = new PetAdapter(pets);
+            recyclerView.setAdapter(petAdapter);
+        }
     }
 }

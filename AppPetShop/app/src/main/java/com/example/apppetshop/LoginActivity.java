@@ -193,7 +193,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void recoverPasssword(View view) {
-
+        Intent i = new Intent(this, RecuperacaoSenha.class);
+        startActivity(i);
     }
 
     private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
