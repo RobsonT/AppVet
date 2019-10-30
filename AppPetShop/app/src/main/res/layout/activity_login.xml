@@ -89,8 +89,7 @@
                         android:layout_marginRight="5sp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/googleg_standard_color_18"
-                        android:tag="loginGoogle"
-                        android:text="Google" />
+                        android:tag="loginGoogle" />
 
                     <com.facebook.login.widget.LoginButton
                         android:id="@+id/loginFacebook"
