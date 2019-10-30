@@ -1,9 +1,11 @@
 package com.example.apppetshop.model;
 
+import java.util.Date;
+
 public class Compra {
     private int id;
     private int idCliente;
-    private String data;
+    private Date data;
     private boolean confirmado;
 
     public int getId() {
@@ -22,11 +24,11 @@ public class Compra {
         this.idCliente = idCliente;
     }
 
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
 

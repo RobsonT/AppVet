@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 servicosCliente.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, servicosCliente).commit();
                 break;
+            case R.id.navRequest:
+                PedidoList pedidoList = new PedidoList();
+                pedidoList.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, pedidoList).commit();
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

@@ -183,6 +183,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent i = new Intent(this, MainActivity.class);
                 i.putExtra("clientId", String.valueOf(client.getId()));
                 startActivity(i);
+                finish();
             } else if (client == null) {
                 Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
             } else {
