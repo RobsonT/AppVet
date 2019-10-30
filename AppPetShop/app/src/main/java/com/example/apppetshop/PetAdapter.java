@@ -34,7 +34,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
     public void onBindViewHolder(final PetAdapter.ViewHolder holder, final int position) {
         Pet pet = petList.get(position);
         holder.namePet.setText(pet.getNome());
-        holder.imgPet.setImageResource(pet.getImage());
+        holder.imgPet.setImageBitmap(pet.getImage());
         holder.breedPet.setText(null/*Raça*/);
     }
 

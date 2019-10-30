@@ -10,17 +10,29 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.apppetshop.DAO.PetDAO;
+import com.example.apppetshop.model.Pet;
 
 public class CadastroPet3 extends AppCompatActivity {
 
     ImageView imageView;
-    Button btnCamera;
+    Button btnCamera, confirmar;
+    Pet pet;
+    PetDAO petDAO;
+    Bitmap bitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet3);
 
+        bitmap = null;
+
+        pet = (Pet) getIntent().getSerializableExtra("pet");
+        petDAO = PetDAO.getInstance();
 
         //teste camera
         btnCamera = findViewById(R.id.buttonCamera);
@@ -33,14 +45,28 @@ public class CadastroPet3 extends AppCompatActivity {
                 startActivityForResult(intent,0);
             }
         });
+
+        confirmar = findViewById(R.id.cadastrarPet);
+        confirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bitmap != null) {
+                    pet.setImage(bitmap);
+                    petDAO.save(pet);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Insira a imagem", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+        bitmap = (Bitmap)data.getExtras().get("data");
         imageView.setImageBitmap(bitmap);
         imageView.setVisibility(View.VISIBLE);
         btnCamera.setText("Tirar outra foto");
+        confirmar.setClickable(true);
     }
 }

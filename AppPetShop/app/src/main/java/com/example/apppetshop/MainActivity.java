@@ -10,14 +10,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apppetshop.DAO.ClienteDAO;
+import com.example.apppetshop.model.Cliente;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     Bundle bundle;
+
+    TextView name, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawerLayout);
+
+        ClienteDAO clienteDAO = ClienteDAO.getInstance();
+        Cliente cliente = clienteDAO.get(Integer.parseInt(getIntent().getExtras().getString( "clientId" )));
+
         NavigationView navigationView = findViewById(R.id.navView);
+
+        name = navigationView.getHeaderView(0).findViewById(R.id.nomeUsuario);
+        email = navigationView.getHeaderView(0).findViewById(R.id.emailUsuario);
+
+        name.setText(cliente.getNome());
+        email.setText(cliente.getEmail());
+
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
