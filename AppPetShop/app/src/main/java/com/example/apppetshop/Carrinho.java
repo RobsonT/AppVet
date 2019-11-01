@@ -31,13 +31,11 @@ public class Carrinho extends Fragment {
     RecyclerView recyclerView;
     CartAdapter cartAdapter;
     List<Item> itens;
-    TextView valorTotal;
+    static TextView valorTotal;
 
     ItemDAO itemDao;
     CompraDAO compraDAO;
     ProdutoDAO produtoDAO;
-
-    double totalValue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,17 +83,12 @@ public class Carrinho extends Fragment {
             itens = new ArrayList<>();
             warningCart.setVisibility(View.VISIBLE);
         }
-
-        Log.i("Tag", "teste");
-        cartAdapter = new CartAdapter(itens, clientId);
+        cartAdapter = new CartAdapter(itens, clientId, compra.getId());
 
         recyclerView = v.findViewById(R.id.recyclerViewCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cartAdapter);
-
-        valorTotal.setText(String.valueOf(totalValue));
-        Log.v("ValorT", String.valueOf(totalValue));
         return v;
     }
 }

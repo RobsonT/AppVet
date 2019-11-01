@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.DAO.ItemDAO;
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Item;
@@ -24,11 +25,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     int clientId;
     Context context;
     Item item;
-    double valor = 0;
+    int compraId;
 
-    public CartAdapter(List<Item> itemList, int clientId) {
+    public CartAdapter(List<Item> itemList, int clientId, int compraId) {
         this.itemList = itemList;
         this.clientId = clientId;
+        this.compraId = compraId;
     }
 
     @Override
@@ -36,44 +38,59 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         context = parent.getContext();
-        valor = 15;
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-            item = itemList.get(position);
+        item = itemList.get(position);
 
-            final ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
-            final Produto product = produtoDAO.get(item.getIdProduto());
+        final ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
+        final Produto product = produtoDAO.get(item.getIdProduto());
 
-        Log.v("valor", String.valueOf(valor));
-            holder.name.setText(product.getNome());
-            holder.imgCart.setImageResource(product.getImagem());
-            holder.price.setText("R$" + String.valueOf(product.getPreco()));
-            holder.quantity.setText(String.valueOf(item.getQuantidade()));
-            holder.increment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
-                    holder.quantity.setText(String.valueOf(currentQuantity + 1));
-                    item.setQuantidade(item.getQuantidade() + 1);
-                    ItemDAO itemDAO = ItemDAO.getInstance();
-                    itemDAO.updateQuantity(item);
+        holder.name.setText(product.getNome());
+        holder.imgCart.setImageResource(product.getImagem());
+        holder.price.setText("R$" + String.valueOf(product.getPreco()));
+        holder.quantity.setText(String.valueOf(item.getQuantidade()));
+        holder.increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
+                holder.quantity.setText(String.valueOf(currentQuantity + 1));
+                item.setQuantidade(item.getQuantidade() + 1);
+                ItemDAO itemDAO = ItemDAO.getInstance();
+                itemDAO.updateQuantity(item);
 
-                    valor = product.getPreco() * currentQuantity;
+                CompraDAO compraDAO = CompraDAO.getInstance();
+                List<Item> itens = itemDAO.getByCompra(compraId);
+                double value = 0;
+                for (Item item: itens) {
+                    Produto p = produtoDAO.get(item.getIdProduto());
+                    value += item.getQuantidade() * p.getPreco();
                 }
-            });
+                Carrinho.valorTotal.setText(String.valueOf(value));
+            }
+        });
 
         holder.decrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
-                holder.quantity.setText(String.valueOf(currentQuantity - 1));
-                item.setQuantidade(item.getQuantidade() - 1);
-                ItemDAO itemDAO = ItemDAO.getInstance();
-                itemDAO.updateQuantity(item);
-                valor = produtoDAO.get(item.getIdProduto()).getPreco() * currentQuantity;
+                if (item.getQuantidade() > 1) {
+                    holder.quantity.setText(String.valueOf(currentQuantity - 1));
+                    item.setQuantidade(item.getQuantidade() - 1);
+                    ItemDAO itemDAO = ItemDAO.getInstance();
+                    itemDAO.updateQuantity(item);
+
+                    CompraDAO compraDAO = CompraDAO.getInstance();
+                    List<Item> itens = itemDAO.getByCompra(compraId);
+                    double value = 0;
+                    for (Item item: itens) {
+                        Produto p = produtoDAO.get(item.getIdProduto());
+                        value += item.getQuantidade() * p.getPreco();
+                    }
+                    Carrinho.valorTotal.setText(String.valueOf(value));
+                }
             }
         });
 
@@ -92,7 +109,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return itemList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCart;
         TextView price;
         TextView name;
@@ -113,9 +130,5 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             increment = itemView.findViewById(R.id.increment);
             decrement = itemView.findViewById(R.id.decrement);
         }
-    }
-
-    public double getValue(){
-        return this.valor;
     }
 }
