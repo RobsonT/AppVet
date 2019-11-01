@@ -1,9 +1,9 @@
 package com.example.apppetshop.DAO;
 
 import com.example.apppetshop.model.Compra;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class CompraDAO implements Dao<Compra> {
 
@@ -19,7 +19,6 @@ public class CompraDAO implements Dao<Compra> {
         if(instance == null){
             instance = new CompraDAO();
         }
-
         return instance;
     }
 

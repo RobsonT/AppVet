@@ -8,10 +8,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
@@ -87,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 favoriteList.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, favoriteList).commit();
                 break;
-//            case R.id.navRequest:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ProdutoFavoritos()).commit();
-//                break;
             case R.id.navPet:
                 ListaPet listaPet = new ListaPet();
                 listaPet.setArguments(bundle);

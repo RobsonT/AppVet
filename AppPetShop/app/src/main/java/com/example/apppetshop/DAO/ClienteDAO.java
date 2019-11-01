@@ -1,12 +1,9 @@
 package com.example.apppetshop.DAO;
 
-import android.widget.Toast;
-
-import com.example.apppetshop.Cadastro;
 import com.example.apppetshop.model.Cliente;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ClienteDAO implements Dao<Cliente>{
     private List<Cliente> clients;

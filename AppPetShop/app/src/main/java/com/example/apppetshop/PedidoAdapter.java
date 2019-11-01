@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -14,7 +13,6 @@ import com.example.apppetshop.DAO.ItemDAO;
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Compra;
 import com.example.apppetshop.model.Item;
-import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.Produto;
 
 import java.text.SimpleDateFormat;
@@ -48,10 +46,12 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
         Compra pedido = pedidoList.get(position);
         holder.idPedido.setText(String.valueOf(pedido.getId()));
         double valor = 0;
+
         for (Item i: itemDAO.getByCompra(pedido.getId())) {
             Produto p = produtoDAO.get(i.getIdProduto());
             valor += i.getQuantidade() * p.getPreco();
         }
+
         holder.precoPedido.setText(String.valueOf(valor));
         SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy");
         String date = spf.format(pedido.getData());
@@ -79,6 +79,5 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
             dataPedido = itemView.findViewById(R.id.dataPedido);
             cv = itemView.findViewById(R.id.cvPedido);
         }
-
     }
 }

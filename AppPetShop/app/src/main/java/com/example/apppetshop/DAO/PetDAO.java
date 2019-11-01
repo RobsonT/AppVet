@@ -1,8 +1,6 @@
 package com.example.apppetshop.DAO;
 
-import com.example.apppetshop.R;
 import com.example.apppetshop.model.Pet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +12,12 @@ public class PetDAO implements Dao<Pet>{
 
     private PetDAO() {
         pets = new ArrayList<>();
-//        Pet pet = new Pet();
-//        pet.setNome("a");
-//        pet.setImage(R.drawable.iconcachorro);
-//        pet.setRaca("alguma");
-//        pet.setIdCliente(0);
-//        pets.add(pet);
     }
 
     public static PetDAO getInstance(){
         if(instance == null){
             instance = new PetDAO();
         }
-
         return instance;
     }
 

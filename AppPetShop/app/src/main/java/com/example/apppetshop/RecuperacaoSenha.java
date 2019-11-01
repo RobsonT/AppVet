@@ -5,7 +5,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -13,28 +12,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-import com.example.apppetshop.DAO.ClienteDAO;
-import com.example.apppetshop.model.Cliente;
 
 public class RecuperacaoSenha extends AppCompatActivity {
 
     EditText number;
     EditText email;
     Button send,button;
-//
-//    ClienteDAO clienteDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recuperacao_senha);
-
-
 
         button = findViewById(R.id.voltarSenha);
         button.setOnClickListener(new View.OnClickListener() {
@@ -46,41 +35,8 @@ public class RecuperacaoSenha extends AppCompatActivity {
                 finish();
             }
         });
-
-//        email = findViewById(R.id.emailRecuperarSenha);
-//        number = findViewById(R.id.numeroSMS);
-//        send = findViewById(R.id.button3);
-//
-//        send.setEnabled(false);
-//        if(checkPermission(Manifest.permission.SEND_SMS)){
-//            send.setEnabled(true);
-//        }else {
-//            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},SEND_SMS_PERMISSION_REQUEST_ONE);
-//        }
-//        clienteDAO = ClienteDAO.getInstance();
-//
-//        emailE = findViewById(R.id.emailRecuperacao);
-//        recover = findViewById(R.id.recuperarSenha);
-//
-//        recover.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Cliente cliente = clienteDAO.getByEmail(emailE.getText().toString());
-//                if(cliente != null){
-////                Enviar senha
-//                }else{
-//                    Toast.makeText(getApplicationContext(), "Insira um email válido",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
-
-
-//    public boolean checkPermission(String permission){
-//        int check = ContextCompat.checkSelfPermission(this, permission);
-//        return (check == PackageManager.PERMISSION_GRANTED);
-//    }
     }
+
 
     public void enviarSMS(View v){
 
@@ -108,9 +64,6 @@ public class RecuperacaoSenha extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 }

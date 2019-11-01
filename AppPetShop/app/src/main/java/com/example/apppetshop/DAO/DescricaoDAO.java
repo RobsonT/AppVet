@@ -1,9 +1,9 @@
 package com.example.apppetshop.DAO;
 
 import com.example.apppetshop.model.Descricao;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DescricaoDAO implements Dao<Descricao> {
 
@@ -19,7 +19,6 @@ public class DescricaoDAO implements Dao<Descricao> {
         if(instance == null){
             instance = new DescricaoDAO();
         }
-
         return instance;
     }
 

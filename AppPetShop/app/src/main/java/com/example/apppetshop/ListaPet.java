@@ -17,7 +17,6 @@ import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.model.Pet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListaPet extends Fragment {

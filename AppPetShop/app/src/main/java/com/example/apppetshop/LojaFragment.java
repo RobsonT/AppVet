@@ -1,7 +1,5 @@
 package com.example.apppetshop;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Produto;

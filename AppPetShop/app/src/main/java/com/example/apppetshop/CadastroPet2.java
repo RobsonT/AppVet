@@ -1,16 +1,11 @@
 package com.example.apppetshop;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,7 +18,6 @@ import com.example.apppetshop.model.Pet;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
-import java.io.Serializable;
 
 public class CadastroPet2 extends AppCompatActivity {
 
@@ -42,7 +36,6 @@ public class CadastroPet2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet2);
 
-
         pesoPet = findViewById(R.id.pesoPet);
         racaPet = findViewById(R.id.racaPet);
         castradoS = findViewById(R.id.castradoSim);
@@ -50,9 +43,9 @@ public class CadastroPet2 extends AppCompatActivity {
         porteP = findViewById(R.id.portePequenoPet);
         porteM = findViewById(R.id.porteMedioPet);
         porteG = findViewById(R.id.porteGrandePet);
-
-
         button = findViewById(R.id.voltarPet2);
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +61,7 @@ public class CadastroPet2 extends AppCompatActivity {
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN");
         MaskTextWatcher mtw = new MaskTextWatcher(pesoPet,smf);
         pesoPet.addTextChangedListener(mtw);
+
 
         porteP.setOnClickListener(new View.OnClickListener() {
             @Override

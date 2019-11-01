@@ -1,7 +1,6 @@
 package com.example.apppetshop;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +8,11 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
+
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
@@ -55,7 +54,6 @@ public class Cadastro extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     public boolean validateName() {
@@ -121,6 +119,7 @@ public class Cadastro extends AppCompatActivity {
 
         if (validateName() && validateEmail() && validateCPF() && validatePassword()) {
             if (clienteDAO.getByEmail(cliente.getEmail()) == null) {
+                cliente.setId(clienteDAO.getAll().size());
                 clienteDAO.save(cliente);
                 finish();
             } else {

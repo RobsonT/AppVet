@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.DAO.ServicoClienteDAO;
@@ -22,12 +21,9 @@ import com.example.apppetshop.model.ServicoCliente;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.apppetshop.DAO.ClienteDAO;
-import com.example.apppetshop.model.Cliente;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 

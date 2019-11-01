@@ -1,24 +1,21 @@
 package com.example.apppetshop.DAO;
 
 import com.example.apppetshop.model.ServicoCliente;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ServicoClienteDAO implements Dao<ServicoCliente>{
 
     private List<ServicoCliente> services = new ArrayList<>();
     private static ServicoClienteDAO instance;
 
-    private ServicoClienteDAO() {
-
-    }
+    private ServicoClienteDAO() {}
 
     public static ServicoClienteDAO getInstance(){
         if(instance == null){
             instance = new ServicoClienteDAO();
         }
-
         return instance;
     }
 

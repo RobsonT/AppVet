@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -18,14 +17,11 @@ import android.widget.Toast;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -67,14 +63,15 @@ public class LoginActivity extends AppCompatActivity {
         clienteDAO = ClienteDAO.getInstance();
         recuperarSenha = findViewById(R.id.recuperarSenha);
 
-//        Sublinhar texto
+        //Sublinhar texto
         TextView textView = findViewById(R.id.recuperarSenha);
         SpannableString content = new SpannableString(textView.getText().toString());
         content.setSpan(new UnderlineSpan(), 0, textView.getText().toString().length(), 0);
         textView.setText(content);
 
         googleSignInButton = findViewById(R.id.loginGoogle);
-//Muda texto do botao google
+
+        //Muda texto do botao google
         textView = (TextView) googleSignInButton.getChildAt(0);
         textView.setText("Login com Google");
 
@@ -129,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken()
                 .requestEmail()
                 .requestProfile()
                 .build();
@@ -229,7 +225,5 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     break;
             }
-
     }
-
 }

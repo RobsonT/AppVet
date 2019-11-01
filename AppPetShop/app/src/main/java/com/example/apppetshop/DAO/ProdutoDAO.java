@@ -2,7 +2,6 @@ package com.example.apppetshop.DAO;
 
 import com.example.apppetshop.R;
 import com.example.apppetshop.model.Produto;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,10 +104,10 @@ public class ProdutoDAO implements Dao<Produto>{
 
         Produto produto11 = new Produto();
         produto11.setId(11);
-        produto11.setNome("Casa cachorro");
+        produto11.setNome("Cama cachorro");
         produto11.setImagem(R.drawable.produto11casacachorro);
         produto11.setPreco(130);
-        produto11.setDescricao("Uma casa em formato de gato para o seu gato");
+        produto11.setDescricao("Uma cama para o conforto de seu cachorro");
         products.add(produto11);
 
         Produto produto12 = new Produto();
@@ -141,7 +140,6 @@ public class ProdutoDAO implements Dao<Produto>{
         if(instance == null){
             instance = new ProdutoDAO();
         }
-
         return instance;
     }
 

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Favorito;
-import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.Produto;
 
 import java.util.List;

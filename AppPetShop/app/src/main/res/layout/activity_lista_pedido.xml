@@ -7,10 +7,18 @@
     android:background="#DBEFF0"
     tools:context=".ListaPedido">
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Faça isso" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPedido"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.apppetshop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,12 +82,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(holder.favoriteLeft.getTag().equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag("true");
-                    favorito.setIdProduto(product.getId());
+                    favorito.setIdProduto(position);
                     favorito.setIdCliente(clientId);
+                    Log.v("Erro", String.valueOf(favorito.getIdProduto()));
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
-                    favorito.setIdProduto(product.getId());
+                    favorito.setIdProduto(position);
                     favorito.setIdCliente(clientId);
                     favoritoDao.delete(favorito);
                     holder.favoriteLeft.setTag("false");
@@ -102,6 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     holder.favoriteRight.setTag("true");
                     favorito.setIdProduto(product.getId());
                     favorito.setIdCliente(0);
+                    Log.v("Erro", String.valueOf(favorito.getIdProduto()));
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite);
@@ -132,7 +135,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 view.getContext().startActivity(i);
             }
         });
-
 
     }
 

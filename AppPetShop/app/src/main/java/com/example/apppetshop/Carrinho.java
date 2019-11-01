@@ -1,7 +1,6 @@
 package com.example.apppetshop;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +37,8 @@ public class Carrinho extends Fragment {
     CompraDAO compraDAO;
     ProdutoDAO produtoDAO;
 
+    double totalValue;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_carrinho,  container, false);
@@ -58,9 +58,6 @@ public class Carrinho extends Fragment {
         moreProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent( getContext(), MainActivity.class );
-//                i.putExtra("clientId", String.valueOf(clientId));
-//                startActivity(i);
                 Bundle bundle = new Bundle();
                 bundle.putString("clientId", String.valueOf(clientId));
 
@@ -89,6 +86,7 @@ public class Carrinho extends Fragment {
             warningCart.setVisibility(View.VISIBLE);
         }
 
+        Log.i("Tag", "teste");
         cartAdapter = new CartAdapter(itens, clientId);
 
         recyclerView = v.findViewById(R.id.recyclerViewCart);
@@ -96,6 +94,8 @@ public class Carrinho extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cartAdapter);
 
+        valorTotal.setText(String.valueOf(totalValue));
+        Log.v("ValorT", String.valueOf(totalValue));
         return v;
     }
 }

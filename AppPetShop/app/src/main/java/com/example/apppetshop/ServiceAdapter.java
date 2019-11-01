@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.DAO.PetDAO;
-import com.example.apppetshop.model.Cliente;
 import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.ServicoCliente;
 

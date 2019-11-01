@@ -1,9 +1,9 @@
 package com.example.apppetshop.DAO;
 
 import com.example.apppetshop.model.Favorito;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class FavoritoDAO implements Dao<Favorito> {
 
@@ -20,7 +20,6 @@ public class FavoritoDAO implements Dao<Favorito> {
         if (instance == null) {
             instance = new FavoritoDAO();
         }
-
         return instance;
     }
 

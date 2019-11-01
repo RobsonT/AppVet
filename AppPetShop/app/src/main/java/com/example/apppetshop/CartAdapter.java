@@ -1,13 +1,12 @@
 package com.example.apppetshop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -25,6 +24,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     int clientId;
     Context context;
     Item item;
+    double valor = 0;
 
     public CartAdapter(List<Item> itemList, int clientId) {
         this.itemList = itemList;
@@ -36,6 +36,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         context = parent.getContext();
+        valor = 15;
         return viewHolder;
     }
 
@@ -43,14 +44,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
             item = itemList.get(position);
 
-            ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
-            Produto product = produtoDAO.get(item.getIdProduto());
+            final ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
+            final Produto product = produtoDAO.get(item.getIdProduto());
 
+        Log.v("valor", String.valueOf(valor));
             holder.name.setText(product.getNome());
             holder.imgCart.setImageResource(product.getImagem());
             holder.price.setText("R$" + String.valueOf(product.getPreco()));
             holder.quantity.setText(String.valueOf(item.getQuantidade()));
-
             holder.increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -59,6 +60,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     item.setQuantidade(item.getQuantidade() + 1);
                     ItemDAO itemDAO = ItemDAO.getInstance();
                     itemDAO.updateQuantity(item);
+
+                    valor = product.getPreco() * currentQuantity;
                 }
             });
 
@@ -70,6 +73,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 item.setQuantidade(item.getQuantidade() - 1);
                 ItemDAO itemDAO = ItemDAO.getInstance();
                 itemDAO.updateQuantity(item);
+                valor = produtoDAO.get(item.getIdProduto()).getPreco() * currentQuantity;
             }
         });
 
@@ -109,5 +113,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             increment = itemView.findViewById(R.id.increment);
             decrement = itemView.findViewById(R.id.decrement);
         }
+    }
+
+    public double getValue(){
+        return this.valor;
     }
 }
