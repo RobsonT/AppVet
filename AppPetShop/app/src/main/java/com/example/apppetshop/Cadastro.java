@@ -23,7 +23,6 @@ public class Cadastro extends AppCompatActivity {
     private EditText cpf;
     private EditText password;
     private EditText confPassword;
-    private Button button;
 
     ClienteDAO clienteDAO;
 
@@ -43,17 +42,7 @@ public class Cadastro extends AppCompatActivity {
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
         MaskTextWatcher mtw = new MaskTextWatcher(cpf,smf);
         cpf.addTextChangedListener(mtw);
-
-        button =  findViewById(R.id.voltarCadastro);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent retorno = new Intent();
-
-                setResult(Activity.RESULT_CANCELED, retorno);
-                finish();
-            }
-        });
+        
     }
 
     public boolean validateName() {
