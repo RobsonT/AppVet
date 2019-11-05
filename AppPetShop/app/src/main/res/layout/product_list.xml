@@ -15,7 +15,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:id="@+id/firstColumn"
@@ -29,16 +30,16 @@
                     android:id="@+id/nomeProduto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="40dp"
+                    android:gravity="center"
                     android:tag="nomeProduto"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/imgProduct"
                     android:layout_width="138dp"
                     android:layout_height="103dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:tag="imagemProduto"
                     app:layout_gravity="center" />
@@ -81,16 +82,16 @@
                     android:id="@+id/nomeProduto1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="40dp"
+                    android:gravity="center"
                     android:tag="nomeProduto"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/imgProduct1"
                     android:layout_width="138dp"
                     android:layout_height="103dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:tag="imagemProduto1"
                     app:layout_gravity="center" />
@@ -115,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite"
                         android:tag="false" />
-                        android:tag="false" />
+                    android:tag="false" />
                 </LinearLayout>
 
             </LinearLayout>
