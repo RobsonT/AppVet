@@ -15,14 +15,12 @@ import android.view.ViewGroup;
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LojaFragment extends Fragment {
 
     RecyclerView recyclerView;
     ProductAdapter productAdapter;
-    ArrayList<Produto> products;
 
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
@@ -30,15 +28,8 @@ public class LojaFragment extends Fragment {
 
         int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
-        products= new ArrayList<>();
-
         ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
         List<Produto> products = produtoDAO.getAll();
-        for (int i = 0; i < products.size(); i++) {
-            Produto product = products.get(i);
-                products.add(product);
-        }
-
 
         productAdapter = new ProductAdapter(products, clientId);
         recyclerView = v.findViewById(R.id.recyclerView);
