@@ -22,17 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    List<Produto> productList1;
-    List<Produto> productList2;
+    List<Produto> productList;
     FavoritoDAO favoritoDao;
     Context context;
     Favorito favorito;
     Produto product;
     int clientId;
 
-    public ProductAdapter(List<Produto> productList1, List<Produto> productList2, int clientId) {
-        this.productList1 = productList1;
-        this.productList2 = productList2;
+    public ProductAdapter(List<Produto> productList, int clientId) {
+        this.productList = productList;
         favorito = new Favorito();
         this.clientId = clientId;
     }
@@ -51,7 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         favoritoDao = FavoritoDAO.getInstance();
         List<Favorito> favoritos = favoritoDao.getByClient(clientId);
 
-        product = productList1.get(position);
+        product = productList.get(position);
         holder.textProduct.setText(product.getNome());
         holder.imgProduct.setImageResource(product.getImagem());
         holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
@@ -62,12 +60,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         }
         if (position < productList2.size()) {
-            product = productList2.get(position);
-            holder.textProduct1.setText(product.getNome());
-            holder.imgProduct1.setImageResource(product.getImagem());
-            holder.textPreco1.setText("R$" + String.valueOf(product.getPreco()));
+            product2 = productList2.get(position);
+            holder.textProduct1.setText(product2.getNome());
+            holder.imgProduct1.setImageResource(product2.getImagem());
+            holder.textPreco1.setText("R$" + String.valueOf(product2.getPreco()));
             for(Favorito f: favoritos){
-                if(f.getIdProduto() == product.getId()){
+                if(f.getIdProduto() == product2.getId()){
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteRight.setTag("true");
                 }
@@ -82,13 +80,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(holder.favoriteLeft.getTag().equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag("true");
-                    favorito.setIdProduto(position);
+                    favorito.setIdProduto(productList1.get(position).getId());
                     favorito.setIdCliente(clientId);
-                    Log.v("Erro", String.valueOf(favorito.getIdProduto()));
+                    Log.v("Id2", String.valueOf(favorito.getIdProduto()));
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
-                    favorito.setIdProduto(position);
+                    favorito.setIdProduto(product2.getId());
                     favorito.setIdCliente(clientId);
                     favoritoDao.delete(favorito);
                     holder.favoriteLeft.setTag("false");
@@ -102,14 +100,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(holder.favoriteRight.getTag().equals("false")) {
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteRight.setTag("true");
-                    favorito.setIdProduto(product.getId());
+                    favorito.setIdProduto(product2.getId());
                     favorito.setIdCliente(0);
-                    Log.v("Erro", String.valueOf(favorito.getIdProduto()));
+                    Log.v("Posição", String.valueOf(position));
+                    Log.v("Id1", String.valueOf(product2.getId()));
+                    Log.v("Id2", String.valueOf(favorito.getIdProduto()));
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteRight.setImageResource(R.drawable.ic_favorite);
                     holder.favoriteRight.setTag("false");
-                    favorito.setIdProduto(product.getId());
+                    favorito.setIdProduto(product2.getId());
                     favorito.setIdCliente(0);
                     favoritoDao.delete(favorito);
                 }

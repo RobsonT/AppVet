@@ -22,8 +22,7 @@ public class LojaFragment extends Fragment {
 
     RecyclerView recyclerView;
     ProductAdapter productAdapter;
-    ArrayList<Produto> products1;
-    ArrayList<Produto> products2;
+    ArrayList<Produto> products;
 
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
@@ -31,21 +30,17 @@ public class LojaFragment extends Fragment {
 
         int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
-        products1= new ArrayList<>();
-        products2= new ArrayList<>();
+        products= new ArrayList<>();
 
         ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
         List<Produto> products = produtoDAO.getAll();
         for (int i = 0; i < products.size(); i++) {
             Produto product = products.get(i);
-            if(i % 2 == 0)
-                products1.add(product);
-            else
-                products2.add(product);
+                products.add(product);
         }
 
 
-        productAdapter = new ProductAdapter(products1, products2, clientId);
+        productAdapter = new ProductAdapter(products, clientId);
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
