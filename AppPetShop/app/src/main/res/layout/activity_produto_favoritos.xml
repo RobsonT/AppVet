@@ -12,6 +12,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Você não possui nenhum produto \n favorito no momento"
+            android:textSize="18sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFavorite"
             android:layout_width="match_parent"
