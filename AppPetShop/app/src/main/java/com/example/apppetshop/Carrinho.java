@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class Carrinho extends Fragment {
         LinearLayout listCart = v.findViewById(R.id.listCart);
         TextView warningCart = v.findViewById(R.id.warningCart);
         TextView moreProducts = v.findViewById(R.id.moreProducts);
+        Button confirm = v.findViewById(R.id.confirm);
         valorTotal = v.findViewById(R.id.valorTotal);
 
         moreProducts.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,10 @@ public class Carrinho extends Fragment {
 
         if(compra != null){
             listCart.setVisibility(View.VISIBLE);
+            itens = new ArrayList<>();
+            warningCart.setVisibility(View.GONE);
+            valorTotal.setVisibility(View.VISIBLE);
+            confirm.setVisibility(View.VISIBLE);
             itens = itemDao.getByCompra(compra.getId());
             warningCart.setVisibility(View.GONE);
             double value = 0;
@@ -82,8 +88,11 @@ public class Carrinho extends Fragment {
             listCart.setVisibility(View.GONE);
             itens = new ArrayList<>();
             warningCart.setVisibility(View.VISIBLE);
+            valorTotal.setVisibility(View.GONE);
+            confirm.setVisibility(View.GONE);
+
         }
-        cartAdapter = new CartAdapter(itens, clientId, compra.getId());
+        cartAdapter = new CartAdapter(itens, clientId);
 
         recyclerView = v.findViewById(R.id.recyclerViewCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -31,7 +31,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public ProductAdapter(List<Produto> productList, int clientId) {
         this.productList = productList;
-        favorito = new Favorito();
         this.clientId = clientId;
     }
 
@@ -57,26 +56,31 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         for(Favorito f: favoritos){
             if(f.getIdProduto() == product.getId()){
                 holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
-                holder.favoriteLeft.setTag("true");
+                holder.favoriteLeft.setTag(product.getId()+"-true");
             }
+        }
+        if(!holder.favoriteLeft.getTag().toString().equals(product.getId()+"-true")){
+            holder.favoriteLeft.setTag(product.getId()+"-false");
         }
 
         holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(holder.favoriteLeft.getTag().equals("false")) {
+                favorito = new Favorito();
+                String[] tag = holder.favoriteLeft.getTag().toString().split("-");
+                if(tag[1].equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    holder.favoriteLeft.setTag("true");
-                    favorito.setIdProduto(product.getId());
+                    holder.favoriteLeft.setTag(tag[0]+"-true");
+                    favorito.setIdProduto(Integer.parseInt(tag[0]));
+                    Log.i("ERROOOO", String.valueOf(favorito.getIdProduto()));
                     favorito.setIdCliente(clientId);
-                    Log.v("Id2", String.valueOf(favorito.getIdProduto()));
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
-                    favorito.setIdProduto(product.getId());
+                    favorito.setIdProduto(Integer.parseInt(tag[0]));
                     favorito.setIdCliente(clientId);
                     favoritoDao.delete(favorito);
-                    holder.favoriteLeft.setTag("false");
+                    holder.favoriteLeft.setTag(tag[0]+"-false");
                 }
             }
         });

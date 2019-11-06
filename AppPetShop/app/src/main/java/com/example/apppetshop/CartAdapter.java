@@ -26,17 +26,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     Context context;
     Item item;
     int compraId;
+    CompraDAO compraDAO;
 
-    public CartAdapter(List<Item> itemList, int clientId, int compraId) {
+    public CartAdapter(List<Item> itemList, int clientId) {
         this.itemList = itemList;
         this.clientId = clientId;
-        this.compraId = compraId;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+        compraDAO = CompraDAO.getInstance();
         context = parent.getContext();
         return viewHolder;
     }
@@ -44,7 +45,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         item = itemList.get(position);
-
+        compraId = compraDAO.getUnconfirmed(clientId).getId();
         final ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
         final Produto product = produtoDAO.get(item.getIdProduto());
 
@@ -61,7 +62,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 ItemDAO itemDAO = ItemDAO.getInstance();
                 itemDAO.updateQuantity(item);
 
-                CompraDAO compraDAO = CompraDAO.getInstance();
                 List<Item> itens = itemDAO.getByCompra(compraId);
                 double value = 0;
                 for (Item item: itens) {

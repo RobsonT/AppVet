@@ -55,6 +55,7 @@ public class FavoritoDAO implements Dao<Favorito> {
             n++;
             if(f.getIdProduto() == favorito.getIdProduto() && f.getIdCliente() == favorito.getIdCliente()){
                 favorites.remove(n);
+                break;
             }
         }
     }
