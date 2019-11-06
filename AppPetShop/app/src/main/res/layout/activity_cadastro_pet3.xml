@@ -52,9 +52,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_red_dark"
                     android:text="tirar foto"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -66,18 +66,22 @@
 
                 <Button
                     android:id="@+id/voltarPet3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
-                    android:text="voltar" />
+                    android:layout_marginRight="20dp"
+                    android:background="#e01f00"
+                    android:text="voltar"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/cadastrarPet"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:background="#00a300"
                     android:clickable="false"
                     android:padding="10dp"
-                    android:text="Cadastrar Pet" />
+                    android:text="Cadastrar Pet"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
             <LinearLayout

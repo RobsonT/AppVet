@@ -172,18 +172,22 @@
 
                 <Button
                     android:id="@+id/voltarPet2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
-                    android:text="voltar" />
+                    android:layout_marginRight="20dp"
+                    android:background="#e01f00"
+                    android:text="voltar"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/cadastroPet2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:background="#00a300"
                     android:onClick="register"
                     android:tag="avancarPetTela2"
-                    android:text="AVANÇAR" />
+                    android:text="AVANÇAR"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
             <LinearLayout

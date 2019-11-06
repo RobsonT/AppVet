@@ -154,22 +154,33 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/cadastroPet1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:onClick="register"
-                android:tag="avancarPetTela1"
-                android:text="Avançar" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/cancelarCadastroPet"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:text="cancelar" />
+                <Button
+                    android:id="@+id/cancelarCadastroPet"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:background="#e01f00"
+                    android:text="cancelar"
+                    android:textColor="@color/browser_actions_bg_grey" />
+
+                <Button
+                    android:id="@+id/cadastroPet1"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00a300"
+                    android:onClick="register"
+                    android:tag="avancarPetTela1"
+                    android:text="Avançar"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
