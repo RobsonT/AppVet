@@ -56,6 +56,10 @@ public class CompraDAO implements Dao<Compra> {
 
     @Override
     public void delete(Compra purchase) {
-        compras.remove(purchase);
+        for (int i = 0; i< compras.size(); i++) {
+            if(compras.get(i).getId() == purchase.getId()) {
+                compras.remove(purchase);
+            }
+        }
     }
 }

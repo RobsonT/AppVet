@@ -32,28 +32,27 @@ public class Carrinho extends Fragment {
     RecyclerView recyclerView;
     CartAdapter cartAdapter;
     List<Item> itens;
-    static TextView valorTotal;
 
-    ItemDAO itemDao;
-    CompraDAO compraDAO;
-    ProdutoDAO produtoDAO;
+    static TextView valorTotal;
+    static LinearLayout listCart;
+    static TextView warningCart;
+    static Button confirm;
+    static LinearLayout valueField;
+    TextView moreProducts;
+
+    private ItemDAO itemDao;
+    private CompraDAO compraDAO;
+    private ProdutoDAO produtoDAO;
+
+    int clientId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_carrinho,  container, false);
-        final int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
-        itemDao = ItemDAO.getInstance();
-        compraDAO = CompraDAO.getInstance();
-        produtoDAO = ProdutoDAO.getInstance();
+        initialize(v);
 
         Compra compra = compraDAO.getUnconfirmed(clientId);
-
-        LinearLayout listCart = v.findViewById(R.id.listCart);
-        TextView warningCart = v.findViewById(R.id.warningCart);
-        TextView moreProducts = v.findViewById(R.id.moreProducts);
-        Button confirm = v.findViewById(R.id.confirm);
-        valorTotal = v.findViewById(R.id.valorTotal);
 
         moreProducts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,17 +66,13 @@ public class Carrinho extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainer, lojaFragment);
                 fragmentTransaction.commit();
+                MainActivity.navigationView.setCheckedItem(R.id.navHome);
             }
         });
 
         if(compra != null){
-            listCart.setVisibility(View.VISIBLE);
-            itens = new ArrayList<>();
-            warningCart.setVisibility(View.GONE);
-            valorTotal.setVisibility(View.VISIBLE);
-            confirm.setVisibility(View.VISIBLE);
+            hideItens();
             itens = itemDao.getByCompra(compra.getId());
-            warningCart.setVisibility(View.GONE);
             double value = 0;
             for (Item item: itens) {
                 Produto p = produtoDAO.get(item.getIdProduto());
@@ -85,12 +80,8 @@ public class Carrinho extends Fragment {
             }
             valorTotal.setText(String.valueOf(value));
         }else{
-            listCart.setVisibility(View.GONE);
+            showItens();
             itens = new ArrayList<>();
-            warningCart.setVisibility(View.VISIBLE);
-            valorTotal.setVisibility(View.GONE);
-            confirm.setVisibility(View.GONE);
-
         }
         cartAdapter = new CartAdapter(itens, clientId);
 
@@ -98,6 +89,74 @@ public class Carrinho extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cartAdapter);
+
+        cartAdapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
+            @Override
+            public void onItemDelete(int position) {
+                removeItem(position);
+            }
+        });
         return v;
+    }
+
+    public void hideItens(){
+        listCart.setVisibility(View.VISIBLE);
+        itens = new ArrayList<>();
+        warningCart.setVisibility(View.GONE);
+        valueField.setVisibility(View.VISIBLE);
+        confirm.setVisibility(View.VISIBLE);
+    }
+
+    public void showItens(){
+        listCart.setVisibility(View.GONE);
+        warningCart.setVisibility(View.VISIBLE);
+        valueField.setVisibility(View.GONE);
+        confirm.setVisibility(View.GONE);
+    }
+
+    public void initialize(View v){
+        clientId = Integer.parseInt(getArguments().getString("clientId"));
+
+        itemDao = ItemDAO.getInstance();
+        compraDAO = CompraDAO.getInstance();
+        produtoDAO = ProdutoDAO.getInstance();
+
+        listCart = v.findViewById(R.id.listCart);
+        warningCart = v.findViewById(R.id.warningCart);
+        moreProducts = v.findViewById(R.id.moreProducts);
+        confirm = v.findViewById(R.id.confirm);
+        valorTotal = v.findViewById(R.id.valorTotal);
+        valueField = v.findViewById(R.id.valorCarrinho);
+    }
+
+    public void removeItem(int position){
+        Item item = itens.get(position);
+        itens.remove(position);
+        cartAdapter.notifyItemRemoved(position);
+        ItemDAO itemDAO = ItemDAO.getInstance();
+        itemDAO.delete(item);
+        CompraDAO compraDAO = CompraDAO.getInstance();
+        int compraId = compraDAO.getUnconfirmed(clientId).getId();
+        List<Item> itens = itemDAO.getByCompra(compraId);
+        if(itens.size() == 0){
+            compraDAO.delete(compraDAO.get(compraId));
+            Carrinho.listCart.setVisibility(View.GONE);
+            Carrinho.warningCart.setVisibility(View.VISIBLE);
+            Carrinho.valueField.setVisibility(View.GONE);
+            Carrinho.confirm.setVisibility(View.GONE);
+        }else {
+
+            Carrinho.valorTotal.setText(String.valueOf(this.getTotalValue()));
+        }
+    }
+
+    public double getTotalValue(){
+        double value = 0;
+        ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
+        for (Item i : this.itens) {
+            Produto p = produtoDAO.get(i.getIdProduto());
+            value += i.getQuantidade() * p.getPreco();
+        }
+        return value;
     }
 }
