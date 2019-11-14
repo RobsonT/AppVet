@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView name, email;
 
+    static NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ClienteDAO clienteDAO = ClienteDAO.getInstance();
         Cliente cliente = clienteDAO.get(Integer.parseInt(getIntent().getExtras().getString( "clientId" )));
 
-        NavigationView navigationView = findViewById(R.id.navView);
+        navigationView = findViewById(R.id.navView);
 
         name = navigationView.getHeaderView(0).findViewById(R.id.nomeUsuario);
         email = navigationView.getHeaderView(0).findViewById(R.id.emailUsuario);

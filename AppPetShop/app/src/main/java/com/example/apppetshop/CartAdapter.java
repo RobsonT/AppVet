@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,18 +27,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     Context context;
     Item item;
     int compraId;
+
     CompraDAO compraDAO;
+    ItemDAO itemDAO;
+    ProdutoDAO produtoDAO;
+
+    private OnItemClickListener cartListener;
 
     public CartAdapter(List<Item> itemList, int clientId) {
         this.itemList = itemList;
         this.clientId = clientId;
     }
 
+    public interface OnItemClickListener{
+        void onItemDelete(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        cartListener = listener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, cartListener);
+
         compraDAO = CompraDAO.getInstance();
+        itemDAO = ItemDAO.getInstance();
+        produtoDAO = ProdutoDAO.getInstance();
+
         context = parent.getContext();
         return viewHolder;
     }
@@ -46,29 +64,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         item = itemList.get(position);
         compraId = compraDAO.getUnconfirmed(clientId).getId();
-        final ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
         final Produto product = produtoDAO.get(item.getIdProduto());
 
         holder.name.setText(product.getNome());
         holder.imgCart.setImageResource(product.getImagem());
         holder.price.setText("R$" + String.valueOf(product.getPreco()));
         holder.quantity.setText(String.valueOf(item.getQuantidade()));
+        holder.close.setTag(String.valueOf(position));
         holder.increment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
                 holder.quantity.setText(String.valueOf(currentQuantity + 1));
+                item = itemDAO.get(holder.getAdapterPosition());
                 item.setQuantidade(item.getQuantidade() + 1);
-                ItemDAO itemDAO = ItemDAO.getInstance();
                 itemDAO.updateQuantity(item);
 
-                List<Item> itens = itemDAO.getByCompra(compraId);
-                double value = 0;
-                for (Item item: itens) {
-                    Produto p = produtoDAO.get(item.getIdProduto());
-                    value += item.getQuantidade() * p.getPreco();
-                }
-                Carrinho.valorTotal.setText(String.valueOf(value));
+                updateTotalValue();
+
             }
         });
 
@@ -76,32 +89,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
+                item = itemDAO.get(holder.getAdapterPosition());
                 if (item.getQuantidade() > 1) {
                     holder.quantity.setText(String.valueOf(currentQuantity - 1));
                     item.setQuantidade(item.getQuantidade() - 1);
-                    ItemDAO itemDAO = ItemDAO.getInstance();
                     itemDAO.updateQuantity(item);
 
-                    CompraDAO compraDAO = CompraDAO.getInstance();
-                    List<Item> itens = itemDAO.getByCompra(compraId);
-                    double value = 0;
-                    for (Item item: itens) {
-                        Produto p = produtoDAO.get(item.getIdProduto());
-                        value += item.getQuantidade() * p.getPreco();
-                    }
-                    Carrinho.valorTotal.setText(String.valueOf(value));
+                    updateTotalValue();
+                }else{
+                    Toast.makeText(context,"Quantidade minima alcançada", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        holder.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ItemDAO itemDAO = ItemDAO.getInstance();
-                itemDAO.delete(item);
-                holder.cv.setVisibility(View.GONE);
-            }
-        });
+    }
+
+    public void updateTotalValue(){
+        List<Item> itens = itemDAO.getByCompra(compraId);
+        double value = 0;
+        for (Item item: itens) {
+            Produto p = produtoDAO.get(item.getIdProduto());
+            value += item.getQuantidade() * p.getPreco();
+        }
+        Carrinho.valorTotal.setText(String.valueOf(value));
     }
 
     @Override
@@ -119,7 +129,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         Button increment;
         Button decrement;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             imgCart = itemView.findViewById(R.id.imageCart);
             price = itemView.findViewById(R.id.priceCart);
@@ -129,6 +139,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             quantity = itemView.findViewById(R.id.quantity);
             increment = itemView.findViewById(R.id.increment);
             decrement = itemView.findViewById(R.id.decrement);
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onItemDelete(position);
+                    }
+                }
+            });
         }
     }
 }
