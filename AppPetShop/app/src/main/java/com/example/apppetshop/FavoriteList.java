@@ -1,5 +1,6 @@
 package com.example.apppetshop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.DAO.FavoritoDAO;
+import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Favorito;
+import com.example.apppetshop.model.Produto;
 
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class FavoriteList extends Fragment {
     List<Favorito> favoritos;
 
     FavoritoDAO favoritoDao;
+    ProdutoDAO produtoDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class FavoriteList extends Fragment {
         int clientId = Integer.parseInt(getArguments().getString("clientId"));
 
         favoritoDao = FavoritoDAO.getInstance();
+        produtoDAO = ProdutoDAO.getInstance();
+
         favoritos = favoritoDao.getByClient(clientId);
 
         favoriteAdapter = new FavoriteAdapter(favoritos);
@@ -40,6 +46,21 @@ public class FavoriteList extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(favoriteAdapter);
 
+        favoriteAdapter.setOnItemClickListener(new FavoriteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemDetail(int position) {
+                showItem(position);
+            }
+        });
+
         return v;
+    }
+
+    public void showItem(int position) {
+        Intent i = new Intent( getContext(), ProdutoDescricao.class);
+        Produto produto = produtoDAO.get(favoritos.get(position).getIdProduto());
+        i.putExtra( "idProduto", String.valueOf( produto.getId()));
+        i.putExtra("idCliente", String.valueOf(favoritos.get(position).getIdCliente()));
+        startActivity(i);
     }
 }

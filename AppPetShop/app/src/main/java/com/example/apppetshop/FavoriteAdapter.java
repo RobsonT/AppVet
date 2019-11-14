@@ -20,14 +20,24 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     List<Favorito> favoriteList;
     Context context;
 
+    private OnItemClickListener favoriteListener;
+
     public FavoriteAdapter(List<Favorito> favoriteList) {
         this.favoriteList = favoriteList;
+    }
+
+    public interface OnItemClickListener{
+        void onItemDetail(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        favoriteListener = listener;
     }
 
     @Override
     public FavoriteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_list, parent, false);
-        FavoriteAdapter.ViewHolder viewHolder = new FavoriteAdapter.ViewHolder(view);
+        FavoriteAdapter.ViewHolder viewHolder = new FavoriteAdapter.ViewHolder(view, favoriteListener);
         context = parent.getContext();
         return viewHolder;
     }
@@ -53,12 +63,23 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         TextView priceFavorite;
         CardView cv;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
             nameFavorite = itemView.findViewById(R.id.nameFavorite);
             priceFavorite = itemView.findViewById(R.id.priceFavorite);
             cv = itemView.findViewById(R.id.cardViewFavorite);
+
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onItemDetail(position);
+                    }
+                }
+            });
         }
 
     }
