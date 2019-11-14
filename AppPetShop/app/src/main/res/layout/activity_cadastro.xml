@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cadastro"
-    android:background="@drawable/plano_fundo">
+    android:background="@drawable/plano_fundo"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context=".Cadastro">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -19,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="Nome de Usuário"
             android:inputType="textPersonName"
             android:padding="20dp"
@@ -30,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="EMAIL"
             android:inputType="textPersonName"
             android:padding="20dp"
@@ -41,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="CPF"
             android:inputType="numberDecimal"
             android:padding="20dp"
@@ -52,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="SENHA"
             android:inputType="textPassword"
             android:padding="20dp"
@@ -63,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="Confirmar SENHA"
             android:inputType="textPassword"
             android:padding="20dp"

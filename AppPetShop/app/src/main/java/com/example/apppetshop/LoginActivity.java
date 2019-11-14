@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         clienteDAO = ClienteDAO.getInstance();
         recuperarSenha = findViewById(R.id.recuperarSenha);
 
+
         //Sublinhar texto
         TextView textView = findViewById(R.id.recuperarSenha);
         SpannableString content = new SpannableString(textView.getText().toString());

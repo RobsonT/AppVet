@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DBEFF0"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".Servicos">
 
     <ScrollView
@@ -118,8 +120,8 @@
                         android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:text="HORÁRIO:" />
-                        android:text="ESCOLHA O HORÁRIO:"
-                        android:visibility="visible" />
+                    android:text="ESCOLHA O HORÁRIO:"
+                    android:visibility="visible" />
 
                     <Spinner
                         android:id="@+id/spinner"
@@ -140,8 +142,8 @@
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:text="ESCOLHA O PET" />
-                        android:text="QUAL PET IRÁ RECEBER O SERVIÇO?"
-                        android:visibility="visible" />
+                    android:text="QUAL PET IRÁ RECEBER O SERVIÇO?"
+                    android:visibility="visible" />
 
                     <Spinner
                         android:id="@+id/spinner2"
@@ -165,8 +167,8 @@
                         android:text="DIA PARA A CONSULTA:" />
 
                     <EditText
-                        android:layout_width="200dp"
                         android:id="@+id/dataServico"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:inputType="date" />
 
