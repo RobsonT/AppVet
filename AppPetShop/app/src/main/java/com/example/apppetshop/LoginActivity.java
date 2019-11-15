@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginFacebook);
         callbackManager = CallbackManager.Factory.create();
 
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+//        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             Cliente client = new Cliente();
@@ -95,10 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     String name = object.getString("name");
                                     String email = object.getString("email");
-                                    client.setEmail(email);
-                                    client.setNome(name);
-                                    client.setId(clienteDAO.getAll().size());
-                                    clienteDAO.save(client);
+//                                    client.setEmail(email);
+//                                    client.setNome(name);
+//                                    client.setId(clienteDAO.getAll().size());
+//                                    clienteDAO.save(client);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

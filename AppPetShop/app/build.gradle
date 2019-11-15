@@ -7,6 +7,7 @@ android {
         applicationId "com.example.apppetshop"
         minSdkVersion 16
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,11 +38,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     api 'com.github.rtoshiro.mflibrary:mflibrary:1.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 
 repositories {
     mavenCentral()
 }
-
-apply plugin: 'com.google.gms.google-services'
