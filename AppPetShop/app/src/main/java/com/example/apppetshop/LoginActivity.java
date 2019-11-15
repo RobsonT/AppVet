@@ -1,5 +1,6 @@
 package com.example.apppetshop;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +31,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private ClienteDAO clienteDAO;
 
     private TextView recuperarSenha;
+    private FirebaseAuth mAuth;
 
     TextView textView;
 
@@ -57,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mAuth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.emailUsuario);
         password = findViewById(R.id.senhaUsuario);
@@ -75,71 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         //Muda texto do botao google
         textView = (TextView) googleSignInButton.getChildAt(0);
         textView.setText("Login com Google");
-
-        loginButton = findViewById(R.id.loginFacebook);
-        callbackManager = CallbackManager.Factory.create();
-
-//        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
-
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            Cliente client = new Cliente();
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-
-                                try {
-                                    String name = object.getString("name");
-                                    String email = object.getString("email");
-//                                    client.setEmail(email);
-//                                    client.setNome(name);
-//                                    client.setId(clienteDAO.getAll().size());
-//                                    clienteDAO.save(client);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("clientId", String.valueOf(client.getId()));
-                startActivity(i);
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestProfile()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
-        googleSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = googleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, 101);
-            }
-        });
-
     }
 
     public boolean validateEmail() {
@@ -174,18 +117,33 @@ public class LoginActivity extends AppCompatActivity {
         String emailText = email.getText().toString().trim();
         String passwordText = password.getText().toString();
         if (validateEmail() && validatePassword()) {
-            Cliente client;
-            client = clienteDAO.getByEmail(emailText);
-            if (client != null && client.getSenha().equals(passwordText)) {
-                Intent i = new Intent(this, MainActivity.class);
-                i.putExtra("clientId", String.valueOf(client.getId()));
-                startActivity(i);
-                finish();
-            } else if (client == null) {
-                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show();
-            }
+            mAuth.signInWithEmailAndPassword(emailText, passwordText)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "E-mail ou senha incorretos",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+//            Cliente client;
+//            client = clienteDAO.getByEmail(emailText);
+//            if (client != null && client.getSenha().equals(passwordText)) {
+//                Intent i = new Intent(this, MainActivity.class);
+//                i.putExtra("clientId", String.valueOf(client.getId()));
+//                startActivity(i);
+//                finish();
+//            } else if (client == null) {
+//                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
@@ -197,34 +155,5 @@ public class LoginActivity extends AppCompatActivity {
     public void recoverPasssword(View view) {
         Intent i = new Intent(this, RecuperacaoSenha.class);
         startActivity(i);
-    }
-
-    private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("clientId", String.valueOf(clienteDAO.getAll().size()));
-
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK)
-            switch (requestCode) {
-                case 101:
-                    try {
-                        // The Task returned from this call is always completed, no need to attach
-                        // a listener.
-                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        onLoggedIn(account);
-                    } catch (ApiException e) {
-                        // The ApiException status code indicates the detailed failure reason.
-                        Log.w("Tag", "signInResult:failed code=" + e.getStatusCode());
-                    }
-                    break;
-            }
     }
 }

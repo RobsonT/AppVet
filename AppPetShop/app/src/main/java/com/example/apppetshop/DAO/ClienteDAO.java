@@ -1,19 +1,28 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.model.Cliente;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ClienteDAO implements Dao<Cliente>{
-    private List<Cliente> clients;
+public class ClienteDAO{
+//    private List<Cliente> clients;
+    private FirebaseFirestore db;
     private static ClienteDAO instance;
 
     private ClienteDAO() {
-        clients = new ArrayList<>();
-        Cliente cliente = new Cliente("a", "a@a.a", "1", "1");
-        cliente.setId(0);
-        clients.add(cliente);
+        db = FirebaseFirestore.getInstance();
     }
 
     public static ClienteDAO getInstance(){
@@ -24,32 +33,51 @@ public class ClienteDAO implements Dao<Cliente>{
         return instance;
     }
 
-    @Override
-    public Cliente get(int id) {
-        return clients.get(id);
+    public Cliente get(String id) {
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.i("teste1", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.i("Teste2", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return null;
     }
 
-    @Override
     public List<Cliente> getAll() {
-        return clients;
+
+        return null;
     }
 
-    @Override
     public void save(Cliente client) {
-        clients.add(client);
+        db.collection("clientes")
+                .add(client)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("Erro client", e.getMessage());
+                    }
+                });
     }
 
-    @Override
     public void delete(Cliente client) {
-        clients.remove(client);
+
+//        clients.remove(client);
     }
 
     public Cliente getByEmail(String email) {
-        for (Cliente c : clients) {
-            if (c.getEmail().equals(email)) {
-                return c;
-            }
-        }
+//        for (Cliente c : clients) {
+//            if (c.getEmail().equals(email)) {
+//                return c;
+//            }
+//        }
         return null;
     }
 }

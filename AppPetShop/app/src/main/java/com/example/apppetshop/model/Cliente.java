@@ -1,13 +1,14 @@
 package com.example.apppetshop.model;
 
 public class Cliente {
-    private int id;
+    private String id;
     private String nome;
     private String cpf;
     private String email;
     private String senha;
 
-    public Cliente(String nome, String email, String cpf, String senha){
+    public Cliente(String id, String nome, String cpf, String email, String senha){
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -18,11 +19,11 @@ public class Cliente {
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,14 +24,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView name, email;
 
+    private FirebaseUser dbUser;
+
     static NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbUser = FirebaseAuth.getInstance().getCurrentUser();
+
         bundle = new Bundle();
-        bundle.putString("clientId", getIntent().getExtras().getString( "clientId" ));
+        bundle.putString("clientId", dbUser.getUid());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawerLayout);
 
         ClienteDAO clienteDAO = ClienteDAO.getInstance();
-        Cliente cliente = clienteDAO.get(Integer.parseInt(getIntent().getExtras().getString( "clientId" )));
+        Cliente cliente = clienteDAO.get(dbUser.getUid());
 
         navigationView = findViewById(R.id.navView);
 
