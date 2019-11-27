@@ -1,6 +1,8 @@
 package com.example.apppetshop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +13,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.model.Pet;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
     List<Pet> petList;
     Context context;
+    FirebaseStorage storage;
 
     public PetAdapter(List<Pet> petList) {
         this.petList = petList;
+        storage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -34,7 +41,15 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
     public void onBindViewHolder(final PetAdapter.ViewHolder holder, final int position) {
         Pet pet = petList.get(position);
         holder.namePet.setText(pet.getNome());
-        holder.imgPet.setImageBitmap(pet.getImage());
+        final long ONE_MEGABYTE = 1024 * 1024;
+        final Bitmap[] bitmap = {null};
+        storage.getReferenceFromUrl(pet.getImage()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        });
+        holder.imgPet.setImageBitmap(bitmap[0]);
         holder.breedPet.setText(pet.getRaca());
     }
 

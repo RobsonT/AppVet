@@ -32,16 +32,6 @@ public class DescricaoDAO implements Dao<Descricao> {
         return descritions;
     }
 
-    public List<Descricao> getByProduct(int id) {
-        List<Descricao> desc = new ArrayList<>();
-        for (Descricao d: descritions) {
-            if(d.getIdProduto() == id){
-                desc.add(d);
-            }
-        }
-        return desc;
-    }
-
     @Override
     public void save(Descricao descrition) {
         descritions.add(descrition);

@@ -1,5 +1,6 @@
 package com.example.apppetshop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -16,16 +17,24 @@ import android.widget.Spinner;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.DAO.ServicoClienteDAO;
+import com.example.apppetshop.model.Compra;
 import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.ServicoCliente;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Servicos extends AppCompatActivity {
 
@@ -38,13 +47,13 @@ public class Servicos extends AppCompatActivity {
     PetDAO petDAO;
     ServicoClienteDAO servicoClienteDAO;
 
-    int clientId;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicos);
 
-        clientId = Integer.parseInt(getIntent().getExtras().getString("clientId"));
+        auth = FirebaseAuth.getInstance();
 
         petDAO = PetDAO.getInstance();
         servicoClienteDAO = ServicoClienteDAO.getInstance();
@@ -81,7 +90,26 @@ public class Servicos extends AppCompatActivity {
         data.addTextChangedListener(mtw);
 
 
-        List<Pet> pets = petDAO.getByClient(clientId);
+        final List<Pet> pets =new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/compras")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Pet pet = document.toObject(Pet.class);
+                                if (pet.getIdCliente().equals(auth.getUid())) {
+                                    pets.add(pet);
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         final String[] spinnerArray = new String[pets.size()];
         String[] spinnerArray2 = {"08:00 - 10:00", "10:00 - 12:00", "13:00 - 15:00", "15:00 - 17:00"};
 
@@ -220,9 +248,9 @@ public class Servicos extends AppCompatActivity {
                 }
                 ServicoCliente servicoCliente = new ServicoCliente();
                 servicoCliente.setData(dataServico);
-                servicoCliente.setId(servicoClienteDAO.getAll().size());
-                servicoCliente.setIdCliente(clientId);
-                servicoCliente.setIdPet(pet.getSelectedItemPosition());
+                servicoCliente.setIdCliente(auth.getUid());
+
+                servicoCliente.setIdPet(pets.get(pet.getSelectedItemPosition()).getId());
                 servicoCliente.setNomeServico(servico.replace("servico", ""));
 
                 servicoClienteDAO.save(servicoCliente);

@@ -8,23 +8,26 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.apppetshop.DAO.ClienteDAO;
 import com.example.apppetshop.model.Cliente;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    Bundle bundle;
 
     TextView name, email;
 
-    private FirebaseUser dbUser;
+    private FirebaseAuth auth;
 
     static NavigationView navigationView;
     @Override
@@ -32,26 +35,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        bundle = new Bundle();
-        bundle.putString("clientId", dbUser.getUid());
+        auth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawerLayout);
-
-        ClienteDAO clienteDAO = ClienteDAO.getInstance();
-        Cliente cliente = clienteDAO.get(dbUser.getUid());
-
         navigationView = findViewById(R.id.navView);
 
         name = navigationView.getHeaderView(0).findViewById(R.id.nomeUsuario);
         email = navigationView.getHeaderView(0).findViewById(R.id.emailUsuario);
 
-        name.setText(cliente.getNome());
-        email.setText(cliente.getEmail());
+        FirebaseFirestore.getInstance().collection("/clientes")
+                .document(auth.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.toObject(Cliente.class) != null) {
+                            name.setText(documentSnapshot.toObject(Cliente.class).getNome());
+                            email.setText(documentSnapshot.toObject(Cliente.class).getEmail());
+                        }
+                    }
+                });
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -59,15 +65,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        if(getIntent().getExtras().getString("compra") != null){
+        if(getIntent().getExtras() != null){
             Carrinho carrinho = new Carrinho();
-            carrinho.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, carrinho).commit();
             navigationView.setCheckedItem(R.id.navCart);
         }else {
             if (savedInstanceState == null) {
                 LojaFragment lojaFragment = new LojaFragment();
-                lojaFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
                 navigationView.setCheckedItem(R.id.navHome);
             }
@@ -79,32 +83,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.navHome:
                 LojaFragment lojaFragment = new LojaFragment();
-                lojaFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, lojaFragment).commit();
                 break;
             case R.id.navCart:
                 Carrinho carrinho = new Carrinho();
-                carrinho.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, carrinho).commit();
                 break;
             case R.id.navFavorite:
                 FavoriteList favoriteList = new FavoriteList();
-                favoriteList.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, favoriteList).commit();
                 break;
             case R.id.navPet:
                 ListaPet listaPet = new ListaPet();
-                listaPet.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, listaPet).commit();
                 break;
             case R.id.navService:
                 ServicosCliente servicosCliente = new ServicosCliente();
-                servicosCliente.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, servicosCliente).commit();
                 break;
             case R.id.navRequest:
                 PedidoList pedidoList = new PedidoList();
-                pedidoList.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, pedidoList).commit();
                 break;
         }

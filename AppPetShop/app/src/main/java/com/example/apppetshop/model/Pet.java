@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Pet implements Serializable {
-    private int id;
-    private int idCliente;
+    private String id;
+    private String idCliente;
     private String nome;
     private String sexo;
     private boolean castrado;
@@ -16,14 +16,22 @@ public class Pet implements Serializable {
     private String porte;
     private double peso;
     private String raca;
-    private Bitmap image;
+    private String image;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
     public Date getNascimento() {
@@ -90,19 +98,11 @@ public class Pet implements Serializable {
         this.raca = raca;
     }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(String image) {
         this.image = image;
-    }
-
-    public int getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
     }
 }

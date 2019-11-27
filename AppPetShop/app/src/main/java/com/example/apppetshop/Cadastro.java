@@ -2,6 +2,7 @@ package com.example.apppetshop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,9 +51,9 @@ public class Cadastro extends AppCompatActivity {
         confPassword = findViewById(R.id.senhaConfUsuario);
 
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
-        MaskTextWatcher mtw = new MaskTextWatcher(cpf,smf);
+        MaskTextWatcher mtw = new MaskTextWatcher(cpf, smf);
         cpf.addTextChangedListener(mtw);
-        
+
     }
 
     public boolean validateName() {
@@ -87,7 +88,7 @@ public class Cadastro extends AppCompatActivity {
 
     public boolean validateCPF() {
         String cpfText = email.getText().toString();
-        if(cpfText.isEmpty()){
+        if (cpfText.isEmpty()) {
             cpf.setError("Preencha o cpf");
             return false;
         }
@@ -114,38 +115,30 @@ public class Cadastro extends AppCompatActivity {
 
     public void register(View view) {
 
-        final String nameClient  = name.getText().toString();
+        final String nameClient = name.getText().toString();
         final String emailClient = email.getText().toString();
         final String cpfClient = cpf.getText().toString();
         final String passwordClient = password.getText().toString();
 
         if (validateName() && validateEmail() && validateCPF() && validatePassword()) {
             dbAuth.createUserWithEmailAndPassword(emailClient, passwordClient)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()) {
-                        String uid = dbAuth.getUid();
-                        Cliente cliente = new Cliente(uid, nameClient, cpfClient, emailClient, passwordClient);
-                        clienteDAO.save(cliente);
-                        Toast.makeText(getApplicationContext(),"Cadastrado com sucesso", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),"Usuário já existe: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-//            if (clienteDAO.getByEmail(cliente.getEmail()) == null) {
-//                cliente.setId(clienteDAO.getAll().size());
-//                clienteDAO.save(cliente);
-//                finish();
-//            } else {
-//                Toast.makeText(this, "Email já cadastrado", Toast.LENGTH_SHORT).show();
-//            }
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                String uid = dbAuth.getUid();
+                                Cliente cliente = new Cliente(uid, nameClient, cpfClient, emailClient);
+                                Toast.makeText(getApplicationContext(), "Cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
     }

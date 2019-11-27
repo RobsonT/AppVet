@@ -10,33 +10,42 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.DAO.ItemDAO;
 import com.example.apppetshop.DAO.ProdutoDAO;
+import com.example.apppetshop.model.Compra;
 import com.example.apppetshop.model.Item;
 import com.example.apppetshop.model.Produto;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<Item> itemList;
-    int clientId;
     Context context;
     Item item;
-    int compraId;
+    Compra compra;
 
     CompraDAO compraDAO;
     ItemDAO itemDAO;
     ProdutoDAO produtoDAO;
 
+    private FirebaseAuth auth;
     private OnItemClickListener cartListener;
 
-    public CartAdapter(List<Item> itemList, int clientId) {
+    public CartAdapter(List<Item> itemList) {
         this.itemList = itemList;
-        this.clientId = clientId;
+        auth = FirebaseAuth.getInstance();
     }
 
     public interface OnItemClickListener{
@@ -56,6 +65,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         itemDAO = ItemDAO.getInstance();
         produtoDAO = ProdutoDAO.getInstance();
 
+        FirebaseFirestore.getInstance().collection("/compras")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Compra c = document.toObject(Compra.class);
+                                if (!c.isConfirmado() && c.getId().equals(auth.getUid())) {
+                                    compra = c;
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         context = parent.getContext();
         return viewHolder;
     }
@@ -63,12 +90,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         item = itemList.get(position);
-        compraId = compraDAO.getUnconfirmed(clientId).getId();
-        final Produto product = produtoDAO.get(item.getIdProduto());
+        final Produto[] product = {null};
 
-        holder.name.setText(product.getNome());
-        holder.imgCart.setImageResource(product.getImagem());
-        holder.price.setText("R$" + String.valueOf(product.getPreco()));
+        FirebaseFirestore.getInstance().collection("/produtos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Produto prod = document.toObject(Produto.class);
+                                if (item.getIdProduto().equals(prod.getId())) {
+                                    product[0] = prod;
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        holder.name.setText(product[0].getNome());
+        holder.imgCart.setImageResource(product[0].getImagem());
+        holder.price.setText("R$" + String.valueOf(product[0].getPreco()));
         holder.quantity.setText(String.valueOf(item.getQuantidade()));
         holder.close.setTag(String.valueOf(position));
         holder.increment.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +120,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
                 holder.quantity.setText(String.valueOf(currentQuantity + 1));
-                item = itemDAO.get(holder.getAdapterPosition());
+                item = itemList.get(holder.getAdapterPosition());
                 item.setQuantidade(item.getQuantidade() + 1);
-                itemDAO.updateQuantity(item);
+                itemDAO.save(item);
 
                 updateTotalValue();
 
@@ -89,11 +133,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.quantity.getText().toString());
-                item = itemDAO.get(holder.getAdapterPosition());
+                item = itemList.get(holder.getAdapterPosition());
                 if (item.getQuantidade() > 1) {
                     holder.quantity.setText(String.valueOf(currentQuantity - 1));
                     item.setQuantidade(item.getQuantidade() - 1);
-                    itemDAO.updateQuantity(item);
+                    itemDAO.save(item);
 
                     updateTotalValue();
                 }else{
@@ -105,11 +149,49 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public void updateTotalValue(){
-        List<Item> itens = itemDAO.getByCompra(compraId);
+        final List<Item> itens = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/itens")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Item i = document.toObject(Item.class);
+                                if (i.getIdCompra().equals(compra.getId())) {
+                                    itens.add(i);
+                                }
+                            }
+                        } else {
+                            Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         double value = 0;
-        for (Item item: itens) {
-            Produto p = produtoDAO.get(item.getIdProduto());
-            value += item.getQuantidade() * p.getPreco();
+        for (final Item item: itens) {
+            final Produto[] p = {null};
+
+            FirebaseFirestore.getInstance().collection("/produtos")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Produto prod = document.toObject(Produto.class);
+                                    if (item.getIdProduto().equals(prod.getId())) {
+                                        p[0] = prod;
+                                    }
+                                }
+                            } else {
+                                Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            value += item.getQuantidade() * p[0].getPreco();
         }
         Carrinho.valorTotal.setText(String.valueOf(value));
     }

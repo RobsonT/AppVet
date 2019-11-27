@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.apppetshop.model.Pet;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,14 +32,14 @@ public class CadastroPet extends AppCompatActivity {
     private ImageView sexF;
     private Button button;
 
-    int clientId;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet);
 
-        clientId = Integer.parseInt(getIntent().getExtras().getString("clientId"));
+        auth = FirebaseAuth.getInstance();
 
         namePet = findViewById(R.id.nomePet);
         birthDatePet = findViewById(R.id.nascPet);
@@ -161,7 +162,7 @@ public class CadastroPet extends AppCompatActivity {
             pet.setNascimento(birthDate);
             pet.setSexo(sex);
             pet.setTipo(type);
-            pet.setIdCliente(clientId);
+            pet.setIdCliente(auth.getUid());
 
             Intent i = new Intent(this, CadastroPet2.class);
             i.putExtra("pet", pet);

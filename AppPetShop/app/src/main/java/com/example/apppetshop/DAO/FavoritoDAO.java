@@ -1,18 +1,29 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.model.Favorito;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FavoritoDAO implements Dao<Favorito> {
+public class FavoritoDAO {
 
-    private List<Favorito> favorites;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     private static FavoritoDAO instance;
 
     private FavoritoDAO() {
-        favorites = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
 
@@ -23,40 +34,41 @@ public class FavoritoDAO implements Dao<Favorito> {
         return instance;
     }
 
-
-    @Override
-    public Favorito get(int id) {
-        return favorites.get(id);
-    }
-
-    @Override
-    public List<Favorito> getAll() {
-        return favorites;
-    }
-
-    public List<Favorito> getByClient(int id) {
-        List<Favorito> fav = new ArrayList<>();
-        for (Favorito f : favorites) {
-            if (f.getIdCliente() == id)
-                fav.add(f);
-        }
-        return fav;
-    }
-
-    @Override
     public void save(Favorito favorito) {
-        favorites.add(favorito);
+        String id = db.collection("favoritos").document().getId();
+        favorito.setId(id);
+        db.collection("favoritos")
+                .document(id)
+                .set(favorito)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("favoritoDao", "Sucesso");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("favoritoDao", e.getMessage());
+                    }
+                });
     }
 
-    @Override
     public void delete(Favorito favorito) {
-        int n = -1;
-        for (Favorito f: favorites){
-            n++;
-            if(f.getIdProduto() == favorito.getIdProduto() && f.getIdCliente() == favorito.getIdCliente()){
-                favorites.remove(n);
-                break;
-            }
-        }
+        db.collection("favoritos").document(favorito.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("favoritoDAO", "Sucesso");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("favoritoDAO", "Error deleting document", e);
+                    }
+                });
     }
 }
