@@ -222,6 +222,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         TextView quantity;
         Button increment;
         Button decrement;
+        TextView valorText;
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -233,6 +234,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             quantity = itemView.findViewById(R.id.quantity);
             increment = itemView.findViewById(R.id.increment);
             decrement = itemView.findViewById(R.id.decrement);
+            valorText = itemView.findViewById(R.id.valorTotalItem);
 
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
