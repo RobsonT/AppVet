@@ -3,26 +3,34 @@ package com.example.apppetshop.model;
 import java.util.Date;
 
 public class ServicoCliente {
-    private int id;
-    private int idCliente;
+    private String id;
+    private String idCliente;
     private String nomeServico;
-    private int idPet;
+    private String idPet;
     private Date data;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIdCliente() {
+    public String getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public String getIdPet() {
+        return idPet;
+    }
+
+    public void setIdPet(String idPet) {
+        this.idPet = idPet;
     }
 
     public String getNomeServico() {
@@ -31,14 +39,6 @@ public class ServicoCliente {
 
     public void setNomeServico(String nomeServico) {
         this.nomeServico = nomeServico;
-    }
-
-    public int getIdPet() {
-        return idPet;
-    }
-
-    public void setIdPet(int idPet) {
-        this.idPet = idPet;
     }
 
     public Date getData() {

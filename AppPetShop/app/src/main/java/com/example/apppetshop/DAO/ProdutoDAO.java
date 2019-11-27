@@ -1,50 +1,58 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.R;
 import com.example.apppetshop.model.Produto;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDAO implements Dao<Produto>{
-
-    private List<Produto> products = new ArrayList<>();
+public class ProdutoDAO{
 
     private static ProdutoDAO instance;
+    private FirebaseFirestore db;
 
     private ProdutoDAO() {
-        products = new ArrayList<>();
 
-        Produto produto = new Produto();
-        produto.setId(0);
-        produto.setNome("Ração para Cachorro");
-        produto.setImagem(R.drawable.produtoracaocachorro);
-        produto.setPreco(18);
-        produto.setDescricao("Ração que contem comida gostosa e faz seu cachorro se sentir feliz");
-        products.add(produto);
+        db = FirebaseFirestore.getInstance();
 
-        Produto produto1 = new Produto();
-        produto1.setId(1);
-        produto1.setNome("Ração para Gato");
-        produto1.setImagem(R.drawable.produto1racaogato);
-        produto1.setPreco(15);
-        produto1.setDescricao("Ração que contem comida gostosa e faz seu gato se sentir feliz");
-        products.add(produto1);
+        //Produto produto = new Produto();
+        //produto.setId(0);
+        //produto.setNome("Ração para Cachorro");
+        //produto.setImagem(R.drawable.produtoracaocachorro);
+        //produto.setPreco(18);
+        //produto.setDescricao("Ração que contem comida gostosa e faz seu cachorro se sentir feliz");
+        //products.add(produto);
 
-        Produto produto2 = new Produto();
-        produto2.setId(2);
-        produto2.setNome("Boneco");
-        produto2.setImagem(R.drawable.produto2boneco);
-        produto2.setPreco(10);
-        produto2.setDescricao("Boneco para animar a vida de seu pet");
-        products.add(produto2);
+        //Produto produto1 = new Produto();
+        //produto1.setId(1);
+        //produto1.setNome("Ração para Gato");
+        //produto1.setImagem(R.drawable.produto1racaogato);
+        //produto1.setPreco(15);
+        //produto1.setDescricao("Ração que contem comida gostosa e faz seu gato se sentir feliz");
+        //products.add(produto1);
 
-        Produto produto3 = new Produto();
-        produto3.setId(3);
-        produto3.setNome("Casa para Gato");
-        produto3.setImagem(R.drawable.produto3casagato);
-        produto3.setPreco(35);
-        produto3.setDescricao("Uma casa que pode tornar seu gato mais contente");
-        products.add(produto3);
+        //Produto produto2 = new Produto();
+        //produto2.setId(2);
+        //produto2.setNome("Boneco");
+        //produto2.setImagem(R.drawable.produto2boneco);
+        //produto2.setPreco(10);
+        //produto2.setDescricao("Boneco para animar a vida de seu pet");
+        //products.add(produto2);
+
+        //Produto produto3 = new Produto();
+        //produto3.setId(3);
+        //produto3.setNome("Casa para Gato");
+        //produto3.setImagem(R.drawable.produto3casagato);
+        //produto3.setPreco(35);
+        //produto3.setDescricao("Uma casa que pode tornar seu gato mais contente");
+        //products.add(produto3);
 
 //        Produto produto4 = new Produto();
 //        produto4.setId(4);
@@ -143,23 +151,20 @@ public class ProdutoDAO implements Dao<Produto>{
         return instance;
     }
 
-    @Override
-    public Produto get(int id) {
-        return products.get(id);
-    }
-
-    @Override
-    public List<Produto> getAll() {
-        return products;
-    }
-
-    @Override
-    public void save(Produto produto) {
-        products.add(produto);
-    }
-
-    @Override
     public void delete(Produto produto) {
-        products.remove(produto);
+        db.collection("produtos").document(produto.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("produtoDAO", "Sucesso");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("produtoDAO", "Error deleting document", e);
+                    }
+                });
     }
 }

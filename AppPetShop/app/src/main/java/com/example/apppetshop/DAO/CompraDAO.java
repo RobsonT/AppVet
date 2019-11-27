@@ -1,12 +1,24 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.model.Compra;
+import com.example.apppetshop.model.Item;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-public class CompraDAO implements Dao<Compra> {
-
+public class CompraDAO{
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
     private List<Compra> compras;
 
     private static CompraDAO instance;
@@ -22,44 +34,41 @@ public class CompraDAO implements Dao<Compra> {
         return instance;
     }
 
-    @Override
-    public Compra get(int id) {
-        return compras.get(id);
-    }
-
-    @Override
-    public List<Compra> getAll() {
-        return compras;
-    }
-
-    public Compra getUnconfirmed(int id) {
-        for (Compra c: compras) {
-            if(c.getIdCliente() == id && !c.isConfirmado())
-                return c;
-        }
-        return null;
-    }
-
-    public List<Compra> getByClient(int id) {
-        List<Compra> newCompras = new ArrayList<>();
-        for (Compra c: compras) {
-            if(c.getIdCliente() == id)
-                newCompras.add(c);
-        }
-        return newCompras;
-    }
-
-    @Override
     public void save(Compra purchase) {
-        compras.add(purchase);
+        String id = db.collection("compras").document().getId();
+        purchase.setId(id);
+        db.collection("compras")
+                .document(id)
+                .set(purchase)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("CompraDao", "Sucesso");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("CompraDao", e.getMessage());
+                    }
+                });
     }
 
-    @Override
-    public void delete(Compra purchase) {
-        for (int i = 0; i< compras.size(); i++) {
-            if(compras.get(i).getId() == purchase.getId()) {
-                compras.remove(purchase);
-            }
-        }
+    public void delete(Compra compra) {
+        db.collection("compras").document(compra.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("compraDAO", "Sucesso");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("compraDAO", "Error deleting document", e);
+                    }
+                });
     }
 }

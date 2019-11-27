@@ -1,11 +1,13 @@
 package com.example.apppetshop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +16,14 @@ import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Compra;
 import com.example.apppetshop.model.Item;
 import com.example.apppetshop.model.Produto;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder> {
@@ -43,13 +51,52 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
         itemDAO = ItemDAO.getInstance();
         produtoDAO = ProdutoDAO.getInstance();
 
-        Compra pedido = pedidoList.get(position);
+        final Compra pedido = pedidoList.get(position);
         holder.idPedido.setText(String.valueOf(pedido.getId()));
         double valor = 0;
 
-        for (Item i: itemDAO.getByCompra(pedido.getId())) {
-            Produto p = produtoDAO.get(i.getIdProduto());
-            valor += i.getQuantidade() * p.getPreco();
+        final List<Item> itens = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/itens")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Item item = document.toObject(Item.class);
+                                if (item.getIdCompra().equals(pedido.getId())) {
+                                    itens.add(item);
+                                }
+                            }
+                        } else {
+                            Log.d("PedidoAdapter", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        for (final Item i: itens) {
+            final Produto[] p = {null};
+
+            FirebaseFirestore.getInstance().collection("/produtos")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Produto prod = document.toObject(Produto.class);
+                                    if (i.getIdProduto().equals(prod.getId())) {
+                                        p[0] = prod;
+                                    }
+                                }
+                            } else {
+                                Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            valor += i.getQuantidade() * p[0].getPreco();
         }
 
         holder.precoPedido.setText(String.valueOf(valor));

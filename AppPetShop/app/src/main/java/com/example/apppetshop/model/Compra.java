@@ -3,24 +3,24 @@ package com.example.apppetshop.model;
 import java.util.Date;
 
 public class Compra {
-    private int id;
-    private int idCliente;
+    private String id;
+    private String idCliente;
     private Date data;
     private boolean confirmado;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIdCliente() {
+    public String getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
 

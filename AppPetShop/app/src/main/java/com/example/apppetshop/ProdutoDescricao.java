@@ -1,10 +1,12 @@
 package com.example.apppetshop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +24,12 @@ import com.example.apppetshop.model.Descricao;
 import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Item;
 import com.example.apppetshop.model.Produto;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -41,9 +49,8 @@ public class ProdutoDescricao extends AppCompatActivity {
 
     ArrayAdapter<String> arrayAdapter;
 
-    int productId;
-    int clientId;
-
+    private String productId;
+    private Produto produto;
     ItemDAO itemDAO;
     CompraDAO compraDAO;
     ProdutoDAO produtoDAO;
@@ -51,10 +58,14 @@ public class ProdutoDescricao extends AppCompatActivity {
     DescricaoDAO descricaoDAO;
     Compra compra;
 
+    private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_descricao);
+
+        auth = FirebaseAuth.getInstance();
 
         produtoDAO = ProdutoDAO.getInstance();
         compraDAO = CompraDAO.getInstance();
@@ -81,11 +92,43 @@ public class ProdutoDescricao extends AppCompatActivity {
             }
         });
 
-        productId = Integer.parseInt(getIntent().getExtras().getString("idProduto"));
-        clientId = Integer.parseInt(getIntent().getExtras().getString("idCliente"));
+        productId =getIntent().getExtras().getString("idProduto");
 
-        Produto produto = produtoDAO.get(productId);
-        compra = compraDAO.getUnconfirmed(clientId);
+        FirebaseFirestore.getInstance().collection("/produtos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Produto prod = document.toObject(Produto.class);
+                                if (prod.getId().equals(productId)) {
+                                    produto = prod;
+                                }
+                            }
+                        } else {
+                            Log.d("ProdutoDescricao", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        FirebaseFirestore.getInstance().collection("/compras")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Compra c = document.toObject(Compra.class);
+                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
+                                    compra = c;
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         nomeProduto.setText(produto.getNome());
         imagemProduto.setImageResource(produto.getImagem());
@@ -96,7 +139,26 @@ public class ProdutoDescricao extends AppCompatActivity {
 
         ArrayList<String> listaDescricoes = new ArrayList<>();
         String descricao;
-        List<Descricao> descricoes = descricaoDAO.getByProduct(productId);
+        final List<Descricao> descricoes = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/descricoes")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Descricao desc = document.toObject(Descricao.class);
+                                if (desc.getIdProduto().equals(productId)) {
+                                    descricoes.add(desc);
+                                }
+                            }
+                        } else {
+                            Log.d("ProdutoDescricao", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         for (Descricao d : descricoes) {
             descricao = d.getAtributo() + ": " + d.getValor();
             listaDescricoes.add(descricao);
@@ -107,9 +169,29 @@ public class ProdutoDescricao extends AppCompatActivity {
 
         lstDescricao.setAdapter(arrayAdapter);
 
-        if (favoritoDAO.getByClient(clientId).size() > 0) {
-            for (Favorito f : favoritoDAO.getByClient(clientId)) {
-                if (f.getIdProduto() == productId) {
+        final List<Favorito> favoritos = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/favoritos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Favorito fav = document.toObject(Favorito.class);
+                                if (auth.getUid().equals(fav.getIdCliente())) {
+                                    favoritos.add(fav);
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        if (favoritos.size() > 0) {
+            for (Favorito f : favoritos) {
+                if (f.getIdProduto().equals(productId)) {
                     favorito.setText("remover favoritos");
                     break;
                 }
@@ -122,13 +204,13 @@ public class ProdutoDescricao extends AppCompatActivity {
                 if (favorito.getText().toString().equals("adicionar favoritos")) {
                     favorito.setText("remover favoritos");
                     Favorito favorito = new Favorito();
-                    favorito.setIdCliente(clientId);
-                    favorito.setIdProduto(productId);
+                    favorito.setIdCliente(auth.getUid());
+                    favorito.setIdProduto(productId); //product.getId()
                     favoritoDAO.save(favorito);
                 } else {
                     favorito.setText("adicionar favoritos");
                     Favorito favorito = new Favorito();
-                    favorito.setIdCliente(clientId);
+                    favorito.setIdCliente(auth.getUid());
                     favorito.setIdProduto(productId);
                     favoritoDAO.delete(favorito);
                 }
@@ -139,16 +221,34 @@ public class ProdutoDescricao extends AppCompatActivity {
     public void addProduct(View view) {
         if (compra == null) {
             compra = new Compra();
-            compra.setId(compraDAO.getAll().size());
             compra.setConfirmado(false);
-            compra.setIdCliente(clientId);
+            compra.setIdCliente(auth.getUid());
             Date currentTime = Calendar.getInstance().getTime();
             compra.setData(currentTime);
             compraDAO.save(compra);
 
         }
 
-        List<Item> itens = itemDAO.getByCompra(compra.getId());
+        final List<Item> itens = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/itens")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Item i = document.toObject(Item.class);
+                                if (compra.getId().equals(i.getIdCompra())) {
+                                    itens.add(i);
+                                }
+                            }
+                        } else {
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         Item item = null;
 
         boolean findItem = false;
@@ -157,7 +257,7 @@ public class ProdutoDescricao extends AppCompatActivity {
                 item = i;
                 item.setQuantidade(item.getQuantidade() + 1);
                 findItem = true;
-                itemDAO.updateQuantity(item);
+                itemDAO.save(item);
                 break;
             }
         }
@@ -171,7 +271,6 @@ public class ProdutoDescricao extends AppCompatActivity {
 
 
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("clientId", String.valueOf(clientId));
         i.putExtra("compra", "compra");
         startActivity(i);
     }

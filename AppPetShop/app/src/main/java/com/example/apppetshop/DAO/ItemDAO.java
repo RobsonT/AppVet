@@ -1,17 +1,28 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.model.Item;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDAO implements Dao<Item>{
-
-    private List<Item> itens;
+public class ItemDAO {
 
     private static ItemDAO instance;
 
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
     private ItemDAO() {
-        itens = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
     public static ItemDAO getInstance(){
@@ -21,46 +32,41 @@ public class ItemDAO implements Dao<Item>{
         return instance;
     }
 
-
-    @Override
-    public Item get(int id) {
-        return itens.get(id);
-    }
-
-    @Override
-    public List<Item> getAll() {
-        return itens;
-    }
-
-    @Override
     public void save(Item item) {
-        itens.add(item);
+        String id = db.collection("itens").document().getId();
+        item.setId(id);
+        db.collection("itens")
+                .document(id)
+                .set(item)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("itemDao", "Sucesso");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("itemDao","Erro", e);
+                    }
+                });
     }
 
-    @Override
     public void delete(Item item) {
-        for (int i = 0; i< itens.size(); i++) {
-            if(itens.get(i).getIdProduto() == item.getIdProduto() && itens.get(i).getIdCompra() == item.getIdCompra()) {
-                itens.remove(item);
-            }
-        }
-    }
-
-    public List<Item> getByCompra(int id){
-        List<Item> newItens = new ArrayList<>();
-        for (Item i: itens) {
-            if (i.getIdCompra() == id){
-                newItens.add(i);
-            }
-        }
-        return newItens;
-    }
-
-    public void updateQuantity(Item item){
-        for (int i = 0; i < itens.size(); i++){
-            if(itens.get(i).getIdCompra() == item.getIdCompra() && itens.get(i).getIdProduto() == item.getIdProduto()){
-                itens.set(i, item);
-            }
-        }
+        db.collection("itens").document(item.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("itemDAO", "Sucesso");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("itemDAO", "Error deleting document", e);
+                    }
+                });
     }
 }

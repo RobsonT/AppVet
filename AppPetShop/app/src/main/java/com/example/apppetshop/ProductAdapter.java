@@ -11,12 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apppetshop.DAO.FavoritoDAO;
 import com.example.apppetshop.model.Favorito;
+import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.Produto;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +35,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Context context;
     Favorito favorito;
     Produto product;
-    int clientId;
 
-    public ProductAdapter(List<Produto> productList, int clientId) {
+    private FirebaseAuth auth;
+
+    public ProductAdapter(List<Produto> productList) {
         this.productList = productList;
-        this.clientId = clientId;
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -46,15 +55,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         favoritoDao = FavoritoDAO.getInstance();
-        List<Favorito> favoritos = favoritoDao.getByClient(clientId);
+        final List<Favorito> favoritos = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection("/favoritos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Favorito fav = document.toObject(Favorito.class);
+                                if (fav.getIdCliente().equals(auth.getUid())) {
+                                    favoritos.add(fav);
+                                }
+                            }
+                        } else {
+                            Log.d("ProductAdapter", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         product = productList.get(position);
         holder.textProduct.setText(product.getNome());
         holder.imgProduct.setImageResource(product.getImagem());
-        holder.textPreco.setText("R$" + String.valueOf(product.getPreco()));
+        holder.textPreco.setText("R$" + product.getPreco());
 
         for(Favorito f: favoritos){
-            if(f.getIdProduto() == product.getId()){
+            if(f.getIdProduto().equals(product.getId())){
                 holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                 holder.favoriteLeft.setTag(product.getId()+"-true");
             }
@@ -71,14 +98,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(tag[1].equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag(tag[0]+"-true");
-                    favorito.setIdProduto(Integer.parseInt(tag[0]));
+                    favorito.setIdProduto(tag[0]);
                     Log.i("ERROOOO", String.valueOf(favorito.getIdProduto()));
-                    favorito.setIdCliente(clientId);
+                    favorito.setIdCliente(auth.getUid());
                     favoritoDao.save(favorito);
                 }else{
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
-                    favorito.setIdProduto(Integer.parseInt(tag[0]));
-                    favorito.setIdCliente(clientId);
+                    favorito.setIdProduto(tag[0]);
+                    favorito.setIdCliente(auth.getUid());
                     favoritoDao.delete(favorito);
                     holder.favoriteLeft.setTag(tag[0]+"-false");
                 }
@@ -90,7 +117,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             public void onClick(View view) {
                 Intent i = new Intent( view.getContext(), ProdutoDescricao.class);
                 i.putExtra( "idProduto", String.valueOf(productList.get(position).getId()));
-                i.putExtra("idCliente", String.valueOf(clientId));
                 view.getContext().startActivity(i);
             }
         });

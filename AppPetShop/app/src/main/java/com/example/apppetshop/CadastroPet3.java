@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ public class CadastroPet3 extends AppCompatActivity {
     Pet pet;
     PetDAO petDAO;
     Bitmap bitmap;
+    Uri uri;
 
 
     @Override
@@ -31,7 +34,7 @@ public class CadastroPet3 extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_pet3);
 
         bitmap = null;
-
+        uri = null;
         pet = (Pet) getIntent().getSerializableExtra("pet");
         petDAO = PetDAO.getInstance();
 
@@ -65,8 +68,7 @@ public class CadastroPet3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(bitmap != null) {
-                    pet.setImage(bitmap);
-                    petDAO.save(pet);
+                    petDAO.save(pet, uri);
                     Intent retorno = new Intent();
 
                     setResult(Activity.RESULT_OK, retorno);
@@ -79,12 +81,13 @@ public class CadastroPet3 extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         bitmap = (Bitmap)data.getExtras().get("data");
         imageView.setImageBitmap(bitmap);
         imageView.setVisibility(View.VISIBLE);
         btnCamera.setText("Tirar outra foto");
         confirmar.setClickable(true);
+        uri = data.getData();
     }
 }

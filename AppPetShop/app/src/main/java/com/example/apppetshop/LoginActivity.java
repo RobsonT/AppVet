@@ -122,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
                                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(i);
                                 finish();
@@ -132,18 +131,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-//            Cliente client;
-//            client = clienteDAO.getByEmail(emailText);
-//            if (client != null && client.getSenha().equals(passwordText)) {
-//                Intent i = new Intent(this, MainActivity.class);
-//                i.putExtra("clientId", String.valueOf(client.getId()));
-//                startActivity(i);
-//                finish();
-//            } else if (client == null) {
-//                Toast.makeText(this, "Email não cadastrado", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show();
-//            }
         }
     }
 

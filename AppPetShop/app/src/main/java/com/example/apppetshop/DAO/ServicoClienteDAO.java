@@ -1,16 +1,26 @@
 package com.example.apppetshop.DAO;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apppetshop.model.ServicoCliente;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ServicoClienteDAO implements Dao<ServicoCliente>{
+public class ServicoClienteDAO {
 
-    private List<ServicoCliente> services = new ArrayList<>();
     private static ServicoClienteDAO instance;
+    private FirebaseFirestore db;
 
-    private ServicoClienteDAO() {}
+    private ServicoClienteDAO() {
+        db = FirebaseFirestore.getInstance();
+    }
 
     public static ServicoClienteDAO getInstance(){
         if(instance == null){
@@ -19,33 +29,24 @@ public class ServicoClienteDAO implements Dao<ServicoCliente>{
         return instance;
     }
 
-    @Override
-    public ServicoCliente get(int id) {
-        return services.get(id);
-    }
-
-    @Override
-    public List<ServicoCliente> getAll() {
-        return services;
-    }
-
-    @Override
     public void save(ServicoCliente serviceClient) {
-        services.add(serviceClient);
-    }
+        String id = db.collection("servicosCliente").document().getId();
+        serviceClient.setId(id);
+        db.collection("servicosCliente")
+                .document(id)
+                .set(serviceClient)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("servicoClienteDao", "Sucesso");
 
-    @Override
-    public void delete(ServicoCliente serviceClient) {
-        services.remove(serviceClient);
-    }
-
-    public List<ServicoCliente> getByClient(int id){
-        List<ServicoCliente> newServices = new ArrayList<>();
-        for (ServicoCliente sc: services) {
-            if(sc.getIdCliente() == id){
-                newServices.add(sc);
-            }
-        }
-        return newServices;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("serviceClienteDao", e.getMessage());
+                    }
+                });
     }
 }

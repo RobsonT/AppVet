@@ -1,24 +1,24 @@
 package com.example.apppetshop.model;
 
 public class Descricao {
-    private int id;
-    private int idProduto;
+    private String id;
+    private String idProduto;
     private String atributo;
     private String valor;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getIdProduto() {
+    public String getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(int idProduto) {
+    public void setIdProduto(String idProduto) {
         this.idProduto = idProduto;
     }
 
