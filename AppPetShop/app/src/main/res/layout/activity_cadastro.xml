@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:minHeight="1000dp"
     tools:context=".Cadastro">
 
     <ScrollView

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -105,10 +106,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 PedidoList pedidoList = new PedidoList();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, pedidoList).commit();
                 break;
+            case R.id.navSair:
+                FirebaseAuth.getInstance().signOut();
+                verifyAuthentication();
+                break;
+
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void verifyAuthentication(){
+        if(FirebaseAuth.getInstance().getUid() == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     @Override

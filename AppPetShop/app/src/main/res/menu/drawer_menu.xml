@@ -27,5 +27,9 @@
             android:id="@+id/navService"
             android:icon="@drawable/ic_service"
             android:title="Serviços" />
+        <item
+            android:id="@+id/navSair"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="Sair" />
     </group>
 </menu>
