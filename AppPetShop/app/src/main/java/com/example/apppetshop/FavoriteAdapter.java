@@ -1,6 +1,8 @@
 package com.example.apppetshop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +19,12 @@ import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Produto;
 import com.example.apppetshop.model.ServicoCliente;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
@@ -28,10 +32,13 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     List<Favorito> favoriteList;
     Context context;
 
+    FirebaseStorage storage;
+
     private OnItemClickListener favoriteListener;
 
     public FavoriteAdapter(List<Favorito> favoriteList) {
         this.favoriteList = favoriteList;
+        storage = FirebaseStorage.getInstance();
     }
 
     public interface OnItemClickListener {
@@ -75,7 +82,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 });
 
         holder.nameFavorite.setText(produto[0].getNome());
-        holder.imgFavorite.setImageResource(produto[0].getImagem());
+
+        final Bitmap[] bitmap = {null};
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storage.getReferenceFromUrl(produto[0].getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        });
+
+        holder.imgFavorite.setImageBitmap(bitmap[0]);
         holder.priceFavorite.setText(String.valueOf(produto[0].getPreco()));
     }
 

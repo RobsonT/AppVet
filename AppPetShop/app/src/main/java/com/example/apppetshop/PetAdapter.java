@@ -42,14 +42,14 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         Pet pet = petList.get(position);
         holder.namePet.setText(pet.getNome());
         final long ONE_MEGABYTE = 1024 * 1024;
-        final Bitmap[] bitmap = {null};
-        storage.getReferenceFromUrl(pet.getImage()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            }
-        });
-        holder.imgPet.setImageBitmap(bitmap[0]);
+        final Bitmap bitmap = null;
+//        storage.getReferenceFromUrl(pet.getImage()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//            }
+//        });
+        holder.imgPet.setImageBitmap(bitmap);
         holder.breedPet.setText(pet.getRaca());
     }
 

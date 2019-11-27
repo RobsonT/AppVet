@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +27,13 @@ import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Item;
 import com.example.apppetshop.model.Produto;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,12 +64,16 @@ public class ProdutoDescricao extends AppCompatActivity {
 
     private FirebaseAuth auth;
 
+    FirebaseStorage storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_descricao);
 
         auth = FirebaseAuth.getInstance();
+
+        storage = FirebaseStorage.getInstance();
 
         produtoDAO = ProdutoDAO.getInstance();
         compraDAO = CompraDAO.getInstance();
@@ -94,6 +102,8 @@ public class ProdutoDescricao extends AppCompatActivity {
 
         productId =getIntent().getExtras().getString("idProduto");
 
+        final Bitmap[] bitmap = {null};
+        final long ONE_MEGABYTE = 1024 * 1024;
         FirebaseFirestore.getInstance().collection("/produtos")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -104,6 +114,18 @@ public class ProdutoDescricao extends AppCompatActivity {
                                 Produto prod = document.toObject(Produto.class);
                                 if (prod.getId().equals(productId)) {
                                     produto = prod;
+                                    nomeProduto.setText(produto.getNome());
+                                    storage.getReferenceFromUrl(produto.getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                        @Override
+                                        public void onSuccess(byte[] bytes) {
+                                            bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                            imagemProduto.setImageBitmap(bitmap[0]);
+                                        }
+                                    });
+                                    DecimalFormat df = new DecimalFormat("0.00");
+                                    String preco = "R$ " + df.format(produto.getPreco());
+                                    precoProduto.setText(preco);
+                                    descricaoProduto.setText(produto.getDescricao());
                                 }
                             }
                         } else {
@@ -130,17 +152,12 @@ public class ProdutoDescricao extends AppCompatActivity {
                     }
                 });
 
-        nomeProduto.setText(produto.getNome());
-        imagemProduto.setImageResource(produto.getImagem());
-        DecimalFormat df = new DecimalFormat("0.00");
-        String preco = "R$ " + df.format(produto.getPreco());
-        precoProduto.setText(preco);
-        descricaoProduto.setText(produto.getDescricao());
-
-        ArrayList<String> listaDescricoes = new ArrayList<>();
-        String descricao;
+        final ArrayList<String> listaDescricoes = new ArrayList<>();
+        final String[] descricao = new String[1];
         final List<Descricao> descricoes = new ArrayList<>();
 
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaDescricoes);
+        lstDescricao.setAdapter(arrayAdapter);
         FirebaseFirestore.getInstance().collection("/descricoes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -150,24 +167,16 @@ public class ProdutoDescricao extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Descricao desc = document.toObject(Descricao.class);
                                 if (desc.getIdProduto().equals(productId)) {
-                                    descricoes.add(desc);
+                                    descricao[0] = desc.getAtributo() + ": " + desc.getValor();
+                                    listaDescricoes.add(descricao[0]);
                                 }
+
                             }
                         } else {
                             Log.d("ProdutoDescricao", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        for (Descricao d : descricoes) {
-            descricao = d.getAtributo() + ": " + d.getValor();
-            listaDescricoes.add(descricao);
-        }
-        arrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1,
-                listaDescricoes);
-
-        lstDescricao.setAdapter(arrayAdapter);
 
         final List<Favorito> favoritos = new ArrayList<>();
 

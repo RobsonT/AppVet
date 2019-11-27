@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.model.Pet;
@@ -32,6 +33,7 @@ import java.util.List;
 public class ListaPet extends Fragment {
 
     RecyclerView recyclerView;
+    TextView message;
     PetAdapter petAdapter;
     List<Pet> pets;
 
@@ -48,6 +50,11 @@ public class ListaPet extends Fragment {
         petDao = PetDAO.getInstance();
         pets = new ArrayList<>();
 
+        message = v.findViewById(R.id.textView15);
+        recyclerView = v.findViewById(R.id.recyclerViewPet);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         FirebaseFirestore.getInstance().collection("/pets")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -58,22 +65,20 @@ public class ListaPet extends Fragment {
                                 Pet pet = document.toObject(Pet.class);
                                 if (pet.getIdCliente().equals(auth.getUid())) {
                                     pets.add(pet);
+                                    message.setVisibility(TextView.GONE);
                                 }
                             }
+                            if(pets.size() == 0)
+                                message.setVisibility(TextView.VISIBLE);
+                            petAdapter = new PetAdapter(pets);
+                            recyclerView.setAdapter(petAdapter);
                         } else {
-                            Log.d("ServicosCliente", "Error getting documents: ", task.getException());
+                            Log.d("listaPet", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        petAdapter = new PetAdapter(pets);
-
         FloatingActionButton fab = v.findViewById(R.id.fab);
-
-        recyclerView = v.findViewById(R.id.recyclerViewPet);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(petAdapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +107,7 @@ public class ListaPet extends Fragment {
                                     Pet pet = document.toObject(Pet.class);
                                     if (pet.getIdCliente().equals(auth.getUid())) {
                                         pets.add(pet);
+                                        Log.i("Funciona", "func");
                                     }
                                 }
                             } else {

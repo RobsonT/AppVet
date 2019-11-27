@@ -2,6 +2,8 @@ package com.example.apppetshop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +22,13 @@ import com.example.apppetshop.model.Favorito;
 import com.example.apppetshop.model.Pet;
 import com.example.apppetshop.model.Produto;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +40,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Favorito favorito;
     Produto product;
 
+    FirebaseStorage storage;
+
     private FirebaseAuth auth;
 
     public ProductAdapter(List<Produto> productList) {
         this.productList = productList;
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -77,7 +84,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         product = productList.get(position);
         holder.textProduct.setText(product.getNome());
-        holder.imgProduct.setImageResource(product.getImagem());
+
+        final Bitmap[] bitmap = {null};
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storage.getReferenceFromUrl(product.getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.imgProduct.setImageBitmap(bitmap[0]);
+            }
+        });
+
         holder.textPreco.setText("R$" + product.getPreco());
 
         for(Favorito f: favoritos){
@@ -99,7 +116,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                     holder.favoriteLeft.setTag(tag[0]+"-true");
                     favorito.setIdProduto(tag[0]);
-                    Log.i("ERROOOO", String.valueOf(favorito.getIdProduto()));
                     favorito.setIdCliente(auth.getUid());
                     favoritoDao.save(favorito);
                 }else{

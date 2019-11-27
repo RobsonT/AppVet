@@ -25,6 +25,7 @@ public class CompraDAO{
 
     private CompraDAO() {
         compras = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
     }
 
     public static CompraDAO getInstance(){

@@ -70,6 +70,12 @@ public class Carrinho extends Fragment {
 
         compra = null;
 
+        cartAdapter = new CartAdapter(itens);
+
+        recyclerView = v.findViewById(R.id.recyclerViewCart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         FirebaseFirestore.getInstance().collection("/compras")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -78,10 +84,67 @@ public class Carrinho extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Compra c = document.toObject(Compra.class);
-                                if (!c.isConfirmado() && c.getId().equals(auth.getUid())) {
+                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
                                     compra = c;
+
+                                    if (compra != null) {
+                                        hideItens();
+                                        FirebaseFirestore.getInstance().collection("/itens")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                Item i = document.toObject(Item.class);
+                                                                if (i.getIdCompra().equals(compra.getId())) {
+                                                                    itens.add(i);
+                                                                }
+                                                            }
+
+
+                                                            cartAdapter = new CartAdapter(itens);
+                                                            recyclerView.setAdapter(cartAdapter);
+
+                                                            final double[] value = {0};
+                                                            for (final Item item : itens) {
+                                                                final Produto[] p = {null};
+                                                                FirebaseFirestore.getInstance().collection("/produtos")
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                        Produto prod = document.toObject(Produto.class);
+                                                                                        if (item.getIdProduto().equals(prod.getId())) {
+                                                                                            p[0] = prod;
+                                                                                        }
+                                                                                    }
+                                                                                    value[0] += item.getQuantidade() * p[0].getPreco();
+                                                                                } else {
+                                                                                    Log.d("Carrinho", "Error getting documents: ", task.getException());
+                                                                                }
+
+                                                                                valorTotal.setText(String.valueOf(value[0]));
+                                                                            }
+                                                                        });
+                                                            }
+                                                        } else {
+                                                            Log.d("carrinho", "Error getting documents: ", task.getException());
+                                                        }
+                                                    }
+                                                });
+
+
+                                    } else {
+                                        showItens();
+                                        itens = new ArrayList<>();
+                                    }
+
                                 }
                             }
+                            Log.i("teste", String.valueOf(itens.size()));
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
@@ -103,60 +166,6 @@ public class Carrinho extends Fragment {
                 MainActivity.navigationView.setCheckedItem(R.id.navHome);
             }
         });
-
-        if (compra != null) {
-            hideItens();
-            FirebaseFirestore.getInstance().collection("/itens")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Item i = document.toObject(Item.class);
-                                    if (i.getIdCompra().equals(compra.getId())) {
-                                        itens.add(i);
-                                    }
-                                }
-                            } else {
-                                Log.d("carrinho", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-            double value = 0;
-            for (final Item item : itens) {
-                final Produto[] p = {null};
-                FirebaseFirestore.getInstance().collection("/produtos")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Produto prod = document.toObject(Produto.class);
-                                        if (item.getIdProduto().equals(prod.getId())) {
-                                            p[0] = prod;
-                                        }
-                                    }
-                                } else {
-                                    Log.d("Carrinho", "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-                value += item.getQuantidade() * p[0].getPreco();
-            }
-            valorTotal.setText(String.valueOf(value));
-        } else {
-            showItens();
-            itens = new ArrayList<>();
-        }
-        cartAdapter = new CartAdapter(itens);
-
-        recyclerView = v.findViewById(R.id.recyclerViewCart);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(cartAdapter);
 
         cartAdapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
             @Override
@@ -202,7 +211,7 @@ public class Carrinho extends Fragment {
         cartAdapter.notifyItemRemoved(position);
         ItemDAO itemDAO = ItemDAO.getInstance();
         itemDAO.delete(item);
-        CompraDAO compraDAO = CompraDAO.getInstance();
+        final CompraDAO compraDAO = CompraDAO.getInstance();
         itens = new ArrayList<>();
         FirebaseFirestore.getInstance().collection("/itens")
                 .get()
@@ -214,6 +223,16 @@ public class Carrinho extends Fragment {
                                 Item i = document.toObject(Item.class);
                                 if (i.getIdCompra().equals(compra.getId())) {
                                     itens.add(i);
+                                    if (itens.size() == 0) {
+                                        compraDAO.delete(compra);
+                                        Carrinho.listCart.setVisibility(View.GONE);
+                                        Carrinho.warningCart.setVisibility(View.VISIBLE);
+                                        Carrinho.valueField.setVisibility(View.GONE);
+                                        Carrinho.confirm.setVisibility(View.GONE);
+                                    } else {
+
+                                        Carrinho.valorTotal.setText(String.valueOf(getTotalValue()));
+                                    }
                                 }
                             }
                         } else {
@@ -221,16 +240,6 @@ public class Carrinho extends Fragment {
                         }
                     }
                 });
-        if (itens.size() == 0) {
-            compraDAO.delete(compra);
-            Carrinho.listCart.setVisibility(View.GONE);
-            Carrinho.warningCart.setVisibility(View.VISIBLE);
-            Carrinho.valueField.setVisibility(View.GONE);
-            Carrinho.confirm.setVisibility(View.GONE);
-        } else {
-
-            Carrinho.valorTotal.setText(String.valueOf(this.getTotalValue()));
-        }
     }
 
     public double getTotalValue() {

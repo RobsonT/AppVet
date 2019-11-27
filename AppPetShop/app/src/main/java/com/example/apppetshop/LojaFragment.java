@@ -37,8 +37,10 @@ public class LojaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_loja,  container, false);
 
-        ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
 
+        recyclerView = v.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         FirebaseFirestore.getInstance().collection("produtos")
                 .get()
@@ -49,17 +51,13 @@ public class LojaFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 products.add(document.toObject(Produto.class));
                             }
+                            productAdapter = new ProductAdapter(products);
+                            recyclerView.setAdapter(productAdapter);
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        productAdapter = new ProductAdapter(products);
-        recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(productAdapter);
 
         return v;
     }

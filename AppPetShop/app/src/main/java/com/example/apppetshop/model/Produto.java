@@ -4,7 +4,7 @@ public class Produto {
     private String id;
     private String nome;
     private double preco;
-    private int imagem;
+    private String imagem;
     private String descricao;
 
     public String getId() {
@@ -31,11 +31,11 @@ public class Produto {
         this.preco = preco;
     }
 
-    public int getImagem() {
+    public String getImagem() {
         return imagem;
     }
 
-    public void setImagem(int imagem) {
+    public void setImagem(String imagem) {
         this.imagem = imagem;
     }
 

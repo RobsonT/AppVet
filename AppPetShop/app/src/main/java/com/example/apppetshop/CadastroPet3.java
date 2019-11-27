@@ -18,6 +18,9 @@ import android.widget.Toast;
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.model.Pet;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
 public class CadastroPet3 extends AppCompatActivity {
 
     ImageView imageView;
@@ -47,6 +50,7 @@ public class CadastroPet3 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent,0);
+
             }
         });
 
@@ -88,6 +92,6 @@ public class CadastroPet3 extends AppCompatActivity {
         imageView.setVisibility(View.VISIBLE);
         btnCamera.setText("Tirar outra foto");
         confirmar.setClickable(true);
-        uri = data.getData();
+        uri = Uri.fromFile(new File("/storage/cats.jpg"));
     }
 }
