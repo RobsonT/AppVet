@@ -33,10 +33,8 @@ public class ItemDAO {
     }
 
     public void save(Item item) {
-        String id = db.collection("itens").document().getId();
-        item.setId(id);
         db.collection("itens")
-                .document(id)
+                .document(item.getId())
                 .set(item)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -75,6 +75,7 @@ public class Carrinho extends Fragment {
         recyclerView = v.findViewById(R.id.recyclerViewCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(cartAdapter);
 
         FirebaseFirestore.getInstance().collection("/compras")
                 .get()
@@ -105,7 +106,12 @@ public class Carrinho extends Fragment {
 
                                                             cartAdapter = new CartAdapter(itens);
                                                             recyclerView.setAdapter(cartAdapter);
-
+                                                            cartAdapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
+                                                                @Override
+                                                                public void onItemDelete(int position) {
+                                                                    removeItem(position);
+                                                                }
+                                                            });
                                                             final double[] value = {0};
                                                             for (final Item item : itens) {
                                                                 final Produto[] p = {null};
@@ -144,7 +150,6 @@ public class Carrinho extends Fragment {
 
                                 }
                             }
-                            Log.i("teste", String.valueOf(itens.size()));
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
@@ -164,13 +169,6 @@ public class Carrinho extends Fragment {
                 fragmentTransaction.replace(R.id.fragmentContainer, lojaFragment);
                 fragmentTransaction.commit();
                 MainActivity.navigationView.setCheckedItem(R.id.navHome);
-            }
-        });
-
-        cartAdapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
-            @Override
-            public void onItemDelete(int position) {
-                removeItem(position);
             }
         });
         return v;
@@ -223,17 +221,16 @@ public class Carrinho extends Fragment {
                                 Item i = document.toObject(Item.class);
                                 if (i.getIdCompra().equals(compra.getId())) {
                                     itens.add(i);
-                                    if (itens.size() == 0) {
-                                        compraDAO.delete(compra);
-                                        Carrinho.listCart.setVisibility(View.GONE);
-                                        Carrinho.warningCart.setVisibility(View.VISIBLE);
-                                        Carrinho.valueField.setVisibility(View.GONE);
-                                        Carrinho.confirm.setVisibility(View.GONE);
-                                    } else {
-
-                                        Carrinho.valorTotal.setText(String.valueOf(getTotalValue()));
-                                    }
                                 }
+                            }
+                            if (itens.size() == 0) {
+                                compraDAO.delete(compra);
+                                Carrinho.listCart.setVisibility(View.GONE);
+                                Carrinho.warningCart.setVisibility(View.VISIBLE);
+                                Carrinho.valueField.setVisibility(View.GONE);
+                                Carrinho.confirm.setVisibility(View.GONE);
+                            } else {
+                                Carrinho.valorTotal.setText(String.valueOf(getTotalValue()));
                             }
                         } else {
                             Log.d("carrinho", "Error getting documents: ", task.getException());

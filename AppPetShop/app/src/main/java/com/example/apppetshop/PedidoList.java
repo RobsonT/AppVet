@@ -45,6 +45,10 @@ public class PedidoList extends Fragment {
         compraDAO = CompraDAO.getInstance();
         pedidos = new ArrayList<>();
 
+        recyclerView = v.findViewById(R.id.recyclerViewPedido);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         FirebaseFirestore.getInstance().collection("/compras")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -57,18 +61,13 @@ public class PedidoList extends Fragment {
                                     pedidos.add(compra);
                                 }
                             }
+                            pedidoAdapter = new PedidoAdapter(pedidos);
+                            recyclerView.setAdapter(pedidoAdapter);
                         } else {
                             Log.d("PedidoList", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        pedidoAdapter = new PedidoAdapter(pedidos);
-
-        recyclerView = v.findViewById(R.id.recyclerViewPedido);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(pedidoAdapter);
 
         return v;
     }

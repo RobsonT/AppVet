@@ -34,6 +34,7 @@ public class FavoriteList extends Fragment {
     RecyclerView recyclerView;
     FavoriteAdapter favoriteAdapter;
     List<Favorito> favoritos;
+    TextView textFav;
 
     private FirebaseAuth auth;
 
@@ -42,14 +43,18 @@ public class FavoriteList extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_produto_favoritos,  container, false);
+        View v = inflater.inflate(R.layout.activity_produto_favoritos, container, false);
 
         auth = FirebaseAuth.getInstance();
+        textFav = v.findViewById(R.id.textFav);
 
         favoritoDao = FavoritoDAO.getInstance();
         produtoDAO = ProdutoDAO.getInstance();
 
         favoritos = new ArrayList<>();
+        recyclerView = v.findViewById(R.id.recyclerViewFavorite);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         FirebaseFirestore.getInstance().collection("/favoritos")
                 .get()
@@ -63,33 +68,29 @@ public class FavoriteList extends Fragment {
                                     favoritos.add(fav);
                                 }
                             }
+                            if(favoritos.size() > 0)
+                                textFav.setVisibility(View.GONE);
+                            else
+                                textFav.setVisibility(View.VISIBLE);
+                            favoriteAdapter = new FavoriteAdapter(favoritos);
+                            favoriteAdapter.setOnItemClickListener(new FavoriteAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemDetail(int position) {
+                                    showItem(position);
+                                }
+                            });
+
+                            recyclerView.setAdapter(favoriteAdapter);
                         } else {
                             Log.d("ServicosCliente", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        favoriteAdapter = new FavoriteAdapter(favoritos);
-
-        recyclerView = v.findViewById(R.id.recyclerViewFavorite);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(favoriteAdapter);
-
-        favoriteAdapter.setOnItemClickListener(new FavoriteAdapter.OnItemClickListener() {
-            @Override
-            public void onItemDetail(int position) {
-                showItem(position);
-            }
-        });
-
         return v;
     }
 
     public void showItem(final int position) {
-        Intent i = new Intent( getContext(), ProdutoDescricao.class);
-        final Produto[] produto = {null};
-
         FirebaseFirestore.getInstance().collection("/produtos")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -99,17 +100,15 @@ public class FavoriteList extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Produto prod = document.toObject(Produto.class);
                                 if (prod.getId().equals(favoritos.get(position).getIdProduto())) {
-                                    produto[0] = prod;
+                                    final Intent i = new Intent(getContext(), ProdutoDescricao.class);
+                                    i.putExtra("idProduto", prod.getId());
+                                    startActivity(i);
                                 }
                             }
                         } else {
-                            Log.d("ServicosCliente", "Error getting documents: ", task.getException());
+                            Log.d("favoritList", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        i.putExtra( "idProduto", String.valueOf( produto[0].getId()));
-        i.putExtra("idCliente", String.valueOf(favoritos.get(position).getIdCliente()));
-        startActivity(i);
     }
 }

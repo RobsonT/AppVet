@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Cadastro extends AppCompatActivity {
 
@@ -128,6 +129,9 @@ public class Cadastro extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String uid = dbAuth.getUid();
                                 Cliente cliente = new Cliente(uid, nameClient, cpfClient, emailClient);
+                                FirebaseFirestore.getInstance()
+                                        .document(uid)
+                                        .set(cliente);
                                 Toast.makeText(getApplicationContext(), "Cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                                 finish();
                             }

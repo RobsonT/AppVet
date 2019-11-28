@@ -51,6 +51,10 @@ public class ServicosCliente extends Fragment {
 
         servicos = new ArrayList<>();
 
+        recyclerView = v.findViewById(R.id.recyclerViewService);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         FirebaseFirestore.getInstance().collection("/servicosCliente")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -63,20 +67,16 @@ public class ServicosCliente extends Fragment {
                                     servicos.add(serv);
                                 }
                             }
+                            serviceAdapter = new ServiceAdapter(servicos);
+                            recyclerView.setAdapter(serviceAdapter);
                         } else {
                             Log.d("ServicosCliente", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        serviceAdapter = new ServiceAdapter(servicos);
-
         FloatingActionButton fab = v.findViewById(R.id.fabService);
 
-        recyclerView = v.findViewById(R.id.recyclerViewService);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(serviceAdapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,14 +108,14 @@ public class ServicosCliente extends Fragment {
                                         servicos.add(serv);
                                     }
                                 }
+
+                                serviceAdapter = new ServiceAdapter(servicos);
+                                recyclerView.setAdapter(serviceAdapter);
                             } else {
                                 Log.d("ServicosCliente", "Error getting documents: ", task.getException());
                             }
                         }
                     });
-
-            serviceAdapter = new ServiceAdapter(servicos);
-            recyclerView.setAdapter(serviceAdapter);
         }
     }
 }

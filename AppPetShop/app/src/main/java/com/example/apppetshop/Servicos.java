@@ -41,13 +41,14 @@ public class Servicos extends AppCompatActivity {
     ImageView servicoBanho, servicoTosa, servicoHospedagem, servicoAdestrar, servicoCastrar, servicoGeral;
     Spinner horario, pet;
     EditText data;
-    Button addServico,button;
+    Button addServico, button;
     String servico;
 
     PetDAO petDAO;
     ServicoClienteDAO servicoClienteDAO;
 
     private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,13 +87,15 @@ public class Servicos extends AppCompatActivity {
 
 
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");
-        MaskTextWatcher mtw = new MaskTextWatcher(data,smf);
+        MaskTextWatcher mtw = new MaskTextWatcher(data, smf);
         data.addTextChangedListener(mtw);
 
 
-        final List<Pet> pets =new ArrayList<>();
+        final List<Pet> pets = new ArrayList<>();
 
-        FirebaseFirestore.getInstance().collection("/compras")
+        final ArrayAdapter<String>[] spinnerArrayAdapter = new ArrayAdapter[]{null};
+
+        FirebaseFirestore.getInstance().collection("/pets")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -104,40 +107,66 @@ public class Servicos extends AppCompatActivity {
                                     pets.add(pet);
                                 }
                             }
+                            final String[] spinnerArray = new String[pets.size()];
+                            for (int i = 0; i < pets.size(); i++) {
+                                spinnerArray[i] = pets.get(i).getNome();
+                            }
+
+                            spinnerArrayAdapter[0] = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, spinnerArray);
+                            pet.setAdapter(spinnerArrayAdapter[0]);
+
+                            pet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    int position = pet.getSelectedItemPosition();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+
+                            addServico.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                                    Date dataServico = null;
+                                    try {
+                                        String hora = horario.getSelectedItem().toString();
+                                        String date = data.getText().toString() + " " + hora.split(" - ")[0];
+                                        dataServico = sdf.parse(date);
+                                    } catch (ParseException ex) {
+                                        Log.v("Exception", ex.getLocalizedMessage());
+                                    }
+                                    ServicoCliente servicoCliente = new ServicoCliente();
+                                    servicoCliente.setData(dataServico);
+                                    servicoCliente.setIdCliente(auth.getUid());
+
+                                    servicoCliente.setIdPet(pets.get(pet.getSelectedItemPosition()).getId());
+                                    servicoCliente.setNomeServico(servico.replace("servico", ""));
+
+                                    servicoClienteDAO.save(servicoCliente);
+                                    Intent retorno = new Intent();
+
+                                    setResult(Activity.RESULT_OK, retorno);
+                                    finish();
+                                }
+                            });
+
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        final String[] spinnerArray = new String[pets.size()];
+
         String[] spinnerArray2 = {"08:00 - 10:00", "10:00 - 12:00", "13:00 - 15:00", "15:00 - 17:00"};
-
-        for (int i = 0; i < pets.size(); i++) {
-            spinnerArray[i] = pets.get(i).getNome();
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        spinnerArray);
-        pet.setAdapter(spinnerArrayAdapter);
 
         ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item,
                         spinnerArray2);
         horario.setAdapter(spinnerArrayAdapter2);
-
-        pet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int position = pet.getSelectedItemPosition();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         horario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -234,31 +263,5 @@ public class Servicos extends AppCompatActivity {
             }
         });
 
-        addServico.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-                Date dataServico = null;
-                try {
-                    String hora = horario.getSelectedItem().toString();
-                    String date =  data.getText().toString() + " " + hora.split(" - ")[0];
-                    dataServico = sdf.parse(date);
-                } catch (ParseException ex) {
-                    Log.v("Exception", ex.getLocalizedMessage());
-                }
-                ServicoCliente servicoCliente = new ServicoCliente();
-                servicoCliente.setData(dataServico);
-                servicoCliente.setIdCliente(auth.getUid());
-
-                servicoCliente.setIdPet(pets.get(pet.getSelectedItemPosition()).getId());
-                servicoCliente.setNomeServico(servico.replace("servico", ""));
-
-                servicoClienteDAO.save(servicoCliente);
-                Intent retorno = new Intent();
-
-                setResult(Activity.RESULT_OK, retorno);
-                finish();
-            }
-        });
     }
 }

@@ -2,12 +2,17 @@ package com.example.apppetshop;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +25,9 @@ import com.example.apppetshop.model.Pet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CadastroPet3 extends AppCompatActivity {
 
@@ -29,6 +37,7 @@ public class CadastroPet3 extends AppCompatActivity {
     PetDAO petDAO;
     Bitmap bitmap;
     Uri uri;
+    String pathToFile;
 
 
     @Override
@@ -45,12 +54,13 @@ public class CadastroPet3 extends AppCompatActivity {
         btnCamera = findViewById(R.id.buttonCamera);
         imageView = findViewById(R.id.camera);
 
+        if(Build.VERSION.SDK_INT >= 23){
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        }
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,0);
-
+                dispatchPictureTakerAction();
             }
         });
 
@@ -84,14 +94,40 @@ public class CadastroPet3 extends AppCompatActivity {
         });
     }
 
+    private void dispatchPictureTakerAction(){
+        Intent takePic = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePic.resolveActivity(getPackageManager()) != null){
+            File photoFile = createPhotoFile();
+            if(photoFile != null) {
+                pathToFile = photoFile.getAbsolutePath();
+                uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.apppetshop.fileprovider", photoFile);
+                takePic.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(takePic, 1);
+            }
+        }
+    }
+
+    private File createPhotoFile(){
+        String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(name, ".jpg", storageDir);
+        } catch (IOException e) {
+            Log.d("CadastroPet3", e.getMessage());
+        }
+        return image;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        bitmap = (Bitmap)data.getExtras().get("data");
-        imageView.setImageBitmap(bitmap);
-        imageView.setVisibility(View.VISIBLE);
-        btnCamera.setText("Tirar outra foto");
-        confirmar.setClickable(true);
-        uri = Uri.fromFile(new File("/storage/cats.jpg"));
+        if(resultCode == RESULT_OK){
+            bitmap = BitmapFactory.decodeFile(pathToFile);
+            imageView.setImageBitmap(bitmap);
+            imageView.setVisibility(View.VISIBLE);
+            btnCamera.setText("Tirar outra foto");
+            confirmar.setClickable(true);
+        }
     }
 }

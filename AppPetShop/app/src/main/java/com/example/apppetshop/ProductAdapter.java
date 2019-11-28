@@ -63,6 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         favoritoDao = FavoritoDAO.getInstance();
         final List<Favorito> favoritos = new ArrayList<>();
+        product = productList.get(position);
 
         FirebaseFirestore.getInstance().collection("/favoritos")
                 .get()
@@ -76,13 +77,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                     favoritos.add(fav);
                                 }
                             }
+                            for(Favorito f: favoritos){
+                                if(f.getIdProduto().equals(product.getId())){
+                                    holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                    holder.favoriteLeft.setTag(product.getId()+"-true");
+                                }
+                            }
                         } else {
                             Log.d("ProductAdapter", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        product = productList.get(position);
         holder.textProduct.setText(product.getNome());
 
         final Bitmap[] bitmap = {null};
@@ -97,12 +102,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.textPreco.setText("R$" + product.getPreco());
 
-        for(Favorito f: favoritos){
-            if(f.getIdProduto().equals(product.getId())){
-                holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
-                holder.favoriteLeft.setTag(product.getId()+"-true");
-            }
-        }
         if(!holder.favoriteLeft.getTag().toString().equals(product.getId()+"-true")){
             holder.favoriteLeft.setTag(product.getId()+"-false");
         }

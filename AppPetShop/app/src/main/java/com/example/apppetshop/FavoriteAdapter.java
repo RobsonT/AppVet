@@ -75,25 +75,23 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                     produto[0] = prod;
                                 }
                             }
+                            holder.nameFavorite.setText(produto[0].getNome());
+
+                            final Bitmap[] bitmap = {null};
+                            final long ONE_MEGABYTE = 1024 * 1024;
+                            storage.getReferenceFromUrl(produto[0].getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    holder.imgFavorite.setImageBitmap(bitmap[0]);
+                                }
+                            });
+                            holder.priceFavorite.setText(String.valueOf(produto[0].getPreco()));
                         } else {
                             Log.d("ServicosCliente", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        holder.nameFavorite.setText(produto[0].getNome());
-
-        final Bitmap[] bitmap = {null};
-        final long ONE_MEGABYTE = 1024 * 1024;
-        storage.getReferenceFromUrl(produto[0].getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            }
-        });
-
-        holder.imgFavorite.setImageBitmap(bitmap[0]);
-        holder.priceFavorite.setText(String.valueOf(produto[0].getPreco()));
     }
 
     @Override

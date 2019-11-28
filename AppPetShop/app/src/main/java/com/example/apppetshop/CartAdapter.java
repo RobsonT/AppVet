@@ -72,24 +72,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         itemDAO = ItemDAO.getInstance();
         produtoDAO = ProdutoDAO.getInstance();
 
-        FirebaseFirestore.getInstance().collection("/compras")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Compra c = document.toObject(Compra.class);
-                                if (!c.isConfirmado() && c.getId().equals(auth.getUid())) {
-                                    compra = c;
-                                }
-                            }
-                        } else {
-                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
         context = parent.getContext();
         return viewHolder;
     }
@@ -116,6 +98,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                     holder.price.setText("R$" + String.valueOf(product[0].getPreco()));
                                     holder.quantity.setText(String.valueOf(item.getQuantidade()));
                                     holder.close.setTag(String.valueOf(position));
+                                    holder.valorText.setText("R$" + product[0].getPreco() * item.getQuantidade());
                                     storage.getReferenceFromUrl(product[0].getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                         @Override
                                         public void onSuccess(byte[] bytes) {
@@ -140,6 +123,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 item.setQuantidade(item.getQuantidade() + 1);
                 itemDAO.save(item);
 
+                FirebaseFirestore.getInstance().collection("produtos")
+                        .whereEqualTo("id", item.getIdProduto())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Produto prod = document.toObject(Produto.class);
+                                        holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
+                                    }
+                                } else {
+                                    Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
                 updateTotalValue();
             }
         });
@@ -154,6 +154,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     item.setQuantidade(item.getQuantidade() - 1);
                     itemDAO.save(item);
 
+                    FirebaseFirestore.getInstance().collection("produtos")
+                            .whereEqualTo("id", item.getIdProduto())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Produto prod = document.toObject(Produto.class);
+                                            holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
+                                        }
+                                    } else {
+                                        Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
                     updateTotalValue();
                 } else {
                     Toast.makeText(context, "Quantidade minima alcançada", Toast.LENGTH_SHORT).show();
@@ -167,45 +184,66 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         final List<Item> itens = new ArrayList<>();
 
         final double[] value = {0};
-        FirebaseFirestore.getInstance().collection("/itens")
+
+        FirebaseFirestore.getInstance().collection("/compras")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Item i = document.toObject(Item.class);
-                                if (i.getIdCompra().equals(compra.getId())) {
-                                    final Produto[] p = {null};
-
-                                    FirebaseFirestore.getInstance().collection("/produtos")
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Produto prod = document.toObject(Produto.class);
-                                                            if (item.getIdProduto().equals(prod.getId())) {
-                                                                p[0] = prod;
-                                                            }
-                                                        }
-                                                    } else {
-                                                        Log.d("cartAdapter", "Error getting documents: ", task.getException());
-                                                    }
-                                                }
-                                            });
-
-                                    value[0] += item.getQuantidade() * p[0].getPreco();
+                                Compra c = document.toObject(Compra.class);
+                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
+                                    compra = c;
                                 }
                             }
 
-                            Carrinho.valorTotal.setText(String.valueOf(value[0]));
+                            FirebaseFirestore.getInstance().collection("/itens")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Item i = document.toObject(Item.class);
+                                                    if (i.getIdCompra().equals(compra.getId())) {
+                                                        final Produto[] p = {null};
+
+                                                        FirebaseFirestore.getInstance().collection("/produtos")
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                Produto prod = document.toObject(Produto.class);
+                                                                                if (item.getIdProduto().equals(prod.getId())) {
+                                                                                    p[0] = prod;
+
+                                                                                }
+                                                                            }
+                                                                            value[0] += item.getQuantidade() * p[0].getPreco();
+                                                                            Carrinho.valorTotal.setText(String.valueOf(value[0]));
+                                                                        } else {
+                                                                            Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            } else {
+                                                Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                                            }
+                                        }
+                                    });
+
                         } else {
-                            Log.d("cartAdapter", "Error getting documents: ", task.getException());
+                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+
     }
 
     @Override
@@ -241,8 +279,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 public void onClick(View view) {
                     if (listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
+                        Log.i("testep", String.valueOf(position));
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemDelete(position);
+                        }
                     }
                 }
             });

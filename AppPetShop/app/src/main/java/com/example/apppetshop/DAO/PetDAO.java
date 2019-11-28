@@ -39,13 +39,13 @@ public class PetDAO {
         pet.setId(id);
         String filename = id;
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
-        //ref.putFile(uriPet).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            //@Override
-            //public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-              //  ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                //    @Override
-                  //  public void onSuccess(Uri uri) {
-                        pet.setImage("teste");//uri.toString()
+        ref.putFile(uriPet).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        pet.setImage(uri.toString());
                         db.collection("pets")
                                 .document(id)
                                 .set(pet)
@@ -63,10 +63,10 @@ public class PetDAO {
                                     }
                                 });
                     }
-                //});
-            //}
-        //});
-    //}
+                });
+            }
+        });
+    }
 
     public void delete(Pet pet) {
         db.collection("pets").document(pet.getId())

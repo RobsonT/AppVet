@@ -64,6 +64,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
                                 Pet p = document.toObject(Pet.class);
                                 if (p.getId().equals(servico.getIdPet())) {
                                     pet[0] = p;
+
+                                    final long ONE_MEGABYTE = 1024 * 1024 * 6;
+                                    final Bitmap[] bitmap = {null};
+                                    storage.getReferenceFromUrl(pet[0].getImage()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                        @Override
+                                        public void onSuccess(byte[] bytes) {
+                                            bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                            holder.imgPet.setImageBitmap(bitmap[0]);
+                                        }
+                                    });
                                 }
                             }
                         } else {
@@ -73,17 +83,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
                 });
 
         holder.nomeServico.setText(servico.getNomeServico());
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        final Bitmap[] bitmap = {null};
-        storage.getReferenceFromUrl(pet[0].getImage()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            }
-        });
-
-        holder.imgPet.setImageBitmap(bitmap[0]);
 
         SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
         String date = spf.format(servico.getData());

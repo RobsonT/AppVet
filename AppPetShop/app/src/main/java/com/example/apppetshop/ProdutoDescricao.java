@@ -46,7 +46,7 @@ public class ProdutoDescricao extends AppCompatActivity {
     TextView nomeProduto;
     ImageView imagemProduto;
     TextView precoProduto;
-    Button addCarrinho,button;
+    Button addCarrinho, button;
     Button favorito;
     TextView descricaoProduto;
     ListView lstDescricao;
@@ -100,7 +100,7 @@ public class ProdutoDescricao extends AppCompatActivity {
             }
         });
 
-        productId =getIntent().getExtras().getString("idProduto");
+        productId = getIntent().getExtras().getString("idProduto");
 
         final Bitmap[] bitmap = {null};
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -130,24 +130,6 @@ public class ProdutoDescricao extends AppCompatActivity {
                             }
                         } else {
                             Log.d("ProdutoDescricao", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-        FirebaseFirestore.getInstance().collection("/compras")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Compra c = document.toObject(Compra.class);
-                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
-                                    compra = c;
-                                }
-                            }
-                        } else {
-                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -228,59 +210,80 @@ public class ProdutoDescricao extends AppCompatActivity {
     }
 
     public void addProduct(View view) {
-        if (compra == null) {
-            compra = new Compra();
-            compra.setConfirmado(false);
-            compra.setIdCliente(auth.getUid());
-            Date currentTime = Calendar.getInstance().getTime();
-            compra.setData(currentTime);
-            compraDAO.save(compra);
 
-        }
-
-        final List<Item> itens = new ArrayList<>();
-
-        FirebaseFirestore.getInstance().collection("/itens")
+        FirebaseFirestore.getInstance().collection("/compras")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Item i = document.toObject(Item.class);
-                                if (compra.getId().equals(i.getIdCompra())) {
-                                    itens.add(i);
+                                Compra c = document.toObject(Compra.class);
+                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
+                                    compra = c;
                                 }
                             }
+                            if (compra == null) {
+                                compra = new Compra();
+                                compra.setConfirmado(false);
+                                compra.setIdCliente(auth.getUid());
+                                Date currentTime = Calendar.getInstance().getTime();
+                                compra.setData(currentTime);
+                                compraDAO.save(compra);
+
+                            }
+
+                            final List<Item> itens = new ArrayList<>();
+
+                            FirebaseFirestore.getInstance().collection("/itens")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Item i = document.toObject(Item.class);
+                                                    if (compra.getId().equals(i.getIdCompra())) {
+                                                        itens.add(i);
+                                                    }
+                                                }
+
+                                                Item item = null;
+
+                                                boolean findItem = false;
+                                                for (Item i : itens) {
+                                                    if (productId.equals(i.getIdProduto())) {
+                                                        item = i;
+                                                        item.setQuantidade(item.getQuantidade() + 1);
+                                                        findItem = true;
+                                                        itemDAO.delete(item);
+                                                        itemDAO.save(item);
+                                                        break;
+                                                    }
+                                                }
+                                                if (!findItem) {
+                                                    String id = FirebaseFirestore.getInstance().collection("itens").document().getId();
+                                                    item = new Item();
+                                                    item.setId(id);
+                                                    item.setIdCompra(compra.getId());
+                                                    item.setIdProduto(productId);
+                                                    item.setQuantidade(1);
+                                                    itemDAO.save(item);
+                                                }
+
+                                            } else {
+                                                Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                                            }
+                                        }
+                                    });
+
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            i.putExtra("compra", "compra");
+                            startActivity(i);
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        Item item = null;
-
-        boolean findItem = false;
-        for (Item i : itens) {
-            if (productId == i.getIdProduto()) {
-                item = i;
-                item.setQuantidade(item.getQuantidade() + 1);
-                findItem = true;
-                itemDAO.save(item);
-                break;
-            }
-        }
-        if (!findItem) {
-            item = new Item();
-            item.setIdCompra(compra.getId());
-            item.setIdProduto(productId);
-            item.setQuantidade(1);
-            itemDAO.save(item);
-        }
-
-
-        Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("compra", "compra");
-        startActivity(i);
     }
 }

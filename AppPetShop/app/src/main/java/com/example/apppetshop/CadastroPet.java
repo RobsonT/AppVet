@@ -149,12 +149,12 @@ public class CadastroPet extends AppCompatActivity {
             String sex = (sexM.getTag().equals("true"))? "macho" : "femea";
             String type = (dog.getTag().equals("true"))? "cachorro" : "gato";
 
-            SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date birthDate = null;
             try {
                 birthDate = sdf.parse(birthDatePet.getText().toString());
             } catch (ParseException ex) {
-                Log.v("Exception", ex.getLocalizedMessage());
+                Log.v("CadastroPet", ex.getLocalizedMessage());
             }
 
             Pet pet = new Pet();
