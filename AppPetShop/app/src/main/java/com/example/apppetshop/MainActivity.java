@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        verifyAuthentication();
         auth = FirebaseAuth.getInstance();
+        verifyAuthentication();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,10 +118,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void verifyAuthentication(){
-        if(FirebaseAuth.getInstance().getUid() == null){
+        Log.i("teste", auth.getUid());
+        if(auth.getUid() == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         }
     }
 
