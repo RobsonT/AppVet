@@ -129,7 +129,7 @@ public class Cadastro extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String uid = dbAuth.getUid();
                                 Cliente cliente = new Cliente(uid, nameClient, cpfClient, emailClient);
-                                FirebaseFirestore.getInstance()
+                                FirebaseFirestore.getInstance().collection("clientes")
                                         .document(uid)
                                         .set(cliente);
                                 Toast.makeText(getApplicationContext(), "Cadastrado com sucesso", Toast.LENGTH_SHORT).show();
