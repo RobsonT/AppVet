@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, pedidoList).commit();
                 break;
             case R.id.navSair:
-                FirebaseAuth.getInstance().signOut();
+               auth.signOut();
                 verifyAuthentication();
                 break;
 
@@ -118,12 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void verifyAuthentication(){
-        Log.i("teste", auth.getUid());
-        if(auth.getUid() == null){
+        if(auth.getUid()  == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish();
         }
     }
 

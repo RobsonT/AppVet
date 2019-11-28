@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.apppetshop.DAO.ServicoClienteDAO;
 import com.example.apppetshop.model.Produto;
@@ -36,6 +37,7 @@ public class ServicosCliente extends Fragment {
     List<ServicoCliente> servicos;
 
     int clientId;
+    TextView message;
 
     ServicoClienteDAO servicoClienteDAO;
 
@@ -46,6 +48,7 @@ public class ServicosCliente extends Fragment {
         View v = inflater.inflate(R.layout.activity_servicos_cliente,  container, false);;
 
         servicoClienteDAO = ServicoClienteDAO.getInstance();
+        message = v.findViewById(R.id.nenhumServico);
 
         auth = FirebaseAuth.getInstance();
 
@@ -66,6 +69,11 @@ public class ServicosCliente extends Fragment {
                                 if (serv.getIdCliente().equals(auth.getUid())) {
                                     servicos.add(serv);
                                 }
+                            }
+                            if(servicos.size() != 0){
+                                message.setVisibility(View.GONE);
+                            }else {
+                                message.setVisibility(View.VISIBLE);
                             }
                             serviceAdapter = new ServiceAdapter(servicos);
                             recyclerView.setAdapter(serviceAdapter);

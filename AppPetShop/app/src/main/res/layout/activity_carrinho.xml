@@ -81,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingRight="20dp"
-                        android:text="VALOR TOTAL:"
+                        android:text="VALOR TOTAL:  R$"
                         android:textSize="18sp"
                         android:visibility="visible" />
 
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="Valor em reais"
+                        android:text="0.00"
                         android:textColor="@color/common_google_signin_btn_text_light_default"
                         android:textSize="18sp" />
 
