@@ -174,39 +174,39 @@ public class ProdutoDescricao extends AppCompatActivity {
                                     favoritos.add(fav);
                                 }
                             }
+
+                            if (favoritos.size() > 0) {
+                                for (Favorito f : favoritos) {
+                                    if (f.getIdProduto().equals(productId)) {
+                                        favorito.setText("remover favoritos");
+                                        break;
+                                    }
+                                }
+                            }
+
+                            favorito.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (favorito.getText().toString().equals("adicionar favoritos")) {
+                                        favorito.setText("remover favoritos");
+                                        Favorito fav = new Favorito();
+                                        fav.setIdCliente(auth.getUid());
+                                        fav.setIdProduto(productId); //product.getId()
+                                        favoritoDAO.save(fav);
+                                    } else {
+                                        favorito.setText("adicionar favoritos");
+                                        Favorito fav = new Favorito();
+                                        fav.setIdCliente(auth.getUid());
+                                        fav.setIdProduto(productId);
+                                        favoritoDAO.delete(fav);
+                                    }
+                                }
+                            });
                         } else {
                             Log.d("Loja fragment", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        if (favoritos.size() > 0) {
-            for (Favorito f : favoritos) {
-                if (f.getIdProduto().equals(productId)) {
-                    favorito.setText("remover favoritos");
-                    break;
-                }
-            }
-        }
-
-        favorito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (favorito.getText().toString().equals("adicionar favoritos")) {
-                    favorito.setText("remover favoritos");
-                    Favorito favorito = new Favorito();
-                    favorito.setIdCliente(auth.getUid());
-                    favorito.setIdProduto(productId); //product.getId()
-                    favoritoDAO.save(favorito);
-                } else {
-                    favorito.setText("adicionar favoritos");
-                    Favorito favorito = new Favorito();
-                    favorito.setIdCliente(auth.getUid());
-                    favorito.setIdProduto(productId);
-                    favoritoDAO.delete(favorito);
-                }
-            }
-        });
     }
 
     public void addProduct(View view) {

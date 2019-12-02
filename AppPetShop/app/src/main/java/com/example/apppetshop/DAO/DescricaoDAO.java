@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DescricaoDAO implements Dao<Descricao> {
+public class DescricaoDAO {
 
     private List<Descricao> descritions;
 
@@ -22,22 +22,22 @@ public class DescricaoDAO implements Dao<Descricao> {
         return instance;
     }
 
-    @Override
+
     public Descricao get(int id) {
         return descritions.get(id);
     }
 
-    @Override
+
     public List<Descricao> getAll() {
         return descritions;
     }
 
-    @Override
+
     public void save(Descricao descrition) {
         descritions.add(descrition);
     }
 
-    @Override
+
     public void delete(Descricao descricao) {
         descritions.remove(descricao);
     }
