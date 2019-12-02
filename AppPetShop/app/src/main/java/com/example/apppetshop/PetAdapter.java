@@ -23,7 +23,6 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
     List<Pet> petList;
     Context context;
     FirebaseStorage storage;
-
     public PetAdapter(List<Pet> petList) {
         this.petList = petList;
         storage = FirebaseStorage.getInstance();

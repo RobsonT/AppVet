@@ -75,12 +75,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                 Favorito fav = document.toObject(Favorito.class);
                                 if (fav.getIdCliente().equals(auth.getUid())) {
                                     favoritos.add(fav);
-                                }
-                            }
-                            for(Favorito f: favoritos){
-                                if(f.getIdProduto().equals(product.getId())){
-                                    holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
-                                    holder.favoriteLeft.setTag(product.getId()+"-true");
+                                    if (fav.getIdProduto().equals(product.getId())) {
+                                        Log.i("teste", fav.getId());
+                                        holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                        holder.favoriteLeft.setTag(product.getId() + "-true");
+                                    }
                                 }
                             }
                         } else {
@@ -102,27 +101,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.textPreco.setText("R$" + product.getPreco());
 
-        if(!holder.favoriteLeft.getTag().toString().equals(product.getId()+"-true")){
-            holder.favoriteLeft.setTag(product.getId()+"-false");
+        if (!holder.favoriteLeft.getTag().toString().equals(product.getId() + "-true")) {
+            holder.favoriteLeft.setTag(product.getId() + "-false");
         }
 
-        holder.favoriteLeft.setOnClickListener(new View.OnClickListener(){
+        holder.favoriteLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 favorito = new Favorito();
                 String[] tag = holder.favoriteLeft.getTag().toString().split("-");
-                if(tag[1].equals("false")) {
+                Log.i("teste", productList.get(position).getId() + "-" + position);
+                if (tag[1].equals("false")) {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    holder.favoriteLeft.setTag(tag[0]+"-true");
-                    favorito.setIdProduto(tag[0]);
+                    holder.favoriteLeft.setTag(productList.get(position).getId() + "-true");
+                    favorito.setIdProduto(productList.get(position).getId());
                     favorito.setIdCliente(auth.getUid());
                     favoritoDao.save(favorito);
-                }else{
+                } else {
                     holder.favoriteLeft.setImageResource(R.drawable.ic_favorite);
-                    favorito.setIdProduto(tag[0]);
+                    favorito.setIdProduto(productList.get(position).getId());
                     favorito.setIdCliente(auth.getUid());
                     favoritoDao.delete(favorito);
-                    holder.favoriteLeft.setTag(tag[0]+"-false");
+                    holder.favoriteLeft.setTag(tag[0] + "-false");
                 }
             }
         });
@@ -130,8 +130,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.firstColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent( view.getContext(), ProdutoDescricao.class);
-                i.putExtra( "idProduto", String.valueOf(productList.get(position).getId()));
+                Intent i = new Intent(view.getContext(), ProdutoDescricao.class);
+                i.putExtra("idProduto", String.valueOf(productList.get(position).getId()));
                 view.getContext().startActivity(i);
             }
         });
@@ -143,7 +143,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         TextView textProduct;
         TextView textPreco;
