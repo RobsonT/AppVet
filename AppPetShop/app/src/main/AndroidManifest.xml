@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".List_Item_Pedido"></activity>
+        <activity android:name=".ListItemPedido"></activity>
         <activity android:name=".EditarPet" />
         <activity android:name=".PedidoList" />
         <activity android:name=".ServiceAdapter" />

@@ -33,14 +33,24 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
     ItemDAO itemDAO;
     ProdutoDAO produtoDAO;
 
+    private OnItemClickListener pedidoListener;
+
     public PedidoAdapter(List<Compra> pedidoList) {
         this.pedidoList = pedidoList;
+    }
+
+    public interface OnItemClickListener {
+        void onPedidoDetail(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        pedidoListener = listener;
     }
 
     @Override
     public PedidoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pedido_list, parent, false);
-        PedidoAdapter.ViewHolder viewHolder = new PedidoAdapter.ViewHolder(view);
+        PedidoAdapter.ViewHolder viewHolder = new PedidoAdapter.ViewHolder(view, pedidoListener);
         context = parent.getContext();
         return viewHolder;
     }
@@ -118,13 +128,24 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
         TextView dataPedido;
         CardView cv;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             idPedido= itemView.findViewById(R.id.id);
             precoPedido = itemView.findViewById(R.id.precoPedido);
             localPedido= itemView.findViewById(R.id.localPedido);
             dataPedido = itemView.findViewById(R.id.dataPedido);
             cv = itemView.findViewById(R.id.cvPedido);
+
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onPedidoDetail(position);
+                    }
+                }
+            });
         }
     }
 }

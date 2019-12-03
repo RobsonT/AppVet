@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 
 import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.model.Compra;
-import com.example.apppetshop.model.Produto;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +62,12 @@ public class PedidoList extends Fragment {
                                 }
                             }
                             pedidoAdapter = new PedidoAdapter(pedidos);
+                            pedidoAdapter.setOnItemClickListener(new PedidoAdapter.OnItemClickListener() {
+                                @Override
+                                public void onPedidoDetail(int position) {
+                                    showItem(position);
+                                }
+                            });
                             recyclerView.setAdapter(pedidoAdapter);
                         } else {
                             Log.d("PedidoList", "Error getting documents: ", task.getException());
@@ -70,5 +76,11 @@ public class PedidoList extends Fragment {
                 });
 
         return v;
+    }
+
+    public void showItem(final int position) {
+        final Intent i = new Intent(getContext(), ListItemPedido.class);
+        i.putExtra("idPedido", pedidos.get(position).getId());
+        startActivity(i);
     }
 }
