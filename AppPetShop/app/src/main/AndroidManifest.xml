@@ -17,14 +17,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditarPet"></activity>
+        <activity android:name=".List_Item_Pedido"></activity>
+        <activity android:name=".EditarPet" />
         <activity android:name=".PedidoList" />
         <activity android:name=".ServiceAdapter" />
         <activity android:name=".RecuperacaoSenha" />
         <activity android:name=".Servicos" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ListaPet" />
         <activity android:name=".ProdutoDescricao" />
         <activity android:name=".ServicosCliente" />
@@ -38,12 +39,12 @@
             android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -75,7 +76,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>
