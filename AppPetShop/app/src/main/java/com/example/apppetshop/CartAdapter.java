@@ -92,7 +92,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Produto prod = document.toObject(Produto.class);
-                                if (item.getIdProduto().equals(prod.getId())) {
+                                if (itemList.get(position).getIdProduto().equals(prod.getId())) {
                                     product[0] = prod;
                                     holder.name.setText(product[0].getNome());
                                     holder.price.setText("R$" + String.valueOf(product[0].getPreco()));

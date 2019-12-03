@@ -64,7 +64,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         favoritoDao = FavoritoDAO.getInstance();
         final List<Favorito> favoritos = new ArrayList<>();
         product = productList.get(position);
-
         FirebaseFirestore.getInstance().collection("/favoritos")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -74,9 +73,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Favorito fav = document.toObject(Favorito.class);
                                 if (fav.getIdCliente().equals(auth.getUid())) {
-                                    favoritos.add(fav);
-                                    if (fav.getIdProduto().equals(product.getId())) {
-                                        Log.i("teste", fav.getId());
+                                    if (fav.getIdProduto().equals(productList.get(position).getId())) {
                                         holder.favoriteLeft.setImageResource(R.drawable.ic_favorite_black_24dp);
                                         holder.favoriteLeft.setTag(product.getId() + "-true");
                                     }
