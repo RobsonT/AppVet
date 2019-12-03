@@ -3,6 +3,7 @@ package com.example.apppetshop;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,28 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
     List<Pet> petList;
     Context context;
     FirebaseStorage storage;
+
+    private OnItemClickListener petListener;
+
+
     public PetAdapter(List<Pet> petList) {
         this.petList = petList;
         storage = FirebaseStorage.getInstance();
     }
 
+    public interface OnItemClickListener {
+        void onItemDetail(int position);
+        void onItemDelete(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        petListener = listener;
+    }
+
     @Override
     public PetAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pet_list, parent, false);
-        PetAdapter.ViewHolder viewHolder = new PetAdapter.ViewHolder(view);
+        PetAdapter.ViewHolder viewHolder = new PetAdapter.ViewHolder(view, petListener);
         context = parent.getContext();
         return viewHolder;
     }
@@ -62,13 +76,39 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         TextView namePet;
         TextView breedPet;
         CardView cv;
+        TextView close;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             imgPet = itemView.findViewById(R.id.imgPet);
             namePet = itemView.findViewById(R.id.namePet);
             breedPet = itemView.findViewById(R.id.breedPet);
-            cv = itemView.findViewById(R.id.cardView);
+            cv = itemView.findViewById(R.id.cardViewPet);
+            close = itemView.findViewById(R.id.closePet);
+
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onItemDetail(position);
+                    }
+                }
+            });
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        Log.i("testep", String.valueOf(position));
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemDelete(position);
+                        }
+                    }
+                }
+            });
         }
 
     }

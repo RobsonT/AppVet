@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/closePet"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="end"

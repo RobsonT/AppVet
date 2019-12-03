@@ -43,7 +43,7 @@ public class ListaPet extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_lista_pet,  container, false);
+        View v = inflater.inflate(R.layout.activity_lista_pet, container, false);
 
         auth = FirebaseAuth.getInstance();
 
@@ -68,9 +68,20 @@ public class ListaPet extends Fragment {
                                     message.setVisibility(TextView.GONE);
                                 }
                             }
-                            if(pets.size() == 0)
+                            if (pets.size() == 0)
                                 message.setVisibility(TextView.VISIBLE);
                             petAdapter = new PetAdapter(pets);
+                            petAdapter.setOnItemClickListener(new PetAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemDetail(int position) {
+                                    showItem(position);
+                                }
+
+                                @Override
+                                public void onItemDelete(int position) {
+                                    removeItem(position);
+                                }
+                            });
                             recyclerView.setAdapter(petAdapter);
                         } else {
                             Log.d("listaPet", "Error getting documents: ", task.getException());
@@ -94,7 +105,7 @@ public class ListaPet extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             pets = new ArrayList<>();
 
             FirebaseFirestore.getInstance().collection("/pets")
@@ -118,5 +129,17 @@ public class ListaPet extends Fragment {
             petAdapter = new PetAdapter(pets);
             recyclerView.setAdapter(petAdapter);
         }
+    }
+
+    public void showItem(int position) {
+
+    }
+
+    public void removeItem(int position) {
+        Pet pet = pets.get(position);
+        pets.remove(position);
+        petAdapter.notifyItemRemoved(position);
+        PetDAO favoritoDAO = PetDAO.getInstance();
+        favoritoDAO.delete(pet);
     }
 }
