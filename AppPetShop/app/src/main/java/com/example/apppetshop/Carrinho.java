@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,6 +112,10 @@ public class Carrinho extends Fragment {
                                                                 public void onItemDelete(int position) {
                                                                     removeItem(position);
                                                                 }
+                                                                @Override
+                                                                public void onItemDetails(int position) {
+                                                                    showItem(position);
+                                                                }
                                                             });
                                                             final double[] value = {0};
                                                             for (final Item item : itens) {
@@ -128,11 +133,10 @@ public class Carrinho extends Fragment {
                                                                                         }
                                                                                     }
                                                                                     value[0] += item.getQuantidade() * p[0].getPreco();
+                                                                                    valorTotal.setText(String.valueOf(value[0]));
                                                                                 } else {
                                                                                     Log.d("Carrinho", "Error getting documents: ", task.getException());
                                                                                 }
-
-                                                                                valorTotal.setText(String.valueOf(value[0]));
                                                                             }
                                                                         });
                                                             }
@@ -239,8 +243,30 @@ public class Carrinho extends Fragment {
                 });
     }
 
+    public void showItem(final int position) {
+        FirebaseFirestore.getInstance().collection("/produtos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Produto prod = document.toObject(Produto.class);
+                                if (prod.getId().equals(itens.get(position).getIdProduto())) {
+                                    final Intent i = new Intent(getContext(), ProdutoDescricao.class);
+                                    i.putExtra("idProduto", prod.getId());
+                                    startActivity(i);
+                                }
+                            }
+                        } else {
+                            Log.d("Carrinho", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
     public double getTotalValue() {
-        double value = 0;
+        final double[] value = {0};
         for (final Item i : this.itens) {
             final Produto[] p = {null};
 
@@ -256,14 +282,13 @@ public class Carrinho extends Fragment {
                                         p[0] = prod;
                                     }
                                 }
+                                value[0] += i.getQuantidade() * p[0].getPreco();
                             } else {
                                 Log.d("Loja fragment", "Error getting documents: ", task.getException());
                             }
                         }
                     });
-
-            value += i.getQuantidade() * p[0].getPreco();
         }
-        return value;
+        return value[0];
     }
 }

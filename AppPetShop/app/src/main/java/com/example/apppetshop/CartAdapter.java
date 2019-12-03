@@ -38,7 +38,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<Item> itemList;
     Context context;
     Item item;
-    Compra compra;
 
     CompraDAO compraDAO;
     ItemDAO itemDAO;
@@ -57,6 +56,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemDelete(int position);
+        void onItemDetails(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -90,16 +90,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            item = itemList.get(position);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Produto prod = document.toObject(Produto.class);
-                                if (itemList.get(position).getIdProduto().equals(prod.getId())) {
-                                    product[0] = prod;
-                                    holder.name.setText(product[0].getNome());
-                                    holder.price.setText("R$" + String.valueOf(product[0].getPreco()));
+                                if (item.getIdProduto().equals(prod.getId())) {
+                                    holder.name.setText(prod.getNome());
+                                    holder.price.setText("R$" + String.valueOf(prod.getPreco()));
                                     holder.quantity.setText(String.valueOf(item.getQuantidade()));
                                     holder.close.setTag(String.valueOf(position));
-                                    holder.valorText.setText("R$" + product[0].getPreco() * item.getQuantidade());
-                                    storage.getReferenceFromUrl(product[0].getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
+                                    storage.getReferenceFromUrl(prod.getImagem()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                         @Override
                                         public void onSuccess(byte[] bytes) {
                                             bitmap[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -133,14 +133,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Produto prod = document.toObject(Produto.class);
                                         holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
+                                        double currentValue = Double.parseDouble(Carrinho.valorTotal.getText().toString());
+                                        Carrinho.valorTotal.setText(String.valueOf(currentValue + prod.getPreco()));
                                     }
                                 } else {
                                     Log.d("cartAdapter", "Error getting documents: ", task.getException());
                                 }
                             }
                         });
-
-                updateTotalValue();
             }
         });
 
@@ -164,85 +164,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             Produto prod = document.toObject(Produto.class);
                                             holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
+                                            double currentValue = Double.parseDouble(Carrinho.valorTotal.getText().toString());
+                                            Carrinho.valorTotal.setText(String.valueOf(currentValue - prod.getPreco()));
                                         }
                                     } else {
                                         Log.d("cartAdapter", "Error getting documents: ", task.getException());
                                     }
                                 }
                             });
-
-                    updateTotalValue();
                 } else {
                     Toast.makeText(context, "Quantidade minima alcançada", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-    }
-
-    public void updateTotalValue() {
-        final List<Item> itens = new ArrayList<>();
-
-        final double[] value = {0};
-
-        FirebaseFirestore.getInstance().collection("/compras")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Compra c = document.toObject(Compra.class);
-                                if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
-                                    compra = c;
-                                }
-                            }
-
-                            FirebaseFirestore.getInstance().collection("/itens")
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                    Item i = document.toObject(Item.class);
-                                                    if (i.getIdCompra().equals(compra.getId())) {
-                                                        final Produto[] p = {null};
-
-                                                        FirebaseFirestore.getInstance().collection("/produtos")
-                                                                .get()
-                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                Produto prod = document.toObject(Produto.class);
-                                                                                if (item.getIdProduto().equals(prod.getId())) {
-                                                                                    p[0] = prod;
-
-                                                                                }
-                                                                            }
-                                                                            value[0] += item.getQuantidade() * p[0].getPreco();
-                                                                            Carrinho.valorTotal.setText(String.valueOf(value[0]));
-                                                                        } else {
-                                                                            Log.d("cartAdapter", "Error getting documents: ", task.getException());
-                                                                        }
-                                                                    }
-                                                                });
-                                                    }
-                                                }
-                                            } else {
-                                                Log.d("cartAdapter", "Error getting documents: ", task.getException());
-                                            }
-                                        }
-                                    });
-
-                        } else {
-                            Log.d("Loja fragment", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
 
     }
 
@@ -273,6 +207,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             increment = itemView.findViewById(R.id.increment);
             decrement = itemView.findViewById(R.id.decrement);
             valorText = itemView.findViewById(R.id.valorTotalItem);
+
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        Log.i("testep", String.valueOf(position));
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemDetails(position);
+                        }
+                    }
+                }
+            });
 
             close.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     public interface OnItemClickListener {
         void onItemDetail(int position);
+        void onItemDelete(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -104,6 +106,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         TextView nameFavorite;
         TextView priceFavorite;
         CardView cv;
+        LinearLayout layout;
+        TextView close;
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -111,6 +115,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             nameFavorite = itemView.findViewById(R.id.nameFavorite);
             priceFavorite = itemView.findViewById(R.id.priceFavorite);
             cv = itemView.findViewById(R.id.cardViewFavorite);
+            close = itemView.findViewById(R.id.closeFavorito);
 
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,6 +124,19 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION)
                             listener.onItemDetail(position);
+                    }
+                }
+            });
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        Log.i("testep", String.valueOf(position));
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemDelete(position);
+                        }
                     }
                 }
             });

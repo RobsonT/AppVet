@@ -15,9 +15,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.DAO.FavoritoDAO;
+import com.example.apppetshop.DAO.ItemDAO;
 import com.example.apppetshop.DAO.ProdutoDAO;
 import com.example.apppetshop.model.Favorito;
+import com.example.apppetshop.model.Item;
 import com.example.apppetshop.model.Produto;
 import com.example.apppetshop.model.ServicoCliente;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,6 +81,10 @@ public class FavoriteList extends Fragment {
                                 public void onItemDetail(int position) {
                                     showItem(position);
                                 }
+                                @Override
+                                public void onItemDelete(int position) {
+                                    removeItem(position);
+                                }
                             });
 
                             recyclerView.setAdapter(favoriteAdapter);
@@ -110,5 +117,13 @@ public class FavoriteList extends Fragment {
                         }
                     }
                 });
+    }
+
+    public void removeItem(int position) {
+        Favorito favorito = favoritos.get(position);
+        favoritos.remove(position);
+        favoriteAdapter.notifyItemRemoved(position);
+        FavoritoDAO favoritoDAO = FavoritoDAO.getInstance();
+        favoritoDAO.delete(favorito);
     }
 }
