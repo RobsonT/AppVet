@@ -118,21 +118,23 @@ public class ListaPet extends Fragment {
                                     Pet pet = document.toObject(Pet.class);
                                     if (pet.getIdCliente().equals(auth.getUid())) {
                                         pets.add(pet);
-                                        Log.i("Funciona", "func");
                                     }
                                 }
+                                petAdapter = new PetAdapter(pets);
+                                recyclerView.setAdapter(petAdapter);
                             } else {
                                 Log.d("ServicosCliente", "Error getting documents: ", task.getException());
                             }
                         }
                     });
-            petAdapter = new PetAdapter(pets);
-            recyclerView.setAdapter(petAdapter);
         }
     }
 
     public void showItem(int position) {
-
+        Pet pet = pets.get(position);
+        final Intent i = new Intent(getContext(), EditarPet.class);
+        i.putExtra("idPet", pet.getId());
+        startActivityForResult(i, 2);
     }
 
     public void removeItem(int position) {

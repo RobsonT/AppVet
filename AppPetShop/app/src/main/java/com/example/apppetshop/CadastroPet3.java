@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.model.Pet;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -82,6 +83,8 @@ public class CadastroPet3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(bitmap != null) {
+                    final String id = FirebaseFirestore.getInstance().collection("pets").document().getId();
+                    pet.setId(id);
                     petDAO.save(pet, uri);
                     Intent retorno = new Intent();
 

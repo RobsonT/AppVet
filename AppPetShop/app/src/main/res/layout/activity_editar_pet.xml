@@ -21,7 +21,7 @@
             android:paddingBottom="20dp">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/nomePet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -29,7 +29,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/nascimentoPet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -38,7 +38,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/racaPet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/pesoPet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -79,7 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Qual o sexo dele(a)?" />
+                            android:text="É gato ou cachorro?" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -87,16 +87,18 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:id="@+id/imageView4"
+                                android:id="@+id/caoPet"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:layout_marginRight="10dp"
+                                android:tag="false"
                                 app:srcCompat="@drawable/iconcachorro" />
 
                             <ImageView
-                                android:id="@+id/imageView5"
+                                android:id="@+id/gatoPet"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
+                                android:tag="false"
                                 app:srcCompat="@drawable/icongato" />
                         </LinearLayout>
                     </LinearLayout>
@@ -119,16 +121,18 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:id="@+id/imageView7"
+                                android:id="@+id/machoPet"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:layout_marginRight="10dp"
+                                android:tag="false"
                                 app:srcCompat="@drawable/iconmasculino" />
 
                             <ImageView
-                                android:id="@+id/imageView6"
+                                android:id="@+id/femeaPet"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
+                                android:tag="false"
                                 app:srcCompat="@drawable/iconfeminino" />
                         </LinearLayout>
                     </LinearLayout>
@@ -154,15 +158,17 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imageView8"
+                            android:id="@+id/simPet"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            android:tag="false"
                             app:srcCompat="@drawable/positivo" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/naoPet"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            android:tag="false"
                             app:srcCompat="@drawable/negativo" />
                     </LinearLayout>
                 </LinearLayout>
@@ -187,24 +193,27 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imageView10"
+                            android:id="@+id/pequenoPet"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_marginRight="15dp"
+                            android:tag="false"
                             app:srcCompat="@drawable/iconportepequeno" />
 
                         <ImageView
-                            android:id="@+id/imageView11"
+                            android:id="@+id/medioPet"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_marginRight="15dp"
+                            android:tag="false"
                             app:srcCompat="@drawable/iconportemedio" />
 
                         <ImageView
-                            android:id="@+id/imageView12"
+                            android:id="@+id/grandePet"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            app:srcCompat="@drawable/iconportegrande" />
+                            app:srcCompat="@drawable/iconportegrande"
+                            android:tag="false" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -218,7 +227,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/cancelarPet"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
@@ -227,7 +236,7 @@
                     android:textColor="@android:color/white" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/confirmarPet"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:background="#00a300"

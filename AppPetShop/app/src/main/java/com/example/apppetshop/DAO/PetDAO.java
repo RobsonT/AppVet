@@ -35,37 +35,55 @@ public class PetDAO {
     }
 
     public void save(final Pet pet, Uri uriPet) {
-        final String id = db.collection("pets").document().getId();
-        pet.setId(id);
+        final String id = pet.getId();
         String filename = id;
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
-        ref.putFile(uriPet).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        pet.setImage(uri.toString());
-                        db.collection("pets")
-                                .document(id)
-                                .set(pet)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.i("petDao", "Sucesso");
+        if (uriPet != null) {
+            ref.putFile(uriPet).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            pet.setImage(uri.toString());
+                            db.collection("pets")
+                                    .document(id)
+                                    .set(pet)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.i("petDao", "Sucesso");
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("petDao", e.getMessage());
-                                    }
-                                });
-                    }
-                });
-            }
-        });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.i("petDao", e.getMessage());
+                                        }
+                                    });
+                        }
+                    });
+                }
+            });
+        } else {
+            db.collection("pets")
+                    .document(id)
+                    .set(pet)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i("petDao", "Sucesso");
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i("petDao", e.getMessage());
+                        }
+                    });
+        }
     }
 
     public void delete(Pet pet) {
