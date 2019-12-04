@@ -21,7 +21,6 @@
         <activity android:name=".EditarPet" />
         <activity android:name=".PedidoList" />
         <activity android:name=".ServiceAdapter" />
-        <activity android:name=".RecuperacaoSenha" />
         <activity android:name=".Servicos" />
         <activity
             android:name=".MainActivity"
