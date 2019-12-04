@@ -46,7 +46,6 @@ public class ServicosCliente extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_servicos_cliente, container, false);
-        ;
 
         servicoClienteDAO = ServicoClienteDAO.getInstance();
         message = v.findViewById(R.id.nenhumServico);
@@ -97,7 +96,6 @@ public class ServicosCliente extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), Servicos.class);
-                i.putExtra("clientId", String.valueOf(clientId));
                 startActivityForResult(i, 0);
             }
         });
