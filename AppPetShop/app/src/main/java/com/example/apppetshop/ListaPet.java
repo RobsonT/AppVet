@@ -118,9 +118,21 @@ public class ListaPet extends Fragment {
                                     Pet pet = document.toObject(Pet.class);
                                     if (pet.getIdCliente().equals(auth.getUid())) {
                                         pets.add(pet);
+                                        petAdapter = new PetAdapter(pets);
+
                                     }
                                 }
-                                petAdapter = new PetAdapter(pets);
+                                petAdapter.setOnItemClickListener(new PetAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemDetail(int position) {
+                                        showItem(position);
+                                    }
+
+                                    @Override
+                                    public void onItemDelete(int position) {
+                                        removeItem(position);
+                                    }
+                                });
                                 recyclerView.setAdapter(petAdapter);
                             } else {
                                 Log.d("ServicosCliente", "Error getting documents: ", task.getException());

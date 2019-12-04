@@ -123,6 +123,12 @@ public class ServicosCliente extends Fragment {
                                 }
 
                                 serviceAdapter = new ServiceAdapter(servicos);
+                                serviceAdapter.setOnItemClickListener(new ServiceAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemDetail(int position) {
+                                        showItem(position);
+                                    }
+                                });
                                 recyclerView.setAdapter(serviceAdapter);
                             } else {
                                 Log.d("ServicosCliente", "Error getting documents: ", task.getException());
