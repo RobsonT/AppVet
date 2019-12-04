@@ -1,6 +1,7 @@
 package com.example.apppetshop;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -35,15 +36,25 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     PetDAO petDAO;
     FirebaseStorage storage;
 
+    private OnItemClickListener serviceListener;
+
     public ServiceAdapter(List<ServicoCliente> serviceList) {
         this.serviceList = serviceList;
         storage = FirebaseStorage.getInstance();
     }
 
+    public interface OnItemClickListener {
+        void onItemDetail(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        serviceListener = listener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_lista_servico, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, serviceListener);
         context = parent.getContext();
         petDAO = PetDAO.getInstance();
         return viewHolder;
@@ -98,12 +109,25 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         ImageView imgPet;
         TextView dataServico;
         TextView nomeServico;
+        CardView cv;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             imgPet = itemView.findViewById(R.id.imgService);
             dataServico = itemView.findViewById(R.id.dataService);
             nomeServico = itemView.findViewById(R.id.nomeService);
+            cv = itemView.findViewById(R.id.cardViewServico);
+
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onItemDetail(position);
+                    }
+                }
+            });
         }
     }
 }

@@ -73,6 +73,9 @@ public class Servicos extends AppCompatActivity {
         data = findViewById(R.id.dataServico);
         addServico = findViewById(R.id.addServico);
 
+        if(getIntent().getExtras() != null){
+            fillFields();
+        }
 
         button = findViewById(R.id.cancelarServico);
         button.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +149,10 @@ public class Servicos extends AppCompatActivity {
                                     servicoCliente.setIdPet(pets.get(pet.getSelectedItemPosition()).getId());
                                     servicoCliente.setNomeServico(servico.replace("servico", ""));
 
+                                    if (getIntent().getExtras() == null)
+                                        servicoCliente.setId(FirebaseFirestore.getInstance().collection("servicosCliente").document().getId());
+                                    else
+                                        servicoCliente.setId(getIntent().getExtras().getString("idServico"));
                                     servicoClienteDAO.save(servicoCliente);
                                     Intent retorno = new Intent();
 
@@ -263,5 +270,48 @@ public class Servicos extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void fillFields() {
+        FirebaseFirestore.getInstance().collection("servicosCliente")
+                .whereEqualTo("id", getIntent().getExtras().getString("idServico"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document: task.getResult()){
+                            ServicoCliente servico = document.toObject(ServicoCliente.class);
+                            switch (servico.getNomeServico()){
+                                case "Banho":
+                                    servicoBanho.setImageResource(R.drawable.servicobanhoselected);
+                                    servicoBanho.setTag("true");
+                                    break;
+                                case "Tosa":
+                                    servicoTosa.setImageResource(R.drawable.servicotosaselected);
+                                    servicoTosa.setTag("true");
+                                    break;
+                                case "Hospedagem":
+                                    servicoHospedagem.setImageResource(R.drawable.servicohospedagemselected);
+                                    servicoHospedagem.setTag("true");
+                                    break;
+                                case "Adestrar":
+                                    servicoAdestrar.setImageResource(R.drawable.servicoadestrarselected);
+                                    servicoAdestrar.setTag("true");
+                                    break;
+                                case "Castrar":
+                                    servicoCastrar.setImageResource(R.drawable.servicocastrarselected);
+                                    servicoBanho.setTag("true");
+                                    break;
+                                case "Geral":
+                                    servicoGeral.setImageResource(R.drawable.servicogeralselected);
+                                    servicoGeral.setTag("true");
+                                    break;
+                            }
+                            SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yyyy");
+                            final String date = spf.format(servico.getData());
+                            data.setText(date);
+                        }
+                    }
+                });
     }
 }

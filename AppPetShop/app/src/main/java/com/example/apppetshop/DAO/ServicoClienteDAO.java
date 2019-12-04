@@ -30,8 +30,7 @@ public class ServicoClienteDAO {
     }
 
     public void save(ServicoCliente serviceClient) {
-        String id = db.collection("servicosCliente").document().getId();
-        serviceClient.setId(id);
+        String id = serviceClient.getId();
         db.collection("servicosCliente")
                 .document(id)
                 .set(serviceClient)

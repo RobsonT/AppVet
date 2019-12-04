@@ -184,6 +184,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         caoPet.setImageResource(R.drawable.iconcachorroselected);
                         gatoPet.setImageResource(R.drawable.icongato);
+                        caoPet.setTag("true");
+                        gatoPet.setTag("false");
                     }
                 });
 
@@ -192,6 +194,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         gatoPet.setImageResource(R.drawable.icongatoselected);
                         caoPet.setImageResource(R.drawable.iconcachorro);
+                        gatoPet.setTag("true");
+                        caoPet.setTag("false");
                     }
                 });
 
@@ -200,6 +204,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         machoPet.setImageResource(R.drawable.iconmasculinoselected);
                         femeaPet.setImageResource(R.drawable.iconfeminino);
+                        machoPet.setTag("true");
+                        femeaPet.setTag("false");
                     }
                 });
 
@@ -208,6 +214,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         femeaPet.setImageResource(R.drawable.iconfemininoselected);
                         machoPet.setImageResource(R.drawable.iconmasculino);
+                        femeaPet.setTag("true");
+                        machoPet.setTag("false");
                     }
                 });
 
@@ -216,6 +224,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         simPet.setImageResource(R.drawable.positivoselected);
                         naoPet.setImageResource(R.drawable.negativo);
+                        simPet.setTag("true");
+                        naoPet.setTag("false");
                     }
                 });
 
@@ -224,6 +234,8 @@ EditarPet extends AppCompatActivity {
                     public void onClick(View v) {
                         naoPet.setImageResource(R.drawable.negativoselected);
                         simPet.setImageResource(R.drawable.positivo);
+                        naoPet.setTag("true");
+                        simPet.setTag("false");
                     }
                 });
 
@@ -233,6 +245,9 @@ EditarPet extends AppCompatActivity {
                         pequenoPet.setImageResource(R.drawable.iconportepequenoselected);
                         medioPet.setImageResource(R.drawable.iconportemedio);
                         grandePet.setImageResource(R.drawable.iconportegrande);
+                        pequenoPet.setTag("true");
+                        medioPet.setTag("false");
+                        grandePet.setTag("false");
                     }
                 });
 
@@ -242,6 +257,9 @@ EditarPet extends AppCompatActivity {
                         medioPet.setImageResource(R.drawable.iconportemedioselected);
                         pequenoPet.setImageResource(R.drawable.iconportepequeno);
                         grandePet.setImageResource(R.drawable.iconportegrande);
+                        medioPet.setTag("true");
+                        pequenoPet.setTag("false");
+                        grandePet.setTag("false");
                     }
                 });
 
@@ -251,6 +269,9 @@ EditarPet extends AppCompatActivity {
                         grandePet.setImageResource(R.drawable.iconportegrandeselected);
                         medioPet.setImageResource(R.drawable.iconportemedio);
                         pequenoPet.setImageResource(R.drawable.iconportepequeno);
+                        grandePet.setTag("true");
+                        medioPet.setTag("false");
+                        pequenoPet.setTag("false");
                     }
                 });
             }

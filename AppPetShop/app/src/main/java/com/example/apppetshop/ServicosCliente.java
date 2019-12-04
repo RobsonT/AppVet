@@ -45,7 +45,8 @@ public class ServicosCliente extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_servicos_cliente,  container, false);;
+        View v = inflater.inflate(R.layout.activity_servicos_cliente, container, false);
+        ;
 
         servicoClienteDAO = ServicoClienteDAO.getInstance();
         message = v.findViewById(R.id.nenhumServico);
@@ -70,12 +71,18 @@ public class ServicosCliente extends Fragment {
                                     servicos.add(serv);
                                 }
                             }
-                            if(servicos.size() != 0){
+                            if (servicos.size() != 0) {
                                 message.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 message.setVisibility(View.VISIBLE);
                             }
                             serviceAdapter = new ServiceAdapter(servicos);
+                            serviceAdapter.setOnItemClickListener(new ServiceAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemDetail(int position) {
+                                    showItem(position);
+                                }
+                            });
                             recyclerView.setAdapter(serviceAdapter);
                         } else {
                             Log.d("ServicosCliente", "Error getting documents: ", task.getException());
@@ -89,7 +96,7 @@ public class ServicosCliente extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(),Servicos.class);
+                Intent i = new Intent(getContext(), Servicos.class);
                 i.putExtra("clientId", String.valueOf(clientId));
                 startActivityForResult(i, 0);
             }
@@ -101,7 +108,7 @@ public class ServicosCliente extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             servicos = new ArrayList<>();
 
             FirebaseFirestore.getInstance().collection("/servicosCliente")
@@ -125,5 +132,12 @@ public class ServicosCliente extends Fragment {
                         }
                     });
         }
+    }
+
+    public void showItem(int position) {
+        ServicoCliente servicoCliente = servicos.get(position);
+        final Intent i = new Intent(getContext(), Servicos.class);
+        i.putExtra("idServico", servicoCliente.getId());
+        startActivityForResult(i, 2);
     }
 }
