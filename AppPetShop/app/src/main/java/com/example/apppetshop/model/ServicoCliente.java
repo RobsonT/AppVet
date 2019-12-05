@@ -8,6 +8,7 @@ public class ServicoCliente {
     private String nomeServico;
     private String idPet;
     private Date data;
+    private String local;
 
     public String getId() {
         return id;
@@ -47,5 +48,13 @@ public class ServicoCliente {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
     }
 }

@@ -51,11 +51,9 @@ public class Carrinho extends Fragment {
     static TextView warningCart;
     static Button confirm;
     static LinearLayout valueField;
+    static TextView localCompra;
+    Button mapaCarrinho;
     TextView moreProducts;
-
-    private ItemDAO itemDao;
-    private CompraDAO compraDAO;
-    private ProdutoDAO produtoDAO;
 
     private FirebaseAuth auth;
 
@@ -112,6 +110,7 @@ public class Carrinho extends Fragment {
                                                                 public void onItemDelete(int position) {
                                                                     removeItem(position);
                                                                 }
+
                                                                 @Override
                                                                 public void onItemDetails(int position) {
                                                                     showItem(position);
@@ -205,6 +204,16 @@ public class Carrinho extends Fragment {
         confirm = v.findViewById(R.id.confirm);
         valorTotal = v.findViewById(R.id.valorTotal);
         valueField = v.findViewById(R.id.valorCarrinho);
+        mapaCarrinho = v.findViewById(R.id.mapaCarrinho);
+        localCompra = v.findViewById(R.id.localCarrinho);
+        mapaCarrinho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapaServico.class);
+                intent.putExtra("required", "compra");
+                startActivity(intent);
+            }
+        });
     }
 
     public void removeItem(int position) {
