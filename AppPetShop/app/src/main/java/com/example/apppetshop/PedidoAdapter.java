@@ -79,36 +79,35 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
                                     itens.add(item);
                                 }
                             }
+                            for (final Item i : itens) {
+                                final Produto[] p = {null};
+
+                                FirebaseFirestore.getInstance().collection("/produtos")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Produto prod = document.toObject(Produto.class);
+                                                        if (i.getIdProduto().equals(prod.getId())) {
+                                                            p[0] = prod;
+                                                            valor[0] += i.getQuantidade() * p[0].getPreco();
+                                                            holder.precoPedido.setText(String.valueOf(valor[0]));
+                                                        }
+                                                    }
+                                                } else {
+                                                    Log.d("Loja fragment", "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
+                            }
                         } else {
                             Log.d("PedidoAdapter", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        for (final Item i: itens) {
-            final Produto[] p = {null};
-
-            FirebaseFirestore.getInstance().collection("/produtos")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Produto prod = document.toObject(Produto.class);
-                                    if (i.getIdProduto().equals(prod.getId())) {
-                                        p[0] = prod;
-                                        valor[0] += i.getQuantidade() * p[0].getPreco();
-                                        holder.precoPedido.setText(String.valueOf(valor[0]));
-                                    }
-                                }
-                            } else {
-                                Log.d("Loja fragment", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-        }
-        SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yyyy");
         String date = spf.format(pedido.getData());
         holder.dataPedido.setText(date);
         holder.localPedido.setText(pedido.getLocal());
@@ -128,9 +127,9 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
 
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
-            idPedido= itemView.findViewById(R.id.id);
+            idPedido = itemView.findViewById(R.id.id);
             precoPedido = itemView.findViewById(R.id.precoPedido);
-            localPedido= itemView.findViewById(R.id.localPedido);
+            localPedido = itemView.findViewById(R.id.localPedido);
             dataPedido = itemView.findViewById(R.id.dataPedido);
             cv = itemView.findViewById(R.id.cvPedido);
 
