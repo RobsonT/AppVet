@@ -108,8 +108,6 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
                         }
                     });
         }
-
-        holder.precoPedido.setText(String.valueOf(valor[0]));
         SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy");
         String date = spf.format(pedido.getData());
         holder.dataPedido.setText(date);
