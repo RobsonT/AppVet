@@ -113,7 +113,7 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
         SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy");
         String date = spf.format(pedido.getData());
         holder.dataPedido.setText(date);
-        holder.localPedido.setText("Ainda não implementado");
+        holder.localPedido.setText(pedido.getLocal());
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.DAO.ItemDAO;
@@ -91,7 +92,10 @@ public class Carrinho extends Fragment {
                                         public void onClick(View v) {
                                             compra.setLocal(localCompra.getText().toString());
                                             compra.setConfirmado(true);
-                                            cartAdapter.notifyDataSetChanged();
+                                            CompraDAO.getInstance().save(compra);
+                                            Toast.makeText(getContext(), "Compra realizada com sucesso", Toast.LENGTH_SHORT).show();
+                                            //itens.clear();
+                                            hideItens();
                                         }
                                     });
                                     if (compra != null) {
