@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.apppetshop.DAO.CompraDAO;
 import com.example.apppetshop.model.Compra;
@@ -31,14 +32,16 @@ public class PedidoList extends Fragment {
     RecyclerView recyclerView;
     PedidoAdapter pedidoAdapter;
     List<Compra> pedidos;
+    TextView warnPedido;
 
     private FirebaseAuth auth;
-
     CompraDAO compraDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_lista_pedido, container, false);
+
+        warnPedido = v.findViewById(R.id.warnPedido);
 
         auth = FirebaseAuth.getInstance();
 
@@ -59,6 +62,7 @@ public class PedidoList extends Fragment {
                                 Compra compra = document.toObject(Compra.class);
                                 if (auth.getUid().equals(compra.getIdCliente()) && compra.isConfirmado()) {
                                     pedidos.add(compra);
+                                    warnPedido.setVisibility(View.GONE);
                                 }
                             }
                             pedidoAdapter = new PedidoAdapter(pedidos);
@@ -74,7 +78,6 @@ public class PedidoList extends Fragment {
                         }
                     }
                 });
-
         return v;
     }
 
