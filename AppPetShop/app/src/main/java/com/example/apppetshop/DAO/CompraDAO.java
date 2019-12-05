@@ -36,8 +36,7 @@ public class CompraDAO{
     }
 
     public void save(Compra purchase) {
-        String id = db.collection("compras").document().getId();
-        purchase.setId(id);
+        String id = purchase.getId();
         db.collection("compras")
                 .document(id)
                 .set(purchase)

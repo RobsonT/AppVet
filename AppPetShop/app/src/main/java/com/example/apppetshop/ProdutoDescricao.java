@@ -222,6 +222,8 @@ public class ProdutoDescricao extends AppCompatActivity {
                             }
                             if (compra == null) {
                                 compra = new Compra();
+                                String id = FirebaseFirestore.getInstance().collection("compras").document().getId();
+                                compra.setId(id);
                                 compra.setConfirmado(false);
                                 compra.setIdCliente(auth.getUid());
                                 Date currentTime = Calendar.getInstance().getTime();

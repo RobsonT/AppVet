@@ -57,7 +57,7 @@ public class PedidoList extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Compra compra = document.toObject(Compra.class);
-                                if (auth.getUid().equals(compra.getIdCliente())) {
+                                if (auth.getUid().equals(compra.getIdCliente()) && compra.isConfirmado()) {
                                     pedidos.add(compra);
                                 }
                             }
