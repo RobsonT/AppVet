@@ -59,10 +59,29 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="0.7"
-                android:gravity="bottom|center"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
                 android:paddingBottom="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/mapaCarrinho"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:text="Selecionar Local" />
+
+                    <TextView
+                        android:id="@+id/localCarrinho"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Local Escolhido" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/valorCarrinho"
