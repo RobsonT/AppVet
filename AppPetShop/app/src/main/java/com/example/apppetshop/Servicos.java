@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.apppetshop.DAO.PetDAO;
 import com.example.apppetshop.DAO.ServicoClienteDAO;
@@ -29,6 +32,8 @@ import java.util.List;
 
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +42,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Servicos extends AppCompatActivity {
+    private static final String TAG = "Servicos";
+    private static  final int ERROR_DIALOG_REQUEST = 9001;
+
+
+    static TextView localServico;
 
     ImageView servicoBanho, servicoTosa, servicoHospedagem, servicoAdestrar, servicoCastrar, servicoGeral;
     Spinner horario, pet;
@@ -53,6 +63,12 @@ public class Servicos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicos);
+
+        localServico = findViewById(R.id.localServico);
+
+        if (isServicesOK()) {
+            init();
+        }
 
         auth = FirebaseAuth.getInstance();
 
@@ -313,5 +329,38 @@ public class Servicos extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void init() {
+        Button btnMap = findViewById(R.id.mapaServico);
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Servicos.this, MapaServico.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    //  Verificando se o serviço funciona
+    public boolean isServicesOK(){
+        Log.d(TAG,"isServiceOK: cheking google services version");
+
+        int availabre = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Servicos.this);
+
+        if(availabre == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map request
+            Log.d(TAG,"isServiceOK: Google Play Services is working");
+            return true;
+        }
+        else if (GoogleApiAvailability.getInstance().isUserResolvableError(availabre)){
+            //an error accured but we can resolve it
+            Log.d(TAG,"isServiceOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(Servicos.this,availabre, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }else {
+            Toast.makeText(this, "You can't make map request", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 }

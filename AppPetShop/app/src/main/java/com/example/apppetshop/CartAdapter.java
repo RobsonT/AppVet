@@ -133,8 +133,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Produto prod = document.toObject(Produto.class);
                                         holder.valorText.setText("R$" + prod.getPreco() * item.getQuantidade());
-                                        double currentValue = Double.parseDouble(Carrinho.valorTotal.getText().toString());
-                                        Carrinho.valorTotal.setText(String.valueOf(currentValue + prod.getPreco()));
+                                            double currentValue = Double.parseDouble(Carrinho.valorTotal.getText().toString());
+                                            Carrinho.valorTotal.setText(String.valueOf(currentValue + prod.getPreco()));
                                     }
                                 } else {
                                     Log.d("cartAdapter", "Error getting documents: ", task.getException());
