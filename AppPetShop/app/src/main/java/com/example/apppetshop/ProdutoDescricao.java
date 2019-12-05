@@ -49,7 +49,6 @@ public class ProdutoDescricao extends AppCompatActivity {
     Button addCarrinho, button;
     Button favorito;
     TextView descricaoProduto;
-    ListView lstDescricao;
 
     ArrayAdapter<String> arrayAdapter;
 
@@ -87,7 +86,6 @@ public class ProdutoDescricao extends AppCompatActivity {
         addCarrinho = findViewById(R.id.addCarrinho);
         favorito = findViewById(R.id.addFavoritos);
         descricaoProduto = findViewById(R.id.descricaoProduto);
-        lstDescricao = findViewById(R.id.lstDescricao);
 
         button = findViewById(R.id.cancelarProduto);
         button.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +137,6 @@ public class ProdutoDescricao extends AppCompatActivity {
         final List<Descricao> descricoes = new ArrayList<>();
 
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaDescricoes);
-        lstDescricao.setAdapter(arrayAdapter);
         FirebaseFirestore.getInstance().collection("/descricoes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
