@@ -99,9 +99,9 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
                                     if (i.getIdProduto().equals(prod.getId())) {
                                         p[0] = prod;
                                         valor[0] += i.getQuantidade() * p[0].getPreco();
+                                        holder.precoPedido.setText(String.valueOf(valor[0]));
                                     }
                                 }
-                                holder.precoPedido.setText(String.valueOf(valor[0]));
                             } else {
                                 Log.d("Loja fragment", "Error getting documents: ", task.getException());
                             }
