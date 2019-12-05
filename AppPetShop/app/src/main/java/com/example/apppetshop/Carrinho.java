@@ -86,7 +86,14 @@ public class Carrinho extends Fragment {
                                 Compra c = document.toObject(Compra.class);
                                 if (!c.isConfirmado() && c.getIdCliente().equals(auth.getUid())) {
                                     compra = c;
-
+                                    confirm.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            compra.setLocal(localCompra.getText().toString());
+                                            compra.setConfirmado(true);
+                                            cartAdapter.notifyDataSetChanged();
+                                        }
+                                    });
                                     if (compra != null) {
                                         hideItens();
                                         FirebaseFirestore.getInstance().collection("/itens")
