@@ -194,10 +194,6 @@ public class Carrinho extends Fragment {
 
     public void initialize(View v) {
 
-        itemDao = ItemDAO.getInstance();
-        compraDAO = CompraDAO.getInstance();
-        produtoDAO = ProdutoDAO.getInstance();
-
         listCart = v.findViewById(R.id.listCart);
         warningCart = v.findViewById(R.id.warningCart);
         moreProducts = v.findViewById(R.id.moreProducts);
