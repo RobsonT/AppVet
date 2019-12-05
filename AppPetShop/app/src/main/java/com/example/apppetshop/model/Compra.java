@@ -7,6 +7,7 @@ public class Compra {
     private String idCliente;
     private Date data;
     private boolean confirmado;
+    private String local;
 
     public String getId() {
         return id;
@@ -38,5 +39,13 @@ public class Compra {
 
     public void setConfirmado(boolean confirmado) {
         this.confirmado = confirmado;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
     }
 }

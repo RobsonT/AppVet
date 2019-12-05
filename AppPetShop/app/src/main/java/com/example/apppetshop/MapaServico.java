@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -71,7 +72,10 @@ public class MapaServico extends AppCompatActivity implements
         addLocalServico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Servicos.localServico.setText(localServico);
+                if(getIntent().getExtras().getString("required").equals("servicos"))
+                    Servicos.localServico.setText(localServico);
+                else
+                    Carrinho.localCompra.setText(localServico);
                 finish();
             }
         });

@@ -164,7 +164,7 @@ public class Servicos extends AppCompatActivity {
 
                                     servicoCliente.setIdPet(pets.get(pet.getSelectedItemPosition()).getId());
                                     servicoCliente.setNomeServico(servico.replace("servico", ""));
-
+                                    servicoCliente.setLocal(localServico.getText().toString());
                                     if (getIntent().getExtras() == null)
                                         servicoCliente.setId(FirebaseFirestore.getInstance().collection("servicosCliente").document().getId());
                                     else
@@ -337,6 +337,7 @@ public class Servicos extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Servicos.this, MapaServico.class);
+                intent.putExtra("required", "servicos");
                 startActivity(intent);
             }
         });
