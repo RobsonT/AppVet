@@ -16,50 +16,98 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="5dp"
+                    android:text="identificador da compra:" />
 
                 <TextView
                     android:id="@+id/id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="40dp"
-                    android:paddingBottom="20dp"
+                    android:paddingBottom="5dp"
                     android:text="identificador" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="5dp"
+                    android:text="Local de Retirada:" />
 
                 <TextView
                     android:id="@+id/localPedido"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="40dp"
-                    android:paddingBottom="20dp"
+                    android:paddingBottom="5dp"
                     android:text="local" />
-
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="5dp"
+                    android:text="Dia da Compra:" />
 
                 <TextView
                     android:id="@+id/dataPedido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="40dp"
-                    android:paddingBottom="20dp"
+                    android:paddingBottom="5dp"
                     android:text="data" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/textView29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="5dp"
+                    android:text="Valor Total:" />
 
                 <TextView
                     android:id="@+id/precoPedido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="40dp"
-                    android:paddingBottom="20dp"
+                    android:paddingBottom="5dp"
                     android:text="preço" />
 
             </LinearLayout>
