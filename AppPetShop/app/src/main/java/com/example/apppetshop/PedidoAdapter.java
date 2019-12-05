@@ -63,7 +63,7 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
 
         final Compra pedido = pedidoList.get(position);
         holder.idPedido.setText(String.valueOf(pedido.getId()));
-        double valor = 0;
+        final double[] valor = {0};
 
         final List<Item> itens = new ArrayList<>();
 
@@ -98,18 +98,18 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.ViewHolder
                                     Produto prod = document.toObject(Produto.class);
                                     if (i.getIdProduto().equals(prod.getId())) {
                                         p[0] = prod;
+                                        valor[0] += i.getQuantidade() * p[0].getPreco();
                                     }
                                 }
+                                holder.precoPedido.setText(String.valueOf(valor[0]));
                             } else {
                                 Log.d("Loja fragment", "Error getting documents: ", task.getException());
                             }
                         }
                     });
-
-            valor += i.getQuantidade() * p[0].getPreco();
         }
 
-        holder.precoPedido.setText(String.valueOf(valor));
+        holder.precoPedido.setText(String.valueOf(valor[0]));
         SimpleDateFormat spf=new SimpleDateFormat("dd/MM/yyyy");
         String date = spf.format(pedido.getData());
         holder.dataPedido.setText(date);
