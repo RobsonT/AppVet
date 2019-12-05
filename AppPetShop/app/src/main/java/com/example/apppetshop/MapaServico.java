@@ -1,20 +1,32 @@
 package com.example.apppetshop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.api.LogDescriptor;
 
 /**
  * A demo class that stores and retrieves data objects with each marker.
@@ -42,6 +54,13 @@ public class MapaServico extends AppCompatActivity implements
 
     private GoogleMap mMap;
 
+    private FusedLocationProviderClient mFusedLocationClient;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final String TAG = "MapaServico";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +81,41 @@ public class MapaServico extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    private void getLocationPermission() {
+        Log.d(TAG, "1 - getLocationPermission: ");
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        try {
+            Task location = mFusedLocationClient.getLastLocation();
+            location.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Log.e(TAG, "1 - onComplete: found location");
+                    Location currentLocation = (Location) task.getResult();
+                    moveCamera(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()),15f);
+
+                }
+            });
+
+        }catch (SecurityException e){
+            Log.e(TAG, "1 - getLocationPermission: Segurity" + e.getMessage());
+        }
+    }
+
+
+    private void moveCamera(LatLng latLng, float zoom){
+        Log.e(TAG,"1 - MoveCamera: movendo a camera");
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom ));
+    }
+
     /** Called when the map is ready. */
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+
+        getLocationPermission();
+        mMap.setMyLocationEnabled(true);
 
         // Add some markers to the map, and add a data object to each marker.
         mChale = mMap.addMarker(new MarkerOptions()
